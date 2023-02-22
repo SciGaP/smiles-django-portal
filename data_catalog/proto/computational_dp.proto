@@ -1,0 +1,105 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+
+//   http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+syntax = "proto3";
+package smiles.model;
+
+message ComputationalDP {
+  optional string mol_id = 1;
+  optional string cas_nr = 2;
+  optional string smiles = 3;
+  optional string smiles_stereo = 4;
+  optional string inchi = 5;
+  optional string molfile_blob_source = 6;
+  optional string emp_formula = 7;
+  optional string emp_formula_sort = 8;
+  optional string emp_formula_source = 9;
+  optional double mw = 10;
+  optional double mw_monoiso = 11;
+  optional double rdb = 12;
+  optional string mw_source = 13;
+  optional string validated_by = 14;
+  optional string journal = 15;
+  optional string auth_of_intr = 16;
+  optional string jour_cit = 17;
+  optional string year_publ = 18;
+  optional string doi_link = 19;
+  optional string comp_class = 20;
+  optional string cuniq = 21;
+  optional string calc_perf = 22;
+  optional string org_met = 23;
+  optional int64 mol_chrg = 24;
+  optional string state_ofmat = 25;
+  optional string color_white = 26;
+  optional string color_uv = 27;
+  optional double absorb_max = 28;
+  optional string solvent_ae = 29;
+  optional double absorb = 30;
+  optional double conc = 31;
+  optional double extinc = 32;
+  optional double emis_max = 33;
+  optional double temp_abs = 34;
+  optional double emis_qy = 35;
+  optional double temp_ems = 36;
+  optional double lifetime = 37;
+  optional double temp_cv = 38;
+  optional double reduc_pot = 39;
+  optional string hw_or_pk_rp = 40;
+  optional double oxid_pot = 41;
+  optional string hw_or_pk_op = 42;
+  optional string solvent_cv = 43;
+  optional string electrolyte = 44;
+  optional string ref_electrd = 45;
+  optional string inter_thngs = 46;
+  optional double density_20 = 47;
+  optional string density_20_source = 48;
+  optional double default_warn_level = 49;
+  optional double n_20 = 50;
+  optional string n_20_source = 51;
+  optional double mp_low = 52;
+  optional double mp_high = 53;
+  optional string mp_source = 54;
+  optional double bp_low = 55;
+  optional double bp_high = 56;
+  optional double bp_press = 57;
+  optional string press_unit = 58;
+  optional string bp_source = 59;
+  optional string safety_r = 60;
+  optional string safety_h = 61;
+  optional string safety_s = 62;
+  optional string safety_p = 63;
+  optional string safety_text = 64;
+  optional string safety_sym = 65;
+  optional string safety_sym_ghs = 66;
+  optional string safety_source = 67;
+  optional string comment_mol = 68;
+  optional ExecEnv exec_env = 69;
+  string data_product_id = 70;
+  string parent_data_product_id = 71;
+  string name = 72;
+}
+
+message ExecEnv{
+  optional string CalcBy = 1;
+  optional double JobCPURunTime = 2;
+  optional string CalcMachine = 3;
+  optional int32 ActualJobRunTime = 4;
+  optional string FinTime = 5;
+  optional int32 Memory = 6;
+  optional string NProcShared = 7;
+}
+
