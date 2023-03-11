@@ -10,14 +10,26 @@ def create_metadata_schema(schema_name: str) -> dc_pb2.MetadataSchema:
     # TODO proper way to extract the schema name or should this be a constant for SMILES project
     metadata_schema.schema_name = SCHEMA_NAME
 
-    return catalog_service.create_meta_data_schema(metadata_schema)
+    return catalog_service.create_metadata_schema(metadata_schema)
+
+
+def get_metadata_schema_field(data):
+    catalog_service = dcs.DataCatalogService()
+    return catalog_service.get_metadata_schema_field(data["schema_name"], data["field_name"])
 
 
 def create_metadata_schema_field(data) -> dc_pb2.MetadataSchemaField:
     catalog_service = dcs.DataCatalogService()
     schema_field = dc_pb2.MetadataSchemaField(**data)
 
-    return catalog_service.create_meta_data_schema_field(schema_field)
+    return catalog_service.create_metadata_schema_field(schema_field)
+
+
+def delete_metadata_schema_field(data):
+    catalog_service = dcs.DataCatalogService()
+    schema_field = dc_pb2.MetadataSchemaField(**data)
+
+    return catalog_service.delete_metadata_schema_field(schema_field)
 
 
 def add_dp_to_schemas(data_product: dc_pb2.DataProduct):
