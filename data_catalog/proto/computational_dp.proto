@@ -21,9 +21,10 @@
 syntax = "proto3";
 
 package smiles.model;
+import "google/protobuf/struct.proto";
 
 message ComputationalDP {
-  string data_product_id = 1;
+  optional string data_product_id = 1;
   optional string parent_data_product_id = 2;
   optional string name = 3;
 
@@ -31,7 +32,7 @@ message ComputationalDP {
   optional string ExperimentName = 5;
   optional string Username = 6;
   optional string Id = 7;
-  optional int32 IndexedTime = 8;
+  optional int64 IndexedTime = 8;
   optional ExecutionEnvironment ExecutionEnvironment = 9;
   optional CalculatedProperties CalculatedProperties = 10;
   optional FinalMoleculeStructuralFormats FinalMoleculeStructuralFormats = 11;
@@ -50,16 +51,27 @@ message ExecutionEnvironment {
   optional string FinTime = 5;
   optional int32 Memory = 6;
   optional string NProcShared = 7;
+  optional int64 FinTimeStamp = 8;
 }
 
 message CalculatedProperties {
-  repeated int32 Homos = 1 [packed = true];
+  optional string Homos = 1;
   optional string Energy = 2;
   optional string Dipole = 3;
   optional string HF = 4;
   repeated double MaximumGradientDistribution = 5 [packed = true];
   repeated double RMSGradientDistribution = 6 [packed = true];
   repeated double Iterations = 7 [packed = true];
+  optional double HomoEigenvalue = 8;
+  optional string HomoEigenvalues = 9;
+  optional double LumoEigenvalue = 10;
+  optional string LumoEigenvalues = 11;
+  optional string Thermal = 12;
+  optional string Enthalpy = 13;
+  optional string Gibbs = 14;
+  repeated double EnergyDistribution = 15 [packed = true];
+  optional string NImag = 16;
+  optional string ZeroPointEnergy = 17;
 }
 
 message FinalMoleculeStructuralFormats {
@@ -82,16 +94,16 @@ message Calculation {
   optional int32 NMO = 3;
   optional string Keywords = 4;
   optional int32 NBasis = 5;
-  repeated double MoEnergies = 6 [packed = true];
+  optional google.protobuf.Value MoEnergies = 6;
   optional string Package = 7;
   optional string CalcType = 8;
   optional string Methods = 9;
 }
 
 message Identifiers {
-  optional string InChiKey = 1;
+  optional string InChIKey = 1;
   optional string CanonicalSMILES = 2;
-  optional string InChi = 3;
+  optional string InChI = 3;
   optional string SMILES = 4;
 }
 
@@ -102,9 +114,11 @@ message Files {
   optional string GaussianInputFile = 4;
   optional string PDBStructureFile = 5;
   optional string InChIFile = 6;
+  optional string GaussianCheckpointFile = 7;
+  optional string GaussianFCheckpointFile = 8;
 }
 
 message InputFileConfiguration {
-  optional string LinkCommands = 1;
+  optional string Link0Commands = 1;
   optional string RouteCommands = 2;
 }
