@@ -39,47 +39,58 @@ message Biblio {
 }
 
 message Record {
-  optional ElectroChemicalPotentials electrochemical_potentials = 1;
+  repeated ElectroChemicalPotentials electrochemical_potentials = 1;
   repeated EmisnSpectra emisn_spectra = 2;
   repeated FluorescenceLifetime fluorescence_lifetimes = 3;
   repeated string names = 4;
   repeated QuantumYield quantum_yields = 5;
+  optional string smiles = 6;
+  optional bool smiles_validation_failed = 7;
+  repeated UvvisSpectra uvvis_spectra = 8;
 }
 
 message ElectroChemicalPotentials {
   optional string solvent = 1;
   optional string type = 2;
   optional string units = 3;
-  optional string value = 4;
-  optional string value_validation_failed = 5;
+  optional double value = 4;
+  optional bool value_validation_failed = 5;
 }
 
 message EmisnSpectra {
   repeated Peak peaks = 1;
   optional string solvent = 2;
-  optional string temperature = 3;
+  optional double temperature = 3;
   optional string temperature_units = 4;
 }
 
 message Peak {
-  optional string extinction = 1;
+  optional int32 extinction = 1;
   optional string extinction_units = 2;
   optional string units = 3;
-  optional string value = 4;
-  optional string value_validation_failed = 5;
+  optional double value = 4;
+  optional bool value_validation_failed = 5;
+  optional bool extinction_validation_failed = 6;
+
 }
 
 message FluorescenceLifetime {
   optional string solvent = 1;
-  optional string temperature = 2;
+  optional double temperature = 2;
   optional string units = 3;
-  optional string value = 4;
+  optional double value = 4;
 }
 
 message QuantumYield {
   optional string solvent = 1;
-  optional string temperature = 2;
-  optional string units = 3;
-  optional string value = 4;
+  optional string type = 2;
+  optional double value = 3;
+}
 
+message UvvisSpectra {
+  optional string apparatus = 1;
+  repeated Peak peaks = 2;
+  optional string solvent = 3;
+  optional double temperature = 4;
+  optional string temperature_units = 5;
 }

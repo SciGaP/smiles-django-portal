@@ -33,7 +33,7 @@ message ExperimentalDP {
   optional string smiles = 6;
   optional string smiles_stereo = 7;
   optional string inchi = 8;
-  optional google.protobuf.Struct molfile_blob_source = 9;
+  optional google.protobuf.Value molfile_blob_source = 9;
   optional string emp_formula = 10;
   optional string emp_formula_sort = 11;
   optional string emp_formula_source = 12;
@@ -45,11 +45,11 @@ message ExperimentalDP {
   optional string journal = 18;
   optional string auth_of_intr = 19;
   optional string jour_cit = 20;
-  optional string year_publ = 21;
+  optional int32 year_publ = 21;
   optional string doi_link = 22;
   optional string comp_class = 23;
   optional string cuniq = 24;
-  optional string calc_perf = 25;
+  optional bool calc_perf = 25;
   optional string org_met = 26;
   optional int64 mol_chrg = 27;
   optional string state_ofmat = 28;

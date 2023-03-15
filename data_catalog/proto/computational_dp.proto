@@ -24,7 +24,7 @@ package smiles.model;
 import "google/protobuf/struct.proto";
 
 message ComputationalDP {
-  optional string data_product_id = 1;
+  string data_product_id = 1;
   optional string parent_data_product_id = 2;
   optional string name = 3;
 
@@ -50,28 +50,28 @@ message ExecutionEnvironment {
   optional int32 ActualJobRunTime = 4;
   optional string FinTime = 5;
   optional int32 Memory = 6;
-  optional string NProcShared = 7;
+  optional int32 NProcShared = 7;
   optional int64 FinTimeStamp = 8;
 }
 
 message CalculatedProperties {
-  optional string Homos = 1;
-  optional string Energy = 2;
-  optional string Dipole = 3;
-  optional string HF = 4;
+  optional int32 Homos = 1;
+  optional double Energy = 2;
+  optional Dipole Dipole = 3;
+  optional double HF = 4;
   repeated double MaximumGradientDistribution = 5 [packed = true];
   repeated double RMSGradientDistribution = 6 [packed = true];
-  repeated double Iterations = 7 [packed = true];
+  repeated int32 Iterations = 7 [packed = true];
   optional double HomoEigenvalue = 8;
-  optional string HomoEigenvalues = 9;
-  optional double LumoEigenvalue = 10;
+  repeated string HomoEigenvalues = 9;
+  repeated double LumoEigenvalue = 10;
   optional string LumoEigenvalues = 11;
-  optional string Thermal = 12;
-  optional string Enthalpy = 13;
-  optional string Gibbs = 14;
+  optional double Thermal = 12;
+  optional double Enthalpy = 13;
+  optional double Gibbs = 14;
   repeated double EnergyDistribution = 15 [packed = true];
-  optional string NImag = 16;
-  optional string ZeroPointEnergy = 17;
+  optional int32 NImag = 16;
+  optional double ZeroPointEnergy = 17;
 }
 
 message FinalMoleculeStructuralFormats {
@@ -82,8 +82,8 @@ message FinalMoleculeStructuralFormats {
 message Molecule {
   optional string Formula = 1;
   optional int32 NAtom = 2;
-  optional string Multiplicity = 3;
-  optional string Charge = 4;
+  optional int32 Multiplicity = 3;
+  optional int32 Charge = 4;
   optional string OrbSym = 5;
   optional string ElecSym = 6;
 }
@@ -121,4 +121,10 @@ message Files {
 message InputFileConfiguration {
   optional string Link0Commands = 1;
   optional string RouteCommands = 2;
+}
+
+message Dipole {
+  double x = 1;
+  double y = 2;
+  double z = 3;
 }
