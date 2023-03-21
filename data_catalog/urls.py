@@ -6,4 +6,5 @@ urlpatterns = [
     path('computational-dp/<str:dp_id>', ComputationalDPView.as_view(), name="get-computational-dp"),
     path('computational-dp/<str:dp_id>', ComputationalDPView.as_view(), name="put-computational-dp"),
     path('computational-dp/<str:dp_id>', ComputationalDPView.as_view(), name="delete-computational-dp"),
+    path(ComputationalDPView.UPLOAD_URL, ComputationalDPView.as_view(), name="upload-computational-dps")
 ]

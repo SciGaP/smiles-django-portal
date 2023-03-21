@@ -19,3 +19,15 @@ A Portal to support SMILES Project
     ```
     python manage.py runserver
     ```
+
+4.  Run the Redis Server
+
+    ```
+    redis-server
+    ```
+
+5.  Run Celery worker
+
+    ```
+    python -m celery -A smiles_django worker -l info
+    ```

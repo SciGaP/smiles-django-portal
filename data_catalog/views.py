@@ -1,15 +1,18 @@
 import json
-from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
+import os
+from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
-from .proto import computational_dp_pb2
 from django.utils.decorators import method_decorator
-
-from . import computational_data_util as comp_util
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from .proto import computational_dp_pb2
+from .util import computational_data_util as comp_util
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ComputationalDPView(View):
+    UPLOAD_URL = 'smiles/computational-dp/upload'
 
     def post(self, request):
         data = json.loads(request.body)
@@ -43,3 +46,22 @@ class ComputationalDPView(View):
             return HttpResponse()
         except Exception as e:
             return HttpResponseNotFound(str(e))
+
+    def upload(self, request):
+        file = request.FILES['file']
+        if file.size > settings.MAX_UPLOAD_SIZE:
+            return HttpResponseBadRequest('File too large')
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+        filename = fs.save(file.name, file)
+        file_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+        comp_util.upload_computational_data_products.delay(file_path)
+
+        # accepted response
+        return HttpResponse('File uploaded and processed successfully.', status=202)
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST' and request.path == '/' + self.UPLOAD_URL and request.FILES.get('file'):
+            return self.upload(request)
+        else:
+            return super().dispatch(request, *args, **kwargs)
