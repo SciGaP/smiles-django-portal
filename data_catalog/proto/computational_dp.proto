@@ -64,8 +64,8 @@ message CalculatedProperties {
   repeated int32 Iterations = 7 [packed = true];
   optional double HomoEigenvalue = 8;
   repeated string HomoEigenvalues = 9;
-  repeated double LumoEigenvalue = 10;
-  optional string LumoEigenvalues = 11;
+  optional double LumoEigenvalue = 10;
+  repeated string LumoEigenvalues = 11;
   optional double Thermal = 12;
   optional double Enthalpy = 13;
   optional double Gibbs = 14;
