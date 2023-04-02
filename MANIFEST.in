@@ -1,0 +1,2 @@
+recursive-include smiles_django/static *
+recursive-include smiles_django/templates *

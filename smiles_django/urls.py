@@ -1,22 +1,25 @@
-"""smiles_django URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import re_path
+from . import views
+from .views import ComputationalDPView, ExperimentalDPView, LiteratureDPView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('smiles/', include('data_catalog.urls'))
+    re_path(r'^computational-dp/?$', ComputationalDPView.as_view(), name="create-comp-dp"),
+    re_path(r"^computational-dp/(?P<dp_id>[^/]+)/$", ComputationalDPView.as_view(), name="get-comp-dp"),
+    re_path(r"computational-dp/(?P<dp_id>[^/]+)$", ComputationalDPView.as_view(), name="get-comp-dp"),
+    re_path(r"^computational-dp/(?P<dp_id>[^/]+)/$", ComputationalDPView.as_view(), name="delete-comp-dp"),
+    re_path(r'computational-dp/upload/?$', ComputationalDPView.as_view(), name="upload-comp-dps"),
+
+    re_path(r'^experimental-dp/?$', ExperimentalDPView.as_view(), name="create-exp-dp"),
+    re_path(r"^experimental-dp/(?P<dp_id>[^/]+)/$", ExperimentalDPView.as_view(), name="get-exp-dp"),
+    re_path(r"experimental-dp/(?P<dp_id>[^/]+)$", ExperimentalDPView.as_view(), name="get-exp-dp"),
+    re_path(r"^experimental-dp/(?P<dp_id>[^/]+)/$", ExperimentalDPView.as_view(), name="delete-exp-dp"),
+    re_path(r'experimental-dp/upload/?$', ExperimentalDPView.as_view(), name="upload-exp-dps"),
+
+    re_path(r'^literature-dp/?$', LiteratureDPView.as_view(), name="create-lit-dp"),
+    re_path(r"^literature-dp/(?P<dp_id>[^/]+)/$", LiteratureDPView.as_view(), name="get-lit-dp"),
+    re_path(r"literature-dp/(?P<dp_id>[^/]+)$", LiteratureDPView.as_view(), name="get-lit-dp"),
+    re_path(r"^literature-dp/(?P<dp_id>[^/]+)/$", LiteratureDPView.as_view(), name="delete-lit-dp"),
+    re_path(r'literature-dp/upload/?$', LiteratureDPView.as_view(), name="upload-lit-dps"),
+
+    re_path('home/', views.home, name='home'),
 ]

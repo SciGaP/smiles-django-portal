@@ -1,4 +1,4 @@
-import data_catalog_pb2 as dc_pb2
+from .proto import data_catalog_pb2 as dc_pb2
 from . import data_catalog_service as dcs
 
 SCHEMA_NAME = "smilesdb"

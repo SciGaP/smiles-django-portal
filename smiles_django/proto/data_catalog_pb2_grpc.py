@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import data_catalog_pb2 as data__catalog__pb2
+from . import data_catalog_pb2 as data__catalog__pb2
 
 
 class DataCatalogAPIServiceStub(object):

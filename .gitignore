@@ -33,3 +33,7 @@ venv/
 site/
 .tox/
 yarn-error.log
+
+*.egg-info
+build
+*.egg

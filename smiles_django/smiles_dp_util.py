@@ -1,13 +1,13 @@
 import os
 import json
 import ijson
-import data_catalog_pb2 as dc_pb2
+from smiles_django.proto import data_catalog_pb2 as dc_pb2
 from enum import Enum
-from data_catalog import data_catalog_service as dcs
-from data_catalog import metadata_util
-from data_catalog.proto import (computational_dp_pb2 as comp_pb2,
-                                experimental_dp_pb2 as exp_pb2,
-                                literature_dp_pb2 as lit_pb2)
+from . import data_catalog_service as dcs
+from . import metadata_util
+from .proto import (computational_dp_pb2 as comp_pb2,
+                    experimental_dp_pb2 as exp_pb2,
+                    literature_dp_pb2 as lit_pb2)
 from google.protobuf.json_format import MessageToJson, ParseDict
 from celery import shared_task
 
@@ -79,15 +79,19 @@ def map_catalog_dp_to_smiles_dp(catalog_dp: dc_pb2.DataProduct, dp_type):
 
 
 @shared_task()
-def upload_smiles_data_products(filename, dp_type):
+def upload_smiles_data_products(filename, dp_id):
     with open(filename, 'rb') as input_file:
         jsons = (o for o in ijson.items(input_file, 'item'))
         count = 0
         failed_count = 0
         for j in jsons:
             try:
-                smiles_dp = ParseDict(j, get_smiles_dp(dp_type), ignore_unknown_fields=True)
-                result_dp = create_smiles_data_product(smiles_dp)
+                smiles_dp = ParseDict(j, get_smiles_dp(SmilesDP(dp_id)), ignore_unknown_fields=True)
+                data_product = map_smiles_dp_to_catalog_dp(smiles_dp)
+                catalog_service = dcs.DataCatalogService()
+                result_dp = catalog_service.create_data_product(data_product)
+                metadata_util.add_dp_to_schemas(result_dp)
+
                 print("Created DP: " + result_dp.data_product_id)
                 count += 1
             except Exception as e:
