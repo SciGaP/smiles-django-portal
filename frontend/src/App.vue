@@ -1,16 +1,12 @@
 <template>
   <div id="app">
-    <data-product-upload/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import DataProductUpload from './components/DataProductUpload.vue';
 
 export default {
-  name: 'App',
-  components: {
-    DataProductUpload
-  }
+  name: 'App'
 };
 </script>
