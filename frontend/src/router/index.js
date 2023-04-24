@@ -1,17 +1,28 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import DataProductUpload from '../components/DataProductUpload.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import DataProductUpload from '../components/DataProductUploader.vue'
+import DataProductTable from '../components/DataProductTable.vue'
+
+Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/smiles/upload-dps',
-    name: 'data-product-upload',
-    component: DataProductUpload
-  }
+    {
+        path: '/smiles/upload-dps',
+        name: 'data-product-upload',
+        component: DataProductUpload
+    },
+    {
+        path: '/smiles/dps/:productType',
+        name: 'data-product-list',
+        component: DataProductTable
+    }
 ]
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+const router = new VueRouter({
+    mode: "history",
+    base: "/smiles_django/build",
+    routes,
+});
 
-export default router
+export default router;
+

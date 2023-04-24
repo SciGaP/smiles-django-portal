@@ -52,9 +52,15 @@ class ComputationalDPView(View):
         # accepted response
         return HttpResponse('File uploaded and processed successfully.', status=202)
 
+    def get(self, request):
+        return JsonResponse(smiles_dp_util.get_smiles_data_products(smiles_dp_util.SmilesDP.COMPUTATIONAL), safe=False,
+                            status=200)
+
     def dispatch(self, request, *args, **kwargs):
         if request.method == 'POST' and request.path.rstrip('/') == self.UPLOAD_URL:
             return self.upload(request)
+        elif request.method == 'GET' and 'dp_id' in kwargs:
+            return self.get_one(request, *args, **kwargs)
         else:
             return super().dispatch(request, *args, **kwargs)
 
@@ -65,13 +71,13 @@ class ExperimentalDPView(View):
 
     def post(self, request):
         data = json.loads(request.body)
-        result_dp = smiles_dp_util.create_smiles_data_product(smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
+        result_dp = smiles_dp_util.create_smiles_data_product(smiles_dp_util.SmilesDP.EXPERIMENTAL, data)
 
         return JsonResponse({'data_product_id': result_dp.data_product_id}, status=201)
 
-    def get(self, request, dp_id):
+    def get_one(self, request, dp_id):
         try:
-            result_json_dp = smiles_dp_util.get_smiles_data_product(dp_id, smiles_dp_util.SmilesDP.COMPUTATIONAL)
+            result_json_dp = smiles_dp_util.get_smiles_data_product(dp_id, smiles_dp_util.SmilesDP.EXPERIMENTAL)
             return JsonResponse(json.loads(result_json_dp), status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
@@ -79,7 +85,7 @@ class ExperimentalDPView(View):
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(dp_id, smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
+            updated_dp = smiles_dp_util.update_smiles_data_product(dp_id, smiles_dp_util.SmilesDP.EXPERIMENTAL, data)
             if updated_dp:
                 return JsonResponse(json.loads(updated_dp), status=200)
             else:
@@ -96,14 +102,20 @@ class ExperimentalDPView(View):
             return HttpResponseNotFound(str(e))
 
     def upload(self, request):
-        upload_smile_dps(request, smiles_dp_util.SmilesDP.COMPUTATIONAL)
+        upload_smile_dps(request, smiles_dp_util.SmilesDP.EXPERIMENTAL)
 
         # accepted response
         return HttpResponse('File uploaded and processed successfully.', status=202)
 
+    def get(self, request):
+        return JsonResponse(smiles_dp_util.get_smiles_data_products(smiles_dp_util.SmilesDP.EXPERIMENTAL), safe=False,
+                            status=200)
+
     def dispatch(self, request, *args, **kwargs):
         if request.method == 'POST' and request.path.rstrip('/') == self.UPLOAD_URL:
             return self.upload(request)
+        elif request.method == 'GET' and 'dp_id' in kwargs:
+            return self.get_one(request, *args, **kwargs)
         else:
             return super().dispatch(request, *args, **kwargs)
 
@@ -118,7 +130,7 @@ class LiteratureDPView(View):
 
         return JsonResponse({'data_product_id': result_dp.data_product_id}, status=201)
 
-    def get(self, request, dp_id):
+    def get_one(self, request, dp_id):
         try:
             result_json_dp = smiles_dp_util.get_smiles_data_product(dp_id, smiles_dp_util.SmilesDP.LITERATURE)
             return JsonResponse(json.loads(result_json_dp), status=200)
@@ -150,9 +162,15 @@ class LiteratureDPView(View):
         # accepted response
         return HttpResponse('File uploaded and processed successfully.', status=202)
 
+    def get(self, request):
+        return JsonResponse(smiles_dp_util.get_smiles_data_products(smiles_dp_util.SmilesDP.LITERATURE), safe=False,
+                            status=200)
+
     def dispatch(self, request, *args, **kwargs):
         if request.method == 'POST' and request.path.rstrip('/') == self.UPLOAD_URL:
             return self.upload(request)
+        elif request.method == 'GET' and 'dp_id' in kwargs:
+            return self.get_one(request, *args, **kwargs)
         else:
             return super().dispatch(request, *args, **kwargs)
 
