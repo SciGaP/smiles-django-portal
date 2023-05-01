@@ -21,7 +21,7 @@ class ComputationalDPView(View):
 
         return JsonResponse({'data_product_id': result_dp.data_product_id}, status=201)
 
-    def get(self, request, dp_id):
+    def get_one(self, request, dp_id):
         try:
             result_json_dp = smiles_dp_util.get_smiles_data_product(dp_id, smiles_dp_util.SmilesDP.COMPUTATIONAL)
             return JsonResponse(json.loads(result_json_dp), status=200)

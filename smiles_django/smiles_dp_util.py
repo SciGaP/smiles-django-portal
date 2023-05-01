@@ -256,6 +256,62 @@ def get_smiles_data_products(dp_type):
             "bp_source": "Manual Entry",
             "safety_r": "R10",
             "safety_h": "H224"
+        },
+        {
+            "data_product_id": "230",
+            "name": "EXP4",
+            "smiles": "C1CCCCC1",
+            "emis_max": 0.5,
+            "mol_id": "M123"
+        },
+        {
+            "data_product_id": "231",
+            "name": "EXP5",
+            "smiles": "C1CCCCC1",
+            "emis_max": 0.7,
+            "mol_id": "6445"
+        },
+        {
+            "data_product_id": "232",
+            "name": "EXP7",
+            "smiles": "C=C=C=C",
+            "emis_max": 0.85,
+            "mol_id": "3937"
+        },
+        {
+            "data_product_id": "233",
+            "name": "EXP8",
+            "smiles": "C=C=C=C-C1CCC",
+            "emis_max": 0.12,
+            "mol_id": "743"
+        },
+        {
+            "data_product_id": "234",
+            "name": "EXP89",
+            "smiles": "C=C=C=C-C1CCC-CC",
+            "emis_max": 0.90,
+            "mol_id": "89"
+        },
+        {
+            "data_product_id": "235",
+            "name": "EXP42",
+            "smiles": "C1CCCCC1CC",
+            "emis_max": 0.52,
+            "mol_id": "M1cwu23"
+        },
+        {
+            "data_product_id": "236",
+            "name": "EXP52",
+            "smiles": "C1CCCC1=C1",
+            "emis_max": 0.12,
+            "mol_id": "642045"
+        },
+        {
+            "data_product_id": "237",
+            "name": "EXP7893",
+            "smiles": "C=C=C=C2-C",
+            "emis_max": 0.85,
+            "mol_id": "3937"
         }
     ]
     return json_array
