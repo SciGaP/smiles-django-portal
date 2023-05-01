@@ -12,7 +12,7 @@ const routes = [
         component: DataProductUpload
     },
     {
-        path: '/smiles/dps/:productType',
+        path: '/smiles/dps',
         name: 'data-product-list',
         component: DataProductTable
     }

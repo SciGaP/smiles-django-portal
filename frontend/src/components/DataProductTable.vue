@@ -1,37 +1,82 @@
 <template>
-  <div id="app">
-    <div class="container mt-5" style="overflow-x: auto;">
-      <div class="card">
-        <div class="card-body">
-          <b-table
-              responsive
-              class="table table-striped table-hover"
-              :items="listItems"
-              :fields="fields"
-              :current-page="currentPage"
-              :per-page="0"
-          >
-            <template v-slot:cell(action)="data">
-              <div class="btn-group" role="group">
-                <b-button size="sm" variant="primary" class="mr-1" @click="edit(data)">
-                  Edit
-                </b-button>
-                <b-button size="sm" variant="danger" @click="deleteRecord(data)">
-                  Delete
-                </b-button>
-              </div>
-            </template>
-          </b-table>
-          <b-pagination
-              v-model="currentPage"
-              :total-rows="totalPages"
-              :per-page="recordsPerPage"
-              class="my-3"
-          ></b-pagination>
+  <b-container fluid>
+    <b-row class="m-2 mb-4">
+      <b-col lg="5" class="my-2">
+        <b-form-group
+            label="Filter"
+            label-for="filter-input"
+            label-cols-sm="3"
+            label-align-sm="right"
+            label-size="sm"
+            class="mb-0"
+        >
+          <b-input-group size="sm">
+            <b-form-input
+                id="filter-input"
+                v-model="filter"
+                type="search"
+                placeholder="Type to Search"
+            ></b-form-input>
+
+            <b-input-group-append>
+              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+    </b-row>
+
+    <b-table
+        responsive
+        :items="items"
+        :fields="fields"
+        :current-page="currentPage"
+        :per-page="perPage"
+        :filter="filter"
+        stacked="md"
+        show-empty
+        small
+        @filtered="onFiltered"
+    >
+      <template #cell(actions)="row">
+        <div class="text-right">
+          <b-button size="sm" @click="row.toggleDetails">
+            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+          </b-button>
+          <b-button size="sm" variant="primary" class="m-1" @click="edit(row.item)">
+            Edit
+          </b-button>
+          <b-button size="sm" variant="danger" @click="deleteRecord(row)">
+            Delete
+          </b-button>
         </div>
-      </div>
-    </div>
-  </div>
+
+      </template>
+
+      <template #row-details="row">
+        <b-card>
+          <ul>
+            <li v-for="(value, key) in row.item" :key="key">
+              <b>{{ key }}:</b> {{ value }}
+            </li>
+          </ul>
+        </b-card>
+      </template>
+    </b-table>
+
+    <b-row class="mb-4">
+      <b-col sm="7" md="3" class="my-1">
+        <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0"
+        ></b-pagination>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -41,39 +86,38 @@ export default {
   name: "SMILESDataProductTable",
   data() {
     return {
-      listItems: [],
+      items: [],
+      totalRows: 1,
       currentPage: 1,
-      totalPages: 0,
-      recordsPerPage: 20,
-      isLoading: false,
-      fields: ["name", "mol_id", "cas_nr", "smiles", "smiles_stereo", "inchi", "emp_formula", "emp_formula_source",
-        "mw", "mw_source", "journal", "year_publ",
-        "action"],
-      params: "",
-    };
+      perPage: 15,
+      filter: null,
+      type: this.$route.query.type
+    }
   },
-  created() {
+  computed: {
+    fields() {
+      return smilesDPService.getDisplayableColumns(this.type);
+    }
+  },
+  mounted() {
     this.loadSMILESDataProducts();
-  },
-  watch: {
-    currentPage: {
-      handler: function (value) {
-        this.params = `page=${value}&size=${this.recordsPerPage}`;
-        this.loadSMILESDataProducts();
-      },
-    },
   },
   methods: {
     loadSMILESDataProducts() {
       this.isLoading = true;
-      this.params = `page=${this.currentPage}&size=${this.recordsPerPage}`;
+      this.params = `type=${this.type}&page=${this.currentPage}&size=${this.perPage}`;
       smilesDPService.getSMILESDataProducts(this.params).then((response) => {
         if (response.data) {
-          this.listItems = response.data;
-          this.totalPages = 40;
-          this.isLoading = false;
+          this.items = response.data;
+          // Set the initial number of items
+          this.totalRows = this.items.length
         }
       });
+    },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
     },
     deleteRecord(data) {
       this.$bvModal
@@ -89,59 +133,20 @@ export default {
             centered: true,
           })
           .then((value) => {
+            console.log(data.item.data_product_id)
             if (value) {
-              this.listItems.splice(data.index, 1);
+              //TODO - this 'type' should extracted from the SMILES DP
+              smilesDPService.deleteSMILESDataProduct(this.type, data.item.data_product_id)
+              const index = this.items.findIndex(item => item.data_product_id === data.item.data_product_id);
+              if (index !== -1) {
+                this.items.splice(index, 1);
+              }
             }
           });
     },
     edit(data) {
       alert(JSON.stringify(data));
-    },
-  },
-};
+    }
+  }
+}
 </script>
-
-<style scoped>
-.table-action-btns > button {
-  margin-right: 0.5rem;
-}
-
-.pagination > li > a,
-.pagination > li > span {
-  color: #007bff;
-  margin: 0 0.2rem;
-  border-radius: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  text-decoration: none;
-  border: 1px solid #007bff;
-}
-
-.pagination > .active > a,
-.pagination > .active > span {
-  background-color: #007bff;
-  color: #fff;
-  border: 1px solid #007bff;
-}
-
-.pagination > .disabled > span,
-.pagination > .disabled > a,
-.pagination > .disabled > a:hover,
-.pagination > .disabled > a:focus {
-  color: #6c757d;
-  pointer-events: none;
-  background-color: #fff;
-  border-color: #6c757d;
-}
-
-.pagination > li:first-child > a,
-.pagination > li:first-child > span {
-  border-top-left-radius: 0.25rem;
-  border-bottom-left-radius: 0.25rem;
-}
-
-.pagination > li:last-child > a,
-.pagination > li:last-child > span {
-  border-top-right-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
-}
-</style>
