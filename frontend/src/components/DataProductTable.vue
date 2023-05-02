@@ -29,6 +29,7 @@
 
     <b-table
         responsive
+        hover
         :items="items"
         :fields="fields"
         :current-page="currentPage"
@@ -38,6 +39,7 @@
         show-empty
         small
         @filtered="onFiltered"
+        :busy="isBusy"
     >
       <template #cell(actions)="row">
         <div class="text-right">
@@ -59,6 +61,14 @@
           <pre>{{ formattedJson(row) }}</pre>
         </b-card>
       </template>
+
+      <template #table-busy>
+        <div class="text-center text-danger my-2">
+          <b-spinner class="align-middle"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
     </b-table>
 
     <b-row class="mb-4">
@@ -88,7 +98,8 @@ export default {
       currentPage: 1,
       perPage: 15,
       filter: null,
-      type: this.$route.query.type
+      type: this.$route.query.type,
+      isBusy: true,
     }
   },
   computed: {
@@ -115,6 +126,7 @@ export default {
           this.totalRows = this.items.length
         }
       });
+      this.isBusy = false;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
