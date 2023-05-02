@@ -19,7 +19,8 @@
             ></b-form-input>
 
             <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+              <b-button variant="outline-secondary" class="m-0" :disabled="!filter" @click="filter = ''">Clear
+              </b-button>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
@@ -40,13 +41,13 @@
     >
       <template #cell(actions)="row">
         <div class="text-right">
-          <b-button size="sm" @click="row.toggleDetails">
+          <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
             {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
           </b-button>
-          <b-button size="sm" variant="primary" class="m-1" @click="edit(row.item)">
+          <b-button size="sm" variant="outline-secondary" class="m-1" @click="edit(row.item)">
             Edit
           </b-button>
-          <b-button size="sm" variant="danger" @click="deleteRecord(row)">
+          <b-button size="sm" variant="outline-danger" @click="deleteRecord(row)">
             Delete
           </b-button>
         </div>
@@ -55,11 +56,7 @@
 
       <template #row-details="row">
         <b-card>
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">
-              <b>{{ key }}:</b> {{ value }}
-            </li>
-          </ul>
+          <pre>{{ formattedJson(row) }}</pre>
         </b-card>
       </template>
     </b-table>
@@ -97,6 +94,11 @@ export default {
   computed: {
     fields() {
       return smilesDPService.getDisplayableColumns(this.type);
+    },
+    formattedJson() {
+      return (row) => {
+        return JSON.stringify(row.item, null, 2);
+      };
     }
   },
   mounted() {
