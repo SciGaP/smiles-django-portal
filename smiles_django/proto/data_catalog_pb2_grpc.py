@@ -49,6 +49,11 @@ class DataCatalogAPIServiceStub(object):
                 request_serializer=data__catalog__pb2.MetadataSchemaDeleteRequest.SerializeToString,
                 response_deserializer=data__catalog__pb2.MetadataSchemaDeleteResponse.FromString,
                 )
+        self.getMetadataSchemas = channel.unary_unary(
+                '/DataCatalogAPIService/getMetadataSchemas',
+                request_serializer=data__catalog__pb2.MetadataSchemaListRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.MetadataSchemaListResponse.FromString,
+                )
         self.getMetadataSchemaField = channel.unary_unary(
                 '/DataCatalogAPIService/getMetadataSchemaField',
                 request_serializer=data__catalog__pb2.MetadataSchemaFieldGetRequest.SerializeToString,
@@ -83,6 +88,11 @@ class DataCatalogAPIServiceStub(object):
                 '/DataCatalogAPIService/removeDataProductFromMetadataSchema',
                 request_serializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.SerializeToString,
                 response_deserializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.FromString,
+                )
+        self.searchDataProducts = channel.unary_unary(
+                '/DataCatalogAPIService/searchDataProducts',
+                request_serializer=data__catalog__pb2.DataProductSearchRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.DataProductSearchResponse.FromString,
                 )
 
 
@@ -131,6 +141,12 @@ class DataCatalogAPIServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def getMetadataSchemas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def getMetadataSchemaField(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -168,6 +184,12 @@ class DataCatalogAPIServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def removeDataProductFromMetadataSchema(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def searchDataProducts(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -211,6 +233,11 @@ def add_DataCatalogAPIServiceServicer_to_server(servicer, server):
                     request_deserializer=data__catalog__pb2.MetadataSchemaDeleteRequest.FromString,
                     response_serializer=data__catalog__pb2.MetadataSchemaDeleteResponse.SerializeToString,
             ),
+            'getMetadataSchemas': grpc.unary_unary_rpc_method_handler(
+                    servicer.getMetadataSchemas,
+                    request_deserializer=data__catalog__pb2.MetadataSchemaListRequest.FromString,
+                    response_serializer=data__catalog__pb2.MetadataSchemaListResponse.SerializeToString,
+            ),
             'getMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
                     servicer.getMetadataSchemaField,
                     request_deserializer=data__catalog__pb2.MetadataSchemaFieldGetRequest.FromString,
@@ -245,6 +272,11 @@ def add_DataCatalogAPIServiceServicer_to_server(servicer, server):
                     servicer.removeDataProductFromMetadataSchema,
                     request_deserializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.FromString,
                     response_serializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.SerializeToString,
+            ),
+            'searchDataProducts': grpc.unary_unary_rpc_method_handler(
+                    servicer.searchDataProducts,
+                    request_deserializer=data__catalog__pb2.DataProductSearchRequest.FromString,
+                    response_serializer=data__catalog__pb2.DataProductSearchResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -376,6 +408,23 @@ class DataCatalogAPIService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def getMetadataSchemas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/getMetadataSchemas',
+            data__catalog__pb2.MetadataSchemaListRequest.SerializeToString,
+            data__catalog__pb2.MetadataSchemaListResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def getMetadataSchemaField(request,
             target,
             options=(),
@@ -491,5 +540,22 @@ class DataCatalogAPIService(object):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/removeDataProductFromMetadataSchema',
             data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.SerializeToString,
             data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def searchDataProducts(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/searchDataProducts',
+            data__catalog__pb2.DataProductSearchRequest.SerializeToString,
+            data__catalog__pb2.DataProductSearchResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
