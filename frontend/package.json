@@ -36,7 +36,11 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {},
+    "globals": {
+      "AiravataAPI": "readonly",
+      "CommonUI": "readonly"
+    }
   },
   "browserslist": [
     "> 1%",

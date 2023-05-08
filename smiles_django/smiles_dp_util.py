@@ -27,7 +27,7 @@ def get_smiles_data_product(request, data_product_id: str, dp_type):
     catalog_dp = catalog_service.get_data_product(data_product_id)
     result_comp_dp = map_catalog_dp_to_smiles_dp(catalog_dp, dp_type)
 
-    return MessageToDict(result_comp_dp)
+    return MessageToDict(result_comp_dp, preserving_proto_field_name=True)
 
 
 def update_smiles_data_product(request, data_product_id: str, dp_type, data):
@@ -38,7 +38,7 @@ def update_smiles_data_product(request, data_product_id: str, dp_type, data):
         catalog_dp = map_smiles_dp_to_catalog_dp(request, comp_dp, dp_type)
         updated_dp = catalog_service.update_data_product(catalog_dp)
 
-        return MessageToDict(map_catalog_dp_to_smiles_dp(updated_dp, dp_type))
+        return MessageToDict(map_catalog_dp_to_smiles_dp(updated_dp, dp_type), preserving_proto_field_name=True)
 
 
 def delete_smiles_data_product(request, data_product_id: str):
@@ -60,8 +60,9 @@ def get_smiles_data_products(request, dp_type):
         raise Exception("No Schemas have been defined")
 
     data_products = catalog_service.search_data_products(sql)
-    smiles_products = [MessageToDict(map_catalog_dp_to_smiles_dp(data_product, dp_type)) for data_product in
-                       data_products]
+    smiles_products = [
+        MessageToDict(map_catalog_dp_to_smiles_dp(data_product, dp_type), preserving_proto_field_name=True) for
+        data_product in data_products]
 
     return smiles_products
 
@@ -87,8 +88,7 @@ def map_smiles_dp_to_catalog_dp(request, smiles_dp, dp_type) -> dc_pb2.DataProdu
 
 def map_catalog_dp_to_smiles_dp(catalog_dp: dc_pb2.DataProduct, dp_type):
     smiles_dp = get_smiles_dp(dp_type)
-    ParseDict(json.loads(catalog_dp.metadata), smiles_dp, ignore_unknown_fields=True)
-
+    ParseDict(json.loads(catalog_dp.metadata), smiles_dp)
     smiles_dp.data_product_id = catalog_dp.data_product_id
     smiles_dp.parent_data_product_id = catalog_dp.parent_data_product_id
     smiles_dp.name = catalog_dp.name

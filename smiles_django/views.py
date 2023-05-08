@@ -35,7 +35,8 @@ class ComputationalDPView(View):
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
+            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id,
+                                                                   smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
             if updated_dp:
                 return JsonResponse(updated_dp, status=200)
             else:
@@ -89,7 +90,8 @@ class ExperimentalDPView(View):
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.EXPERIMENTAL, data)
+            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.EXPERIMENTAL,
+                                                                   data)
             if updated_dp:
                 return JsonResponse(updated_dp, status=200)
             else:
@@ -144,7 +146,8 @@ class LiteratureDPView(View):
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.LITERATURE, data)
+            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.LITERATURE,
+                                                                   data)
             if updated_dp:
                 return JsonResponse(updated_dp, status=200)
             else:

@@ -1,15 +1,8 @@
 <template>
   <b-container fluid>
-    <b-row class="m-2 mb-4">
+    <b-row class="m-2 mb-4 d-flex justify-content-center">
       <b-col lg="5" class="my-2">
-        <b-form-group
-            label="Filter"
-            label-for="filter-input"
-            label-cols-sm="3"
-            label-align-sm="right"
-            label-size="sm"
-            class="mb-0"
-        >
+        <b-form-group>
           <b-input-group size="sm">
             <b-form-input
                 id="filter-input"
@@ -27,49 +20,56 @@
       </b-col>
     </b-row>
 
-    <b-table
-        responsive
-        hover
-        :items="items"
-        :fields="fields"
-        :current-page="currentPage"
-        :per-page="perPage"
-        :filter="filter"
-        stacked="md"
-        show-empty
-        small
-        @filtered="onFiltered"
-        :busy="isBusy"
-    >
-      <template #cell(actions)="row">
-        <div class="text-right">
-          <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
-            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-          </b-button>
-          <b-button size="sm" variant="outline-secondary" class="m-1" @click="edit(row.item)">
-            Edit
-          </b-button>
-          <b-button size="sm" variant="outline-danger" @click="deleteRecord(row)">
-            Delete
-          </b-button>
-        </div>
+    <div class="table-container">
+      <div style="margin-top: 60px;">
+        <b-table
+            responsive
+            hover
+            sticky-header
+            :items="items"
+            :fields="fields"
+            :current-page="currentPage"
+            :per-page="perPage"
+            :filter="filter"
+            stacked="md"
+            show-empty
+            small
+            @filtered="onFiltered"
+            :busy="isBusy"
+            @row-clicked="onRowClicked"
+            thead-class="my-header"
+        >
+          <template #cell(actions)="row">
+            <div class="text-right">
+              <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
+                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+              </b-button>
+              <b-button size="sm" variant="outline-secondary" class="m-1" @click="edit(row.item)">
+                Edit
+              </b-button>
+              <b-button size="sm" variant="outline-danger" @click="deleteRecord(row)">
+                Delete
+              </b-button>
+            </div>
 
-      </template>
+          </template>
 
-      <template #row-details="row">
-        <b-card>
-          <pre>{{ formattedJson(row) }}</pre>
-        </b-card>
-      </template>
+          <template #row-details="row">
+            <b-card>
+              <pre>{{ formattedJson(row) }}</pre>
+            </b-card>
+          </template>
 
-      <template #table-busy>
-        <div class="text-center text-danger my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </template>
+          <template #table-busy>
+            <div class="text-center text-danger my-2">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong>Loading...</strong>
+            </div>
+          </template>
 
-    </b-table>
+        </b-table>
+      </div>
+    </div>
 
     <b-row class="mb-4">
       <b-col sm="7" md="3" class="my-1">
@@ -88,6 +88,7 @@
 
 <script>
 import {smilesDPService} from "@/services/smiles-dp-service";
+import {configurationService} from "@/services/configuraion-service";
 
 export default {
   name: "SMILESDataProductTable",
@@ -104,7 +105,7 @@ export default {
   },
   computed: {
     fields() {
-      return smilesDPService.getDisplayableColumns(this.type);
+      return configurationService.getDisplayableColumns(this.type);
     },
     formattedJson() {
       return (row) => {
@@ -117,9 +118,8 @@ export default {
   },
   methods: {
     loadSMILESDataProducts() {
-      this.isLoading = true;
-      this.params = `type=${this.type}&page=${this.currentPage}&size=${this.perPage}`;
-      smilesDPService.getSMILESDataProducts(this.params).then((response) => {
+      this.params = `page=${this.currentPage}&size=${this.perPage}`;
+      smilesDPService.getSMILESDataProducts(this.type, this.params).then((response) => {
         if (response.data) {
           this.items = response.data;
           // Set the initial number of items
@@ -149,7 +149,6 @@ export default {
           .then((value) => {
             console.log(data.item.data_product_id)
             if (value) {
-              //TODO - this 'type' should extracted from the SMILES DP
               smilesDPService.deleteSMILESDataProduct(this.type, data.item.data_product_id)
               const index = this.items.findIndex(item => item.data_product_id === data.item.data_product_id);
               if (index !== -1) {
@@ -160,7 +159,24 @@ export default {
     },
     edit(data) {
       alert(JSON.stringify(data));
+    },
+    onRowClicked(item) {
+      this.$router.push({
+        name: this.type + '-data-product-detailed',
+        params: {type: this.type.toString(), id: item.data_product_id, dp: item}
+      })
     }
   }
 }
 </script>
+
+<style>
+.table-container {
+  overflow-x: scroll;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 20px;
+}
+
+</style>
