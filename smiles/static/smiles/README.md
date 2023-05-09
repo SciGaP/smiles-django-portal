@@ -8,7 +8,7 @@ load them in your templates using the static template tag.
 {% load static %}
 
 
-<script src="{% static 'smiles_django/some_script.js' %}"></script>
+<script src="{% static 'smiles/some_script.js' %}"></script>
 ```
 
 See

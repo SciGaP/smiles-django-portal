@@ -4,7 +4,7 @@ from django.apps import AppConfig
 class SmilesDjangoPortalConfig(AppConfig):
     # Standard Django app configuration. For more information on these settings,
     # see https://docs.djangoproject.com/en/2.2/ref/applications/#application-configuration
-    name = 'smiles_django'
+    name = 'smiles'
     label = name
     verbose_name = "SMILES Django Portal"
 
@@ -12,7 +12,7 @@ class SmilesDjangoPortalConfig(AppConfig):
 
     # Set url_home to a namespaced URL that will be the homepage when the custom
     # app is selected from the main menu
-    url_home = "smiles_django:home"
+    url_home = "smiles:home"
 
     # Set fa_icon_class to a FontAwesome CSS class for an icon to associate with
     # the custom app. Find an icon class at https://fontawesome.com/icons?d=gallery&p=2&s=regular,solid&m=free
@@ -27,5 +27,5 @@ class SmilesDjangoPortalConfig(AppConfig):
 
     def ready(self) -> None:
         # Uncomment to register your queue settings calculators.
-        # from smiles_django import queue_settings_calculators  # noqa
+        # from smiles import queue_settings_calculators  # noqa
         pass

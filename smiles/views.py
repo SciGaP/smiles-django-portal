@@ -179,7 +179,7 @@ class LiteratureDPView(View):
 
 
 def home(request):
-    return render(request, "smiles_django/home.html", {
+    return render(request, "smiles/home.html", {
         'project_name': "SMILES Django Portal"
     })
 

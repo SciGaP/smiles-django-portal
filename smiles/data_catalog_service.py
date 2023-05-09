@@ -1,5 +1,5 @@
 import grpc
-from smiles_django.proto import data_catalog_pb2_grpc, data_catalog_pb2 as pb2
+from smiles.proto import data_catalog_pb2_grpc, data_catalog_pb2 as pb2
 
 from typing import List
 from grpc import StatusCode, RpcError

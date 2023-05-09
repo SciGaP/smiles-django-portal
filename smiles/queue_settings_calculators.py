@@ -3,7 +3,7 @@ from airavata_django_portal_sdk.decorators import queue_settings_calculator
 
 # See https://apache-airavata-django-portal.readthedocs.io/en/latest/dev/queue_settings_calculator/ for more information
 @queue_settings_calculator(
-    id="smiles_django-my-queue-settings-calculator", name="SMILES Django Portal: My Queue Settings Calculator"
+    id="smiles-my-queue-settings-calculator", name="SMILES Django Portal: My Queue Settings Calculator"
 )
 def my_queue_settings_calculator(request, experiment_model: ExperimentModel):
     # See https://airavata.apache.org/api-docs/master/experiment_model.html#Struct_ExperimentModel for ExperimentModel fields

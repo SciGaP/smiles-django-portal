@@ -60,7 +60,7 @@ export default {
 
   computed: {
     uploadUrl() {
-      const URL_PREFIX = 'http://127.0.0.1:8000/smiles_django/';
+      const URL_PREFIX = 'http://127.0.0.1:8000/smiles/';
       if (this.selectedDatabase === 'Literature Database') {
         return URL_PREFIX + 'literature-dp/upload';
       } else if (this.selectedDatabase === 'Experimental Database') {

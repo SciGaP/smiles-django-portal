@@ -1,7 +1,7 @@
 import os
 import json
 import ijson
-from smiles_django.proto import data_catalog_pb2 as dc_pb2
+from smiles.proto import data_catalog_pb2 as dc_pb2
 from enum import Enum
 from . import data_catalog_service as dcs
 from . import metadata_util

@@ -28,7 +28,7 @@ A Portal to support SMILES Project
 5. Run Celery worker
 
    ```
-   python -m celery -A smiles_django worker -l info
+   python -m celery -A smiles worker -l info
    ```
 
 6. Follow the instructions and run Apache Airavata Data Catalog - https://github.com/apache/airavata-data-catalog

@@ -1,2 +1,2 @@
-recursive-include smiles_django/static *
-recursive-include smiles_django/templates *
+recursive-include smiles/static *
+recursive-include smiles/templates *
