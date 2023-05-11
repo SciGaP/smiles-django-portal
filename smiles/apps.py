@@ -1,4 +1,22 @@
 from django.apps import AppConfig
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+class Settings:
+    WEBPACK_LOADER = {
+        "SMILES": {
+            "BUNDLE_DIR_NAME": "smiles/dist/",  # must end with slash
+            "STATS_FILE": os.path.join(
+                BASE_DIR,
+                "static",
+                "smiles",
+                "dist",
+                "webpack-stats.json",
+            ),
+        }
+    }
 
 
 class SmilesDjangoPortalConfig(AppConfig):
@@ -7,6 +25,8 @@ class SmilesDjangoPortalConfig(AppConfig):
     name = 'smiles'
     label = name
     verbose_name = "SMILES Django Portal"
+    url_prefix = "smiles"
+    settings = Settings()
 
     # The following are Airavata Django Portal specific custom Django app settings
 
@@ -25,7 +45,12 @@ class SmilesDjangoPortalConfig(AppConfig):
     # https://apache-airavata-django-portal.readthedocs.io/en/latest/dev/new_django_app/#appconfig-settings
     # for more details for more details.
 
-    def ready(self) -> None:
-        # Uncomment to register your queue settings calculators.
-        # from smiles import queue_settings_calculators  # noqa
-        pass
+    # def ready(self) -> None:
+    #     # Uncomment to register your queue settings calculators.
+    #     # from smiles import queue_settings_calculators  # noqa
+    #     pass
+
+    def merge_settings(self, settings_module):
+        WEBPACK_LOADER = getattr(settings_module, "WEBPACK_LOADER", {})
+        WEBPACK_LOADER.update(Settings.WEBPACK_LOADER)
+        settings_module.WEBPACK_LOADER = WEBPACK_LOADER
