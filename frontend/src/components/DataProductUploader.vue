@@ -1,41 +1,58 @@
 <template>
   <div class="file-upload">
-    <label class="file-upload__label" :class="{'file-upload__label--has-file': file, 'no-click': uploading}">
-      <span class="file-upload__text">{{ file ? file.name : 'Drag and drop or click to select a file' }}</span>
-      <input class="file-upload__input" type="file" @change="onFileSelected" ref="fileInput"/>
-    </label>
-    <div class="upload-container">
-      <div class="add-to-container">
-        <span class="add-to-label">Add to</span>
-      </div>
-      <div class="upload-checkboxes" :class="{ 'no-click': uploading}">
-        <label>
-          <input type="radio" v-model="selectedDatabase" value="Literature Database">
-          <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Literature Database' }">Literature Database</span>
-        </label>
-        <label>
-          <input type="radio" v-model="selectedDatabase" value="Computational Database">
-          <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Computational Database' }">Computational Database</span>
-        </label>
-        <label>
-          <input type="radio" v-model="selectedDatabase" value="Experimental Database">
-          <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Experimental Database' }">Experimental Database</span>
-        </label>
-      </div>
-      <div class="upload-buttons">
-        <button class="file-upload__button" :disabled="!file" :class="{'file-upload__button--disabled': uploading}"
-                @click="uploadFile">
-          <span v-if="!uploading">Upload a file</span>
-          <span v-else>Uploading...</span>
-        </button>
-        <button class="form-upload__button" :class="{'form-upload__button--active': formOpen}"
-                @click="formOpen = !formOpen">Fill up a form
-        </button>
-      </div>
-      <div class="progress-bar-container" v-if="progress !== 0">
-        <div class="file-upload__progress" v-if="uploading">
-          <div class="file-upload__progress-bar" :style="{ width: progress + '%' }"/>
+    <div class="file-upload__content">
+      <label class="upload__label" :class="{'upload__label--has-file': file, 'no-click': uploading}">
+        <img class="upload-input__icon" src="../assets/icons/file-upload.svg"/>
+        <span class="upload-input__text">{{ file ? file.name : 'Drag and drop your file or click to browse' }}</span>
+        <span class="upload-size__text">Max. file size 2 GB</span>
+        <input class="file-upload__input" type="file" @change="onFileSelected" ref="fileInput"/>
+      </label>
+      <div style="display: flex; justify-content: center;">
+        <div class="text-label">
+          <span>Or</span>
         </div>
+      </div>
+      <label class="input__label">
+        <span class="upload-input__text">
+          <img class="upload-input__icon" src="../assets/icons/fill-up-form.svg"/>
+          Fill up a form
+        </span>
+        <input class="file-upload__input" type="button" @click="fillUpForm"/>
+      </label>
+      <div class="upload-container">
+        <div style="display: flex; justify-content: center;">
+          <div class="text-label">
+            <span>To</span>
+          </div>
+        </div>
+        <div class="upload-checkboxes" :class="{ 'no-click': uploading}">
+          <label>
+            <input type="radio" v-model="selectedDatabase" value="Literature Database">
+            <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Literature Database' }">Literature Database</span>
+          </label>
+          <label>
+            <input type="radio" v-model="selectedDatabase" value="Computational Database">
+            <span class="checkbox-label"
+                  :class="{ 'checkbox-selected': selectedDatabase === 'Computational Database' }">Computational Database</span>
+          </label>
+          <label>
+            <input type="radio" v-model="selectedDatabase" value="Experimental Database">
+            <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Experimental Database' }">Experimental Database</span>
+          </label>
+        </div>
+        <div class="progress-bar-container" v-if="progress !== 0">
+          <div class="file-upload__progress" v-if="uploading">
+            <div class="file-upload__progress-bar" :style="{ width: progress + '%' }"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="file-upload__footer">
+      <div class="mr-3">
+        <button class="discard_button" :class="{'discard_button--disabled' : !file || uploading}"
+                :disabled="!file || uploading" @click="discard">Discard
+        </button>
+        <button class="btn btn-primary" :disabled="!file || uploading" @click="uploadFile">Next</button>
       </div>
     </div>
   </div>
@@ -51,7 +68,6 @@ export default {
     return {
       file: null,
       uploading: false,
-      // uploadProgress: null,
       selectedDatabase: 'Computational Database',
       formOpen: false,
       progress: 0
@@ -76,6 +92,9 @@ export default {
   methods: {
     onFileSelected(e) {
       this.file = e.target.files[0];
+    },
+    fillUpForm() {
+      alert("Not implemented yet!");
     },
     uploadFile() {
       if (!this.uploading && this.file) {
@@ -104,7 +123,11 @@ export default {
               this.$refs.fileInput.value = '';
             });
       }
-    }
+    },
+    discard() {
+      this.file = null;
+      this.selectedDatabase = 'Computational Database';
+    },
   }
 };
 </script>
@@ -118,9 +141,12 @@ export default {
   justify-content: center;
   height: 600px;
   padding: 20px;
+  position: relative;
+  min-height: 100vh;
 }
 
-.file-upload__label {
+.upload__label,
+.input__label {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -128,17 +154,23 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   font-size: 20px;
-  color: #777;
   text-align: center;
   padding: 10px;
   border: 2px dashed #ccc;
   border-radius: 10px;
-  height: 60px;
-  margin-bottom: 20px;
+  height: 250px;
+  margin: 10px 0;
+  background-color: white;
+  width: 500px;
 }
 
-.file-upload__label:hover,
-.file-upload__label--has-file {
+.input__label {
+  height: 60px;
+}
+
+.upload__label:hover,
+.input__label:hover,
+.upload__label--has-file {
   background-color: #f8f8f8;
 }
 
@@ -146,50 +178,13 @@ export default {
   display: none;
 }
 
-.file-upload__text {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.upload-input__text {
+  margin: 10px 0;
 }
 
-.file-upload__button {
-  background-color: #fff;
-  color: #333;
-  border: 2px solid #333;
-  border-radius: 5px;
-  padding: 10px;
-  margin-right: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.file-upload__button:hover:not(.file-upload__button--disabled) {
-  background-color: #333;
-  color: #fff;
-}
-
-.file-upload__button--disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.form-upload__button {
-  background-color: #fff;
-  color: #333;
-  border: 2px solid #333;
-  border-radius: 5px;
-  padding: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.form-upload__button:hover:not(.form-upload__button--active) {
-  background-color: #333;
-  color: #fff;
-}
-
-.form-upload__button--active {
-  background-color: #333;
-  color: #fff;
+.upload-size__text {
+  font-size: 18px;
+  color: #777;
 }
 
 .upload-checkboxes {
@@ -268,21 +263,56 @@ input[type="radio"]:checked + .checkbox-label::before {
   height: 50%;
 }
 
-.add-to-container {
-  margin-bottom: 16px;
-}
-
-.add-to-label {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.upload-buttons {
-  margin-top: 80px;
+.text-label {
+  font-size: 20px;
+  color: #777;
+  margin: 10px 0;
 }
 
 .no-click {
   pointer-events: none;
+}
+
+.file-upload__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.file-upload__footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.discard_button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  margin-right: 10px;
+}
+
+.discard_button:hover:not(.discard_button--disabled) {
+  text-decoration: underline;
+}
+
+.discard_button--disabled {
+  color: lightgray;
+}
+
+.upload-input__icon {
+  margin: 10px;
 }
 
 </style>

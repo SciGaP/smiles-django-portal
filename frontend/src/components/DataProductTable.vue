@@ -1,20 +1,16 @@
 <template>
   <b-container fluid>
     <b-row class="m-2 mb-4 d-flex justify-content-center">
-      <b-col lg="5" class="my-2">
+      <b-col lg="5" class="my-3">
         <b-form-group>
-          <b-input-group size="sm">
+          <b-input-group>
             <b-form-input
                 id="filter-input"
                 v-model="filter"
                 type="search"
                 placeholder="Type to Search"
+                style="border-radius: 10px;"
             ></b-form-input>
-
-            <b-input-group-append>
-              <b-button variant="outline-secondary" class="m-0" :disabled="!filter" @click="filter = ''">Clear
-              </b-button>
-            </b-input-group-append>
           </b-input-group>
         </b-form-group>
       </b-col>
@@ -71,18 +67,23 @@
       </div>
     </div>
 
-    <b-row class="mb-4">
-      <b-col sm="7" md="3" class="my-1">
-        <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            align="fill"
-            size="sm"
-            class="my-0"
-        ></b-pagination>
-      </b-col>
-    </b-row>
+    <div class="text-right">
+      <b-row class="mb-4">
+        <b-col sm="7" md="3" class="my-1 ml-auto pr-5">
+          <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              prev-text="< Prev"
+              next-text="Next >"
+              align="right"
+              size="sm"
+              pills
+              class="my-0"
+          ></b-pagination>
+        </b-col>
+      </b-row>
+    </div>
   </b-container>
 </template>
 
@@ -173,10 +174,11 @@ export default {
 <style>
 .table-container {
   overflow-x: scroll;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
+  border: 1px solid gray;
+  border-radius: 20px;
   padding: 10px;
   margin: 20px;
+  background: white;
 }
 
 </style>
