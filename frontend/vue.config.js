@@ -7,9 +7,15 @@ module.exports = {
             : "/static/smiles/dist/",
     outputDir: "../smiles/static/smiles/dist",
     pages: {
-        projects: "src/main"
+         app: "src/main"
     },
     configureWebpack: {
+        plugins: [
+            new BundleTracker({
+                filename: "webpack-stats.json",
+                path: "../smiles/static/smiles/dist/"
+            })
+        ],
         optimization: {
             /*
              * Force creating a vendor bundle so we can load the 'app' and 'vendor'

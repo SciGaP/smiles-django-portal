@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from celery import Celery
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -32,7 +33,7 @@ class SmilesDjangoPortalConfig(AppConfig):
 
     # Set url_home to a namespaced URL that will be the homepage when the custom
     # app is selected from the main menu
-    url_home = "smiles:home"
+    # url_home = "smiles:home"
 
     # Set fa_icon_class to a FontAwesome CSS class for an icon to associate with
     # the custom app. Find an icon class at https://fontawesome.com/icons?d=gallery&p=2&s=regular,solid&m=free
@@ -45,10 +46,10 @@ class SmilesDjangoPortalConfig(AppConfig):
     # https://apache-airavata-django-portal.readthedocs.io/en/latest/dev/new_django_app/#appconfig-settings
     # for more details for more details.
 
-    # def ready(self) -> None:
-    #     # Uncomment to register your queue settings calculators.
-    #     # from smiles import queue_settings_calculators  # noqa
-    #     pass
+    def ready(self):
+        app = Celery("smiles")
+        app.config_from_object("django.conf:settings", namespace="CELERY")
+        app.autodiscover_tasks()
 
     def merge_settings(self, settings_module):
         WEBPACK_LOADER = getattr(settings_module, "WEBPACK_LOADER", {})

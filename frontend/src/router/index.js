@@ -22,12 +22,17 @@ const routes = [
         name: 'exp-data-product-detailed',
         component: ExpDataProductDetails,
         props: true
-    }
+    },
+    {
+        path: '/',
+        name: 'data-product-list ',
+        component: DataProductUpload
+    },
 ]
 
 const router = new VueRouter({
     mode: "history",
-    base: "/smiles/build",
+    base: "/smiles/home",
     routes,
 });
 

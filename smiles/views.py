@@ -1,9 +1,9 @@
 import json
 import os
+
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
-from django.views.decorators.csrf import csrf_exempt
 from django.views import View
-from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from . import smiles_dp_util
@@ -11,7 +11,6 @@ from django.shortcuts import render
 from .apps import SmilesDjangoPortalConfig
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class ComputationalDPView(View):
     UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/computational-dp/upload'
 
@@ -66,7 +65,9 @@ class ComputationalDPView(View):
             return super().dispatch(request, *args, **kwargs)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+ComputationalDPView = login_required(ComputationalDPView.as_view())
+
+
 class ExperimentalDPView(View):
     UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/experimental-dp/upload'
 
@@ -122,7 +123,9 @@ class ExperimentalDPView(View):
             return super().dispatch(request, *args, **kwargs)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+ExperimentalDPView = login_required(ExperimentalDPView.as_view())
+
+
 class LiteratureDPView(View):
     UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/literature-dp/upload'
 
@@ -178,8 +181,12 @@ class LiteratureDPView(View):
             return super().dispatch(request, *args, **kwargs)
 
 
+LiteratureDPView = login_required(LiteratureDPView.as_view())
+
+
+@login_required()
 def home(request):
-    return render(request, "smiles/home.html", {
+    return render(request, "smiles/application.html", {
         'project_name': "SMILES Django Portal"
     })
 

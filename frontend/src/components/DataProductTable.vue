@@ -40,9 +40,6 @@
               <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
                 {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
               </b-button>
-              <b-button size="sm" variant="outline-secondary" class="m-1" @click="edit(row.item)">
-                Edit
-              </b-button>
               <b-button size="sm" variant="outline-danger" @click="deleteRecord(row)">
                 Delete
               </b-button>
@@ -157,9 +154,6 @@ export default {
               }
             }
           });
-    },
-    edit(data) {
-      alert(JSON.stringify(data));
     },
     onRowClicked(item) {
       this.$router.push({

@@ -6,7 +6,28 @@ A Portal to support SMILES Project
 
 1. Follow the instructions for installing the
    [Airavata Django Portal](https://github.com/apache/airavata-django-portal)
-2. With the Airavata Django Portal virtual environment activated, clone this
+
+   
+2. settings.py file
+
+	For the correct operation of this Django project, the following configurations should be added to your `settings.py` file:
+	
+	```
+	# Max upload size is set to 2GB
+	MAX_UPLOAD_SIZE = 1024 * 1024 * 1024 * 2  
+	
+	# Celery settings
+	CELERY_BROKER_URL = "redis://localhost:6379"
+	CELERY_RESULT_BACKEND = "redis://localhost:6379"
+	```
+
+3. To build the frontend, navigate to `smiles-django-portal/frontend` and run
+	
+	```
+	yarn run build
+	```
+
+4. With the Airavata Django Portal virtual environment activated, clone this
    repo and install it into the portal's virtual environment
 
    ```
@@ -14,21 +35,21 @@ A Portal to support SMILES Project
    pip install -e .
    ```
 
-3. Start (or restart) the Django Portal server.
+5. Start (or restart) the Django Portal server.
    ```
    python manage.py runserver
    ```
 
-4. Run the Redis Server
+6. Run the Redis Server
 
    ```
    redis-server
    ```
 
-5. Run Celery worker
+7. Run Celery worker
 
    ```
    python -m celery -A smiles worker -l info
    ```
 
-6. Follow the instructions and run Apache Airavata Data Catalog - https://github.com/apache/airavata-data-catalog
+8. Follow the instructions and run Apache Airavata Data Catalog - https://github.com/apache/airavata-data-catalog
