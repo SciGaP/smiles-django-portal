@@ -1,0 +1,2 @@
+recursive-include smiles/static *
+recursive-include smiles/templates *

@@ -1,0 +1,96 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache LicenseVersion 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing;
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+syntax = "proto3";
+
+package smiles.model;
+
+message LiteratureDP {
+  string data_product_id = 1;
+  optional string parent_data_product_id = 2;
+  optional string name = 3;
+
+  optional Biblio biblio = 4;
+  repeated Record records = 5;
+}
+
+message Biblio {
+  optional string doi = 1;
+  optional string published_date = 2;
+  optional string title = 3;
+
+}
+
+message Record {
+  repeated ElectroChemicalPotentials electrochemical_potentials = 1;
+  repeated EmisnSpectra emisn_spectra = 2;
+  repeated FluorescenceLifetime fluorescence_lifetimes = 3;
+  repeated string names = 4;
+  repeated QuantumYield quantum_yields = 5;
+  optional string smiles = 6;
+  optional bool smiles_validation_failed = 7;
+  repeated UvvisSpectra uvvis_spectra = 8;
+}
+
+message ElectroChemicalPotentials {
+  optional string solvent = 1;
+  optional string type = 2;
+  optional string units = 3;
+  optional double value = 4;
+  optional bool value_validation_failed = 5;
+}
+
+message EmisnSpectra {
+  repeated Peak peaks = 1;
+  optional string solvent = 2;
+  optional double temperature = 3;
+  optional string temperature_units = 4;
+}
+
+message Peak {
+  optional int32 extinction = 1;
+  optional string extinction_units = 2;
+  optional string units = 3;
+  optional double value = 4;
+  optional bool value_validation_failed = 5;
+  optional bool extinction_validation_failed = 6;
+
+}
+
+message FluorescenceLifetime {
+  optional string solvent = 1;
+  optional double temperature = 2;
+  optional string units = 3;
+  optional double value = 4;
+}
+
+message QuantumYield {
+  optional string solvent = 1;
+  optional string type = 2;
+  optional double value = 3;
+}
+
+message UvvisSpectra {
+  optional string apparatus = 1;
+  repeated Peak peaks = 2;
+  optional string solvent = 3;
+  optional double temperature = 4;
+  optional string temperature_units = 5;
+}

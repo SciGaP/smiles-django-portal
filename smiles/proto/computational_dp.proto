@@ -1,0 +1,130 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache LicenseVersion 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing;
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+syntax = "proto3";
+
+package smiles.model;
+import "google/protobuf/struct.proto";
+
+message ComputationalDP {
+  string data_product_id = 1;
+  optional string parent_data_product_id = 2;
+  optional string name = 3;
+
+  optional string ProjectName = 4;
+  optional string ExperimentName = 5;
+  optional string Username = 6;
+  optional string Id = 7;
+  optional int64 IndexedTime = 8;
+  optional ExecutionEnvironment ExecutionEnvironment = 9;
+  optional CalculatedProperties CalculatedProperties = 10;
+  optional FinalMoleculeStructuralFormats FinalMoleculeStructuralFormats = 11;
+  optional Molecule Molecule = 12;
+  optional Calculation Calculation = 13;
+  optional Identifiers Identifiers = 14;
+  optional Files Files = 15;
+  optional InputFileConfiguration InputFileConfiguration = 16;
+}
+
+message ExecutionEnvironment {
+  optional string CalcBy = 1;
+  optional double JobCPURunTime = 2;
+  optional string CalcMachine = 3;
+  optional int32 ActualJobRunTime = 4;
+  optional string FinTime = 5;
+  optional int32 Memory = 6;
+  optional int32 NProcShared = 7;
+  optional int64 FinTimeStamp = 8;
+}
+
+message CalculatedProperties {
+  optional int32 Homos = 1;
+  optional double Energy = 2;
+  optional Dipole Dipole = 3;
+  optional double HF = 4;
+  repeated double MaximumGradientDistribution = 5 [packed = true];
+  repeated double RMSGradientDistribution = 6 [packed = true];
+  repeated int32 Iterations = 7 [packed = true];
+  optional double HomoEigenvalue = 8;
+  repeated string HomoEigenvalues = 9;
+  optional double LumoEigenvalue = 10;
+  repeated string LumoEigenvalues = 11;
+  optional double Thermal = 12;
+  optional double Enthalpy = 13;
+  optional double Gibbs = 14;
+  repeated double EnergyDistribution = 15 [packed = true];
+  optional int32 NImag = 16;
+  optional double ZeroPointEnergy = 17;
+}
+
+message FinalMoleculeStructuralFormats {
+  optional string SDF = 1;
+  optional string PDB = 2;
+}
+
+message Molecule {
+  optional string Formula = 1;
+  optional int32 NAtom = 2;
+  optional int32 Multiplicity = 3;
+  optional int32 Charge = 4;
+  optional string OrbSym = 5;
+  optional string ElecSym = 6;
+}
+
+message Calculation {
+  optional string JobStatus = 1;
+  optional string Basis = 2;
+  optional int32 NMO = 3;
+  optional string Keywords = 4;
+  optional int32 NBasis = 5;
+  optional google.protobuf.Value MoEnergies = 6;
+  optional string Package = 7;
+  optional string CalcType = 8;
+  optional string Methods = 9;
+}
+
+message Identifiers {
+  optional string InChIKey = 1;
+  optional string CanonicalSMILES = 2;
+  optional string InChI = 3;
+  optional string SMILES = 4;
+}
+
+message Files {
+  optional string SMILESFile = 1;
+  optional string SDFStructureFile = 2;
+  optional string GaussianOutputFile = 3;
+  optional string GaussianInputFile = 4;
+  optional string PDBStructureFile = 5;
+  optional string InChIFile = 6;
+  optional string GaussianCheckpointFile = 7;
+  optional string GaussianFCheckpointFile = 8;
+}
+
+message InputFileConfiguration {
+  optional string Link0Commands = 1;
+  optional string RouteCommands = 2;
+}
+
+message Dipole {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
