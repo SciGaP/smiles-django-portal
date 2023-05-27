@@ -12,45 +12,45 @@ from google.protobuf.json_format import MessageToJson, ParseDict, MessageToDict
 from celery import shared_task
 
 
-def create_smiles_data_product(request, dp_type, data) -> dc_pb2.DataProduct:
+def create_smiles_data_product(request_data, dp_type, data) -> dc_pb2.DataProduct:
     smiles_dp = get_smiles_dp(dp_type, data)
-    data_product = map_smiles_dp_to_catalog_dp(request, smiles_dp, dp_type)
-    catalog_service = dcs.DataCatalogService(request.user)
+    data_product = map_smiles_dp_to_catalog_dp(request_data, smiles_dp, dp_type)
+    catalog_service = dcs.DataCatalogService(request_data)
     result_dp = catalog_service.create_data_product(data_product)
-    metadata_util.add_dp_to_schemas(request, result_dp)
+    metadata_util.add_dp_to_schemas(request_data, result_dp)
 
     return result_dp
 
 
-def get_smiles_data_product(request, data_product_id: str, dp_type):
-    catalog_service = dcs.DataCatalogService(request.user)
+def get_smiles_data_product(request_data, data_product_id: str, dp_type):
+    catalog_service = dcs.DataCatalogService(request_data)
     catalog_dp = catalog_service.get_data_product(data_product_id)
     result_comp_dp = map_catalog_dp_to_smiles_dp(catalog_dp, dp_type)
 
     return MessageToDict(result_comp_dp, preserving_proto_field_name=True)
 
 
-def update_smiles_data_product(request, data_product_id: str, dp_type, data):
-    catalog_service = dcs.DataCatalogService(request.user)
+def update_smiles_data_product(request_data, data_product_id: str, dp_type, data):
+    catalog_service = dcs.DataCatalogService(request_data)
     catalog_dp = catalog_service.get_data_product(data_product_id)
     if catalog_dp.data_product_id:
         comp_dp = get_smiles_dp(dp_type, data)
-        catalog_dp = map_smiles_dp_to_catalog_dp(request, comp_dp, dp_type)
+        catalog_dp = map_smiles_dp_to_catalog_dp(request_data, comp_dp, dp_type)
         updated_dp = catalog_service.update_data_product(catalog_dp)
 
         return MessageToDict(map_catalog_dp_to_smiles_dp(updated_dp, dp_type), preserving_proto_field_name=True)
 
 
-def delete_smiles_data_product(request, data_product_id: str):
-    catalog_service = dcs.DataCatalogService(request.user)
+def delete_smiles_data_product(request_data, data_product_id: str):
+    catalog_service = dcs.DataCatalogService(request_data)
     catalog_dp = catalog_service.get_data_product(data_product_id)
     if catalog_dp.data_product_id:
         catalog_service.delete_data_product(data_product_id)
 
 
-def get_smiles_data_products(request, dp_type):
-    catalog_service = dcs.DataCatalogService(request.user)
-    filtered_schema_list = metadata_util.get_metadata_schemas(request, dp_type.prefix)
+def get_smiles_data_products(request_data, dp_type):
+    catalog_service = dcs.DataCatalogService(request_data)
+    filtered_schema_list = metadata_util.get_metadata_schemas(request_data, dp_type.prefix)
 
     if len(filtered_schema_list) == 1:
         sql = f"SELECT data_product_id FROM {filtered_schema_list[0]}"
@@ -67,14 +67,14 @@ def get_smiles_data_products(request, dp_type):
     return smiles_products
 
 
-def map_smiles_dp_to_catalog_dp(request, smiles_dp, dp_type) -> dc_pb2.DataProduct:
+def map_smiles_dp_to_catalog_dp(request_data, smiles_dp, dp_type) -> dc_pb2.DataProduct:
     data_catalog_product = dc_pb2.DataProduct()
     data_catalog_product.data_product_id = smiles_dp.data_product_id
     data_catalog_product.parent_data_product_id = smiles_dp.parent_data_product_id
     data_catalog_product.name = smiles_dp.name
 
     # TODO For the time being, all the specific schemas will be added
-    data_catalog_product.metadata_schemas[:] = metadata_util.get_metadata_schemas(request, dp_type.prefix)
+    data_catalog_product.metadata_schemas[:] = metadata_util.get_metadata_schemas(request_data, dp_type.prefix)
 
     # Convert the model to a JSON string, excluding fields 'data_product_id', 'parent_data_product_id', and 'name'
     smiles_dp.data_product_id = ""
@@ -97,7 +97,7 @@ def map_catalog_dp_to_smiles_dp(catalog_dp: dc_pb2.DataProduct, dp_type):
 
 
 @shared_task()
-def upload_smiles_data_products(request, filename, dp_id):
+def upload_smiles_data_products(request_data, filename, dp_id):
     with open(filename, 'rb') as input_file:
         jsons = (o for o in ijson.items(input_file, 'item'))
         count = 0
@@ -105,10 +105,10 @@ def upload_smiles_data_products(request, filename, dp_id):
         for j in jsons:
             try:
                 smiles_dp = ParseDict(j, get_smiles_dp(SmilesDP(dp_id)), ignore_unknown_fields=True)
-                data_product = map_smiles_dp_to_catalog_dp(request, smiles_dp, SmilesDP(dp_id))
-                catalog_service = dcs.DataCatalogService(request.user)
+                data_product = map_smiles_dp_to_catalog_dp(request_data, smiles_dp, SmilesDP(dp_id))
+                catalog_service = dcs.DataCatalogService(request_data)
                 result_dp = catalog_service.create_data_product(data_product)
-                metadata_util.add_dp_to_schemas(request, result_dp)
+                metadata_util.add_dp_to_schemas(request_data, result_dp)
 
                 print("Created DP: " + result_dp.data_product_id)
                 count += 1

@@ -6,11 +6,11 @@ from grpc import StatusCode, RpcError
 
 
 class DataCatalogService:
-    def __init__(self, user):
+    def __init__(self, request_data):
         # Connect to the gRPC service (DataCatalogAPI gRPC Server)
         channel = grpc.insecure_channel('localhost:6565')
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
-        self.user_info = pb2.UserInfo(user_id="demouser", tenant_id="demotenant")
+        self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
 
     def create_data_product(self, data_catalog_product: pb2.DataProduct) -> pb2.DataProduct:
         create_request = pb2.DataProductCreateRequest(user_info=self.user_info)
