@@ -40,9 +40,6 @@
               <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
                 {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
               </b-button>
-              <b-button size="sm" variant="outline-danger" @click="deleteRecord(row)">
-                Delete
-              </b-button>
             </div>
 
           </template>
@@ -85,8 +82,9 @@
 </template>
 
 <script>
-import {smilesDPService} from "@/services/smiles-dp-service";
 import {configurationService} from "@/services/configuraion-service";
+
+const {utils} = AiravataAPI;
 
 export default {
   name: "SMILESDataProductTable",
@@ -116,44 +114,20 @@ export default {
   },
   methods: {
     loadSMILESDataProducts() {
-      this.params = `page=${this.currentPage}&size=${this.perPage}`;
-      smilesDPService.getSMILESDataProducts(this.type, this.params).then((response) => {
-        if (response.data) {
-          this.items = response.data;
-          // Set the initial number of items
-          this.totalRows = this.items.length
-        }
-      });
+      utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`)
+          .then(response => {
+            if (response) {
+              this.items = response;
+              // Set the initial number of items
+              this.totalRows = this.items.length
+            }
+          });
       this.isBusy = false;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length
       this.currentPage = 1
-    },
-    deleteRecord(data) {
-      this.$bvModal
-          .msgBoxConfirm("Do you want to delete the record?", {
-            title: "Record Delete Confirmation",
-            size: "mm",
-            buttonSize: "sm",
-            okVariant: "danger",
-            okTitle: "YES",
-            cancelTitle: "NO",
-            footerClass: "p-2",
-            hideHeaderClose: false,
-            centered: true,
-          })
-          .then((value) => {
-            console.log(data.item.data_product_id)
-            if (value) {
-              smilesDPService.deleteSMILESDataProduct(this.type, data.item.data_product_id)
-              const index = this.items.findIndex(item => item.data_product_id === data.item.data_product_id);
-              if (index !== -1) {
-                this.items.splice(index, 1);
-              }
-            }
-          });
     },
     onRowClicked(item) {
       this.$router.push({
