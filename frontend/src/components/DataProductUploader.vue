@@ -127,10 +127,8 @@ export default {
               this.file = null;
               this.$refs.fileInput.value = '';
               this.dismissCountDown = 3;
-              console.log(response)
             })
             .catch(error => {
-              console.log(error);
               this.uploading = false;
               this.progress = 0;
               this.file = null;

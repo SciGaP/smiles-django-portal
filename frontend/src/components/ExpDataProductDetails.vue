@@ -7,6 +7,84 @@
       <b-container fluid>
         <b-row class="m-4">
           <b-col cols="6">
+            <div>
+              <b-card class="d-flex justify-content-center align-items-center w-100">
+                <b-img fluid :src="structureImg" alt="Structure"/>
+              </b-card>
+            </div>
+          </b-col>
+
+
+          <b-col cols="6">
+            <b-row>
+              <b-col cols="8">
+                <b-card>
+                  <div class="dp-row">
+                    <div class="dp-key">Family</div>
+                    <div class="dp-value">Family</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Formula</div>
+                    <div class="dp-value">{{ item.emp_formula }}</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Number of Atoms</div>
+                    <div class="dp-value">68</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Electron Symmetry</div>
+                    <div class="dp-value">2-A</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Charge</div>
+                    <div class="dp-value">{{ item.mol_chrg }}</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Multiplicity</div>
+                    <div class="dp-value">2</div>
+                  </div>
+                </b-card>
+              </b-col>
+              <b-col cols="4">
+                <b-card>
+                  <div class="font-weight-bold" style="margin-bottom: 10px;">Related Data</div>
+                  <a href="url">Molecule 1 V1</a><br/>
+                  <a href="url">Molecule 1 V2</a>
+                </b-card>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-card style="margin-bottom: 50px;">
+                  <div class="dp-row">
+                    <div class="dp-key">Data Product ID</div>
+                    <div class="dp-value">{{ item.data_product_id }}</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Journal</div>
+                    <div class="dp-value">{{ item.journal }}</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Author/Created by</div>
+                    <div class="dp-value">{{ item.auth_of_intr }}</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Reference</div>
+                    <div class="dp-value">{{ item.doi_link }}</div>
+                  </div>
+                  <div class="dp-row">
+                    <div class="dp-key">Indexed Time</div>
+                    <div class="dp-value">{{ item.indexed_time }}</div>
+                  </div>
+                </b-card>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
+
+
+        <b-row class="m-4">
+          <b-col cols="6">
             <b-card style="margin-bottom: 50px;">
               <template #header>
                 <h4 class="mb-0">Properties</h4>
@@ -82,67 +160,6 @@
             </b-card>
           </b-col>
 
-          <b-col cols="6">
-            <b-row>
-              <b-col>
-                <b-card style="margin-bottom: 50px;">
-                  <div class="dp-row">
-                    <div class="dp-key">Family</div>
-                    <div class="dp-value">Family</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Formula</div>
-                    <div class="dp-value">{{ item.emp_formula }}</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Number of Atoms</div>
-                    <div class="dp-value">68</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Electron Symmetry</div>
-                    <div class="dp-value">2-A</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Charge</div>
-                    <div class="dp-value">{{ item.mol_chrg }}</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Multiplicity</div>
-                    <div class="dp-value">2</div>
-                  </div>
-                </b-card>
-              </b-col>
-              <b-col>
-                <b-card style="margin-bottom: 50px;">
-                  <div class="font-weight-bold" style="margin-bottom: 10px;">Related Data</div>
-                  <a href="url">Molecule 1 V1</a><br/>
-                  <a href="url">Molecule 1 V2</a>
-                </b-card>
-              </b-col>
-            </b-row>
-            <b-card style="margin-bottom: 50px;">
-              <div class="dp-row">
-                <div class="dp-key">Data Product ID</div>
-                <div class="dp-value">{{ item.data_product_id }}</div>
-              </div>
-              <div class="dp-row">
-                <div class="dp-key">Journal</div>
-                <div class="dp-value">{{ item.journal }}</div>
-              </div>
-              <div class="dp-row">
-                <div class="dp-key">Author/Created by</div>
-                <div class="dp-value">{{ item.auth_of_intr }}</div>
-              </div>
-              <div class="dp-row">
-                <div class="dp-key">Reference</div>
-                <div class="dp-value">{{ item.doi_link }}</div>
-              </div>
-              <div class="dp-row">
-                <div class="dp-key">Indexed Time</div>
-                <div class="dp-value">{{ item.indexed_time }}</div>
-              </div>
-            </b-card>
-          </b-col>
         </b-row>
       </b-container>
     </div>
@@ -150,6 +167,8 @@
 </template>
 
 <script>
+import fallbackStructure from "../assets/images/structure-fallback.svg"
+
 const {utils} = AiravataAPI;
 
 export default {
@@ -159,7 +178,8 @@ export default {
   data() {
     return {
       item: null,
-      showAlert: false
+      showAlert: false,
+      structureImg: fallbackStructure
     };
   },
   mounted() {
@@ -189,7 +209,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .dp-row {
   display: flex;

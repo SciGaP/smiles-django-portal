@@ -19,6 +19,9 @@ function getDisplayableColumns(type) {
         return JSON.parse(localStorage.getItem('comp-display-columns')) ||
             [
                 {key: "name", label: "Name", sortable: true},
+                {key: "Identifiers.SMILES", label: "SMILES String", sortable: true},
+                {key: "Molecule.Formula", label: "Formula"},
+                {key: "CalculatedProperties.Homos", label: "Homos"},
                 {key: 'actions', label: ''}
             ];
     } else if (type === "lit") {

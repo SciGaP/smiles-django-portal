@@ -8,8 +8,8 @@
         <b-row class="m-4">
           <b-col cols="6">
             <div>
-              <b-card>
-                <b-img :src="structureImg" alt="Structure"/>
+              <b-card class="d-flex justify-content-center align-items-center w-100">
+                <b-img fluid :src="structureImg" alt="Structure"/>
               </b-card>
             </div>
           </b-col>
@@ -338,7 +338,6 @@ export default {
       utils.FetchUtils.get(`/smiles/comp-dp/${this.$route.params.id}`)
           .then(response => {
             this.item = response;
-            console.log(this.item);
           })
           .catch((e) => {
             if (e.details && e.details.status === 404) {

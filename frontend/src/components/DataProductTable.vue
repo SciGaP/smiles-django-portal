@@ -1,16 +1,18 @@
 <template>
   <b-container fluid>
-    <b-row class="m-2 mb-4 d-flex justify-content-center">
-      <b-col lg="5" class="my-3">
+    <b-row class="d-flex justify-content-center">
+      <b-col lg="8" class="my-3">
         <b-form-group>
           <b-input-group>
-            <b-form-input
-                id="filter-input"
-                v-model="filter"
-                type="search"
-                placeholder="Type to Search"
-                style="border-radius: 10px;"
-            ></b-form-input>
+            <div class="position-relative">
+              <b-form-input id="filter-input"
+                            v-model="filter"
+                            type="search"
+                            placeholder="Type to Search"
+                            class="rounded-pill pl-5 search-bar"
+              ></b-form-input>
+              <img src="../assets/icons/search-icon.svg" alt="Search" class="position-absolute search-icon">
+            </div>
           </b-input-group>
         </b-form-group>
       </b-col>
@@ -61,7 +63,7 @@
       </div>
     </div>
 
-    <div class="text-right">
+    <div class="pagination-container">
       <b-row class="mb-4">
         <b-col sm="7" md="3" class="my-1 ml-auto pr-5">
           <b-pagination
@@ -93,7 +95,7 @@ export default {
       items: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 15,
+      perPage: 20,
       filter: null,
       type: this.$route.query.type,
       isBusy: true,
@@ -142,11 +144,29 @@ export default {
 <style>
 .table-container {
   overflow-x: scroll;
+  overflow-y: auto;
   border: 1px solid gray;
   border-radius: 20px;
-  padding: 10px;
-  margin: 20px;
+  margin: 5px 10px;
   background: white;
+  max-height: 73vh;
+}
+
+.search-bar {
+  width: 60vw;
+}
+
+.search-icon {
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.pagination-container {
+  text-align: right;
+  height: 10%;
 }
 
 </style>
