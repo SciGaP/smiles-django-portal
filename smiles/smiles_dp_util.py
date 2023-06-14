@@ -1,6 +1,7 @@
 import os
 import json
 import ijson
+import decimal
 from smiles.proto import data_catalog_pb2 as dc_pb2
 from enum import Enum
 from . import data_catalog_service as dcs
@@ -9,6 +10,7 @@ from .proto import (computational_dp_pb2 as comp_pb2,
                     experimental_dp_pb2 as exp_pb2,
                     literature_dp_pb2 as lit_pb2)
 from google.protobuf.json_format import MessageToJson, ParseDict, MessageToDict
+from google.protobuf.struct_pb2 import Value
 from celery import shared_task
 
 
@@ -104,7 +106,7 @@ def upload_smiles_data_products(request_data, filename, dp_id):
         failed_count = 0
         for j in jsons:
             try:
-                smiles_dp = ParseDict(j, get_smiles_dp(SmilesDP(dp_id)), ignore_unknown_fields=True)
+                smiles_dp = parse_smiles_dp(j, SmilesDP(dp_id))
                 data_product = map_smiles_dp_to_catalog_dp(request_data, smiles_dp, SmilesDP(dp_id))
                 catalog_service = dcs.DataCatalogService(request_data)
                 result_dp = catalog_service.create_data_product(data_product)
@@ -137,6 +139,31 @@ def get_smiles_dp(dp_type, data=None):
     return smiles_dp
 
 
+def parse_smiles_dp(j, dp_type):
+    match dp_type:
+        case SmilesDP.COMPUTATIONAL:
+            if j.get("calculation")["mo_energies"] is not None:
+                pb_value = Value()
+                str_mo_energies = json.dumps(j.get("calculation")["mo_energies"], cls=DecimalEncoder)
+                ParseDict(str_mo_energies, pb_value)
+                del j.get("calculation")["mo_energies"]
+
+            smiles_dp = ParseDict(j, comp_pb2.ComputationalDP(), ignore_unknown_fields=True)
+
+            if pb_value is not None:
+                smiles_dp.calculation.mo_energies.CopyFrom(pb_value)
+
+        case SmilesDP.EXPERIMENTAL:
+            smiles_dp = ParseDict(j, exp_pb2.ExperimentalDP(), ignore_unknown_fields=True)
+
+        case SmilesDP.LITERATURE:
+            smiles_dp = ParseDict(j, lit_pb2.LiteratureDP(), ignore_unknown_fields=True)
+        case _:
+            raise Exception("Undefined SMILES data product type: " + str(dp_type))
+
+    return smiles_dp
+
+
 class SmilesDP(Enum):
     COMPUTATIONAL = 1
     EXPERIMENTAL = 2
@@ -154,3 +181,10 @@ class SmilesDP(Enum):
             return "lit_"
         else:
             raise ValueError(f"Unknown enum value: {self}")
+
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            return float(o)
+        return super(DecimalEncoder, self).default(o)
