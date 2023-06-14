@@ -1,5 +1,6 @@
 export const configurationService = {
-    getDisplayableColumns
+    getDisplayableColumns,
+    getLitRecordDisplayableColumns
 };
 
 
@@ -40,4 +41,14 @@ function getDisplayableColumns(type) {
                 {key: 'actions', label: ''}
             ];
     }
+}
+
+function getLitRecordDisplayableColumns() {
+    return JSON.parse(localStorage.getItem('lit-record-display-columns')) ||
+            [
+                {key: "structure", label: "Structure"},
+                {key: "smiles", label: "SMILES String"},
+                {key: "dye_family", label: "Family"},
+                {key: 'actions', label: ''}
+            ];
 }

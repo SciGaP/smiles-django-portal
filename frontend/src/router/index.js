@@ -4,6 +4,7 @@ import DataProductUpload from '../components/DataProductUploader.vue'
 import DataProductTable from '../components/DataProductTable.vue'
 import ExpDataProductDetails from '../components/ExpDataProductDetails.vue'
 import CompDataProductDetails from '../components/CompDataProductDetails.vue'
+import LitDataProductDetails from '../components/LitDataProductDetails.vue'
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,12 @@ const routes = [
         path: '/dp/comp/:id',
         name: 'comp-data-product-detailed',
         component: CompDataProductDetails,
+        props: true
+    },
+    {
+        path: '/dp/lit/:id',
+        name: 'lit-data-product-detailed',
+        component: LitDataProductDetails,
         props: true
     },
     {
