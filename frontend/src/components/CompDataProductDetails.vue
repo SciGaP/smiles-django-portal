@@ -20,27 +20,15 @@
                 <b-card>
                   <div class="dp-row">
                     <div class="dp-key">Family</div>
-                    <div class="dp-value">Family</div>
+                    <div class="dp-value">{{ item.dye_family }}</div>
                   </div>
                   <div class="dp-row">
-                    <div class="dp-key">Formula</div>
-                    <div class="dp-value">{{ item.emp_formula }}</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Number of Atoms</div>
-                    <div class="dp-value">68</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Electron Symmetry</div>
-                    <div class="dp-value">2-A</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Charge</div>
-                    <div class="dp-value">{{ item.mol_chrg }}</div>
-                  </div>
-                  <div class="dp-row">
-                    <div class="dp-key">Multiplicity</div>
-                    <div class="dp-value">2</div>
+                    <div class="dp-key">Names</div>
+                    <div class="dp-value">
+                      <div v-for="(name, index) in item.other_names" :key="index">
+                        {{ name }}
+                      </div>
+                    </div>
                   </div>
                 </b-card>
               </b-col>
@@ -54,22 +42,22 @@
             </b-row>
             <b-row>
               <b-col>
-                <b-card style="margin-bottom: 50px;">
+                <b-card class="card-component">
                   <div class="dp-row">
                     <div class="dp-key">Project Name</div>
-                    <div class="dp-value">{{ item.ProjectName }}</div>
+                    <div class="dp-value">{{ item.project_name }}</div>
                   </div>
                   <div class="dp-row">
                     <div class="dp-key">Experiment Name</div>
-                    <div class="dp-value">{{ item.ExperimentName }}</div>
+                    <div class="dp-value">{{ item.experiment_name }}</div>
                   </div>
                   <div class="dp-row">
                     <div class="dp-key">Created by</div>
-                    <div class="dp-value">{{ item.Username }}</div>
+                    <div class="dp-value">{{ item.username }}</div>
                   </div>
                   <div class="dp-row">
                     <div class="dp-key">Indexed Time</div>
-                    <div class="dp-value">{{ item.IndexedTime }}</div>
+                    <div class="dp-value">{{ item.indexed_time }}</div>
                   </div>
                 </b-card>
               </b-col>
@@ -79,48 +67,48 @@
 
         <b-row class="m-4">
           <b-col cols="6">
-            <b-card v-if="item.ExecutionEnvironment" style="margin-bottom: 50px;">
+            <b-card v-if="item.execution_environment" class="card-component">
               <template #header>
                 <h4 class="mb-0">Execution Environment</h4>
               </template>
               <div class="dp-row">
                 <div class="dp-key">Calc By</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.CalcBy }}</div>
+                <div class="dp-value">{{ item.execution_environment.calc_by }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Job CPU Run Time</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.JobCPURunTime }}</div>
+                <div class="dp-value">{{ item.execution_environment.job_cpu_runtime }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Calc Machine</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.CalcMachine }}</div>
+                <div class="dp-value">{{ item.execution_environment.calc_machine }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Actual Job Run Time</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.ActualJobRunTime }}</div>
+                <div class="dp-value">{{ item.execution_environment.actual_job_runtime }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Fin Time</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.FinTime }}</div>
+                <div class="dp-value">{{ item.execution_environment.fin_time }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Memory</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.Memory }}</div>
+                <div class="dp-value">{{ item.execution_environment.memory }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">NProc Shared</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.NProcShared }}</div>
+                <div class="dp-value">{{ item.execution_environment.n_proc_shared }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Fin Time Stamp</div>
-                <div class="dp-value">{{ item.ExecutionEnvironment.FinTimeStamp }}</div>
+                <div class="dp-value">{{ item.execution_environment.fin_timestamp }}</div>
               </div>
             </b-card>
           </b-col>
         </b-row>
 
         <b-row class="m-4" style="padding: 0 15px;">
-          <b-card v-if="item.CalculatedProperties" class="full-width">
+          <b-card v-if="item.calculated_properties" class="full-width">
             <template #header>
               <h4 class="mb-0">Calculated Properties</h4>
             </template>
@@ -128,32 +116,36 @@
               <b-col cols="6">
                 <div class="dp-row">
                   <div class="dp-key">Homos</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.Homos }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.homos }}</div>
+                </div>
+                <div class="dp-row">
+                  <div class="dp-key">Energy</div>
+                  <div class="dp-value">{{ item.calculated_properties.energy }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">Dipole X</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.Dipole.x }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.dipole.x }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">Dipole Y</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.Dipole.y }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.dipole.y }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">Dipole Z</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.Dipole.z }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.dipole.z }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">HF</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.HF }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.hf }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">Homo eigenvalue</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.HomoEigenvalue }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.homo_eigen_value }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">Homo eigenvalues</div>
                   <div class="dp-value">
-                    <div v-for="(homoEigenvalue, index) in item.CalculatedProperties.HomoEigenvalues" :key="index">
+                    <div v-for="(homoEigenvalue, index) in item.calculated_properties.homo_eigen_values" :key="index">
                       {{ homoEigenvalue }}
                     </div>
                   </div>
@@ -162,12 +154,12 @@
               <b-col cols="6">
                 <div class="dp-row">
                   <div class="dp-key">Lumo eigenvalue</div>
-                  <div class="dp-value">{{ item.CalculatedProperties.LumoEigenvalue }}</div>
+                  <div class="dp-value">{{ item.calculated_properties.lumo_eigen_value }}</div>
                 </div>
                 <div class="dp-row">
                   <div class="dp-key">Lumo eigenvalues</div>
                   <div class="dp-value">
-                    <div v-for="(lumoEigenvalue, index) in item.CalculatedProperties.LumoEigenvalues" :key="index">
+                    <div v-for="(lumoEigenvalue, index) in item.calculated_properties.lumo_eigen_values" :key="index">
                       {{ lumoEigenvalue }}
                     </div>
                   </div>
@@ -179,128 +171,128 @@
 
         <b-row class="m-4">
           <b-col cols="6">
-            <b-card v-if="item.FinalMoleculeStructuralFormats" style="margin-bottom: 50px;">
+            <b-card v-if="item.final_molecule_structural_formats" class="card-component">
               <template #header>
                 <h4 class="mb-0">Structural Formats</h4>
               </template>
               <div class="dp-row">
                 <div class="dp-key">SDF</div>
-                <div class="dp-value">{{ item.FinalMoleculeStructuralFormats.SDF }}</div>
+                <div class="dp-value">{{ item.final_molecule_structural_formats.sdf }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">PDB</div>
-                <div class="dp-value">{{ item.FinalMoleculeStructuralFormats.PDB }}</div>
+                <div class="dp-value">{{ item.final_molecule_structural_formats.pdb }}</div>
               </div>
             </b-card>
           </b-col>
         </b-row>
 
         <b-row class="m-4" style="padding: 0 15px;">
-          <b-card v-if="item.Calculation" class="full-width">
+          <b-card v-if="item.calculation" class="full-width">
             <template #header>
               <h4 class="mb-0">Calculation</h4>
             </template>
             <div class="dp-row">
               <div class="dp-key">JobStatus</div>
-              <div class="dp-value">{{ item.Calculation.JobStatus }}</div>
+              <div class="dp-value">{{ item.calculation.job_status }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Basis</div>
-              <div class="dp-value">{{ item.Calculation.Basis }}</div>
+              <div class="dp-value">{{ item.calculation.basis }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">NMO</div>
-              <div class="dp-value">{{ item.Calculation.NMO }}</div>
+              <div class="dp-value">{{ item.calculation.nmo }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Keywords</div>
-              <div class="dp-value">{{ item.Calculation.Keywords }}</div>
+              <div class="dp-value">{{ item.calculation.keywords }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Package</div>
-              <div class="dp-value">{{ item.Calculation.Package }}</div>
+              <div class="dp-value">{{ item.calculation.package }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">CalcType</div>
-              <div class="dp-value">{{ item.Calculation.CalcType }}</div>
+              <div class="dp-value">{{ item.calculation.calc_type }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Methods</div>
-              <div class="dp-value">{{ item.Calculation.Methods }}</div>
+              <div class="dp-value">{{ item.calculation.methods }}</div>
             </div>
           </b-card>
         </b-row>
 
         <b-row class="m-4">
           <b-col cols="6">
-            <b-card v-if="item.Identifiers" style="margin-bottom: 50px;">
+            <b-card v-if="item.identifiers" class="card-component">
               <template #header>
                 <h4 class="mb-0">Identifiers</h4>
               </template>
               <div class="dp-row">
                 <div class="dp-key">InChIKey</div>
-                <div class="dp-value">{{ item.Identifiers.InChIKey }}</div>
+                <div class="dp-value">{{ item.identifiers.inchi_key }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Canonical SMILES</div>
-                <div class="dp-value">{{ item.Identifiers.CanonicalSMILES }}</div>
+                <div class="dp-value">{{ item.identifiers.canonical_smiles }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">InChI</div>
-                <div class="dp-value">{{ item.Identifiers.InChI }}</div>
+                <div class="dp-value">{{ item.identifiers.inchi }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">SMILES</div>
-                <div class="dp-value">{{ item.Identifiers.SMILES }}</div>
+                <div class="dp-value">{{ item.identifiers.smiles }}</div>
               </div>
             </b-card>
           </b-col>
         </b-row>
 
         <b-row class="m-4" style="padding: 0 15px;">
-          <b-card v-if="item.Files" class="full-width">
+          <b-card v-if="item.files" class="full-width">
             <template #header>
               <h4 class="mb-0">Files</h4>
             </template>
             <div class="dp-row">
               <div class="dp-key">SMILES File</div>
-              <div class="dp-value">{{ item.Files.SMILESFile }}</div>
+              <div class="dp-value">{{ item.files.smiles_file }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">SDF Structure File</div>
-              <div class="dp-value">{{ item.Files.SDFStructureFile }}</div>
+              <div class="dp-value">{{ item.files.sdf_structure_file }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Gaussian Output File</div>
-              <div class="dp-value">{{ item.Files.GaussianOutputFile }}</div>
+              <div class="dp-value">{{ item.files.gaussian_output_file }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Gaussian Input File</div>
-              <div class="dp-value">{{ item.Files.GaussianInputFile }}</div>
+              <div class="dp-value">{{ item.files.gaussian_input_file }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">PDB Structure File</div>
-              <div class="dp-value">{{ item.Files.PDBStructureFile }}</div>
+              <div class="dp-value">{{ item.files.pdb_structure_file }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">InChI File</div>
-              <div class="dp-value">{{ item.Files.InChIFile }}</div>
+              <div class="dp-value">{{ item.files.inchi_file }}</div>
             </div>
           </b-card>
         </b-row>
 
         <b-row class="m-4" style="padding: 0 15px;">
-          <b-card v-if="item.InputFileConfiguration" class="full-width">
+          <b-card v-if="item.input_file_configuration" class="full-width">
             <template #header>
               <h4 class="mb-0">Input File Configuration</h4>
             </template>
             <div class="dp-row">
               <div class="dp-key">Link0 Commands</div>
-              <div class="dp-value">{{ item.InputFileConfiguration.Link0Commands }}</div>
+              <div class="dp-value">{{ item.input_file_configuration.link_0_commands }}</div>
             </div>
             <div class="dp-row">
               <div class="dp-key">Route Commands</div>
-              <div class="dp-value">{{ item.InputFileConfiguration.RouteCommands }}</div>
+              <div class="dp-value">{{ item.input_file_configuration.route_commands }}</div>
             </div>
           </b-card>
         </b-row>
@@ -375,8 +367,11 @@ export default {
 
 .full-width {
   width: 100vw;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
+}
 
+.card-component {
+  margin-bottom: 20px;
 }
 </style>
 

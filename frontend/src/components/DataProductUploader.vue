@@ -121,14 +121,14 @@ export default {
                 this.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               }
             })
-            .then(response => {
+            .then(() => {
               this.uploading = false;
               this.progress = 0;
               this.file = null;
               this.$refs.fileInput.value = '';
               this.dismissCountDown = 3;
             })
-            .catch(error => {
+            .catch(() => {
               this.uploading = false;
               this.progress = 0;
               this.file = null;

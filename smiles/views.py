@@ -151,7 +151,7 @@ class LiteratureDPView(View):
 
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
-                                                         smiles_dp_util.SmilesDP.EXPERIMENTAL)
+                                                         smiles_dp_util.SmilesDP.LITERATURE)
         return JsonResponse(result, safe=False, status=200)
 
     def put(self, request, dp_id):

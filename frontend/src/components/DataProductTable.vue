@@ -35,7 +35,6 @@
             @filtered="onFiltered"
             :busy="isBusy"
             @row-clicked="onRowClicked"
-            thead-class="my-header"
         >
           <template #cell(actions)="row">
             <div class="text-right">

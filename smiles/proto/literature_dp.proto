@@ -20,44 +20,95 @@
 
 syntax = "proto3";
 
-package smiles.model;
+package smiles.model.lit;
 
 message LiteratureDP {
   string data_product_id = 1;
   optional string parent_data_product_id = 2;
   optional string name = 3;
 
-  optional Biblio biblio = 4;
-  repeated Record records = 5;
+  optional string note = 4;
+  optional string user = 5;
+  optional string search_keywords = 6;
+  optional string redox_info = 7;
+  optional Biblio biblio = 8;
+  repeated Record records = 9;
 }
 
 message Biblio {
   optional string doi = 1;
   optional string published_date = 2;
   optional string title = 3;
+  optional string publisher = 4;
 
 }
 
 message Record {
-  repeated ElectroChemicalPotentials electrochemical_potentials = 1;
-  repeated EmisnSpectra emisn_spectra = 2;
-  repeated FluorescenceLifetime fluorescence_lifetimes = 3;
-  repeated string names = 4;
-  repeated QuantumYield quantum_yields = 5;
-  optional string smiles = 6;
-  optional bool smiles_validation_failed = 7;
-  repeated UvvisSpectra uvvis_spectra = 8;
+  optional string smiles = 1;
+  optional string dye_family = 2; // Values - Acridinium, Pyrylium, Cyanine, Quinolinium, Rhodamine, etc.
+  optional bytes structure = 3;
+  repeated string other_names = 4;
+  optional bool smiles_validation_failed = 5;
+  optional ElectroChemicalPotentials electrochemical_potentials = 6;
+  optional FluorescenceLifetime fluorescence_lifetimes = 7;
+  optional SpectralData spectral_data = 8;
+
 }
 
 message ElectroChemicalPotentials {
+  optional Cathodic cathodic = 1;
+  optional Anodic anodic = 2;
+  optional string value_quoted_ref = 3;
+  optional string data_measured_ref = 4;
+  optional string method = 5;
+  optional double temperature = 6;
+  optional string data_type = 7; // Values - Table, Text, Figure, or SI
+  optional bool json_extraction_completed = 8;
+  optional string human_validator = 9; // Name of the human validator
+  optional string elec_val_status_red = 10; // Electrochemistry Validation status for reduction. Values - HQ, MQ, or, LQ
+  optional string elec_val_status_ox = 11; // Electrochemistry Validation status for oxidation. Values - HQ, MQ, or, LQ
+}
+
+
+message Cathodic {
+  optional double red_v = 1; // Red / V
+  optional string hw_or_pk = 2;
+  optional string solvent = 3;
+  optional string electrolyte = 4;
+}
+
+message Anodic {
+  optional double ox_v = 1; // Ox / V
+  optional string hw_or_pk = 2;
+  optional string solvent = 3;
+  optional string electrolyte = 4;
+}
+
+message FluorescenceLifetime {
   optional string solvent = 1;
-  optional string type = 2;
+  optional double temperature = 2;
   optional string units = 3;
   optional double value = 4;
-  optional bool value_validation_failed = 5;
+}
+
+message SpectralData {
+  optional string solvent = 1;
+  optional double absorb_max = 2;
+  optional double emis_max = 3;
+  optional double lifetime = 4;
+  optional double quantum_yield = 3434;
+  optional EmisnSpectra emisn_spectra = 35355;
+  optional AbsorpSpectra absorp_spectra = 64534;
 }
 
 message EmisnSpectra {
+  repeated Peak peaks = 1;
+  optional string solvent = 2;
+  optional double temperature = 3;
+  optional string temperature_units = 4;
+}
+
+message AbsorpSpectra {
   repeated Peak peaks = 1;
   optional string solvent = 2;
   optional double temperature = 3;
@@ -71,26 +122,4 @@ message Peak {
   optional double value = 4;
   optional bool value_validation_failed = 5;
   optional bool extinction_validation_failed = 6;
-
-}
-
-message FluorescenceLifetime {
-  optional string solvent = 1;
-  optional double temperature = 2;
-  optional string units = 3;
-  optional double value = 4;
-}
-
-message QuantumYield {
-  optional string solvent = 1;
-  optional string type = 2;
-  optional double value = 3;
-}
-
-message UvvisSpectra {
-  optional string apparatus = 1;
-  repeated Peak peaks = 2;
-  optional string solvent = 3;
-  optional double temperature = 4;
-  optional string temperature_units = 5;
 }

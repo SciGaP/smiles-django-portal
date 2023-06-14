@@ -13,7 +13,7 @@ export default {
 
 <style scoped>
 #app {
-  height: 100vh;
+  height: 95vh;
   width: 100vw;
   overflow-x: hidden; /* Hide horizontal scrollbar */
   overflow-y: auto; /* Add vertical scrollbar if necessary */
