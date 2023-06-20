@@ -106,7 +106,7 @@ def upload_smiles_data_products(request_data, filename, dp_id):
         failed_count = 0
         for j in jsons:
             try:
-                smiles_dp = parse_smiles_dp(j, SmilesDP(dp_id))
+                smiles_dp = get_smiles_dp(SmilesDP(dp_id), j)
                 data_product = map_smiles_dp_to_catalog_dp(request_data, smiles_dp, SmilesDP(dp_id))
                 catalog_service = dcs.DataCatalogService(request_data)
                 result_dp = catalog_service.create_data_product(data_product)
@@ -126,38 +126,25 @@ def get_smiles_dp(dp_type, data=None):
     match dp_type:
         case SmilesDP.COMPUTATIONAL:
             smiles_dp = comp_pb2.ComputationalDP()
-            ParseDict(data, smiles_dp) if data is not None else None
+            if data is not None:
+                if data.get("calculation")["mo_energies"] is not None:
+                    pb_value = Value()
+                    str_mo_energies = json.dumps(data.get("calculation")["mo_energies"], cls=DecimalEncoder)
+                    ParseDict(str_mo_energies, pb_value)
+                    del data.get("calculation")["mo_energies"]
+
+                smiles_dp = ParseDict(data, smiles_dp, ignore_unknown_fields=True)
+                if pb_value is not None:
+                    smiles_dp.calculation.mo_energies.CopyFrom(pb_value)
+
         case SmilesDP.EXPERIMENTAL:
             smiles_dp = exp_pb2.ExperimentalDP()
             ParseDict(data, smiles_dp) if data is not None else None
+
         case SmilesDP.LITERATURE:
             smiles_dp = lit_pb2.LiteratureDP()
             ParseDict(data, smiles_dp) if data is not None else None
-        case _:
-            raise Exception("Undefined SMILES data product type: " + str(dp_type))
 
-    return smiles_dp
-
-
-def parse_smiles_dp(j, dp_type):
-    match dp_type:
-        case SmilesDP.COMPUTATIONAL:
-            if j.get("calculation")["mo_energies"] is not None:
-                pb_value = Value()
-                str_mo_energies = json.dumps(j.get("calculation")["mo_energies"], cls=DecimalEncoder)
-                ParseDict(str_mo_energies, pb_value)
-                del j.get("calculation")["mo_energies"]
-
-            smiles_dp = ParseDict(j, comp_pb2.ComputationalDP(), ignore_unknown_fields=True)
-
-            if pb_value is not None:
-                smiles_dp.calculation.mo_energies.CopyFrom(pb_value)
-
-        case SmilesDP.EXPERIMENTAL:
-            smiles_dp = ParseDict(j, exp_pb2.ExperimentalDP(), ignore_unknown_fields=True)
-
-        case SmilesDP.LITERATURE:
-            smiles_dp = ParseDict(j, lit_pb2.LiteratureDP(), ignore_unknown_fields=True)
         case _:
             raise Exception("Undefined SMILES data product type: " + str(dp_type))
 
