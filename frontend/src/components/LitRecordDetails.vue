@@ -3,12 +3,10 @@
     <div v-if="record">
       <b-container fluid>
         <b-row class="m-4">
-          <b-col cols="6">
-            <div>
-              <b-card class="d-flex justify-content-center align-items-center w-100">
-                <b-img fluid :src="structureImg" alt="Structure"/>
-              </b-card>
-            </div>
+          <b-col cols="6" class="d-flex">
+            <b-card class="d-flex justify-content-center align-items-center w-100 h-100 m-0 p-0">
+              <molecular-structure-img :structure="record.structure" fit-to-content/>
+            </b-card>
           </b-col>
 
           <b-col cols="6">
@@ -172,7 +170,7 @@
 </template>
 
 <script>
-import fallbackStructure from "../assets/images/structure-fallback.svg"
+import MolecularStructureImg from "@/components/common/MolecularStructureImg";
 
 export default {
   props: {
@@ -181,10 +179,12 @@ export default {
       required: true,
     },
   },
+  components: {
+    MolecularStructureImg
+  },
   data() {
     return {
-      showAlert: false,
-      structureImg: fallbackStructure
+      showAlert: false
     };
   },
   methods: {}

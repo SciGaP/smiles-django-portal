@@ -59,44 +59,48 @@
 
         <b-row class="m-4">
           <b-col cols="12">
-              <div v-if="item.records">
-                <b-table
-                    responsive
-                    striped
-                    hover
-                    sticky-header
-                    outlined
-                    :items="item.records"
-                    :fields="fields"
-                    stacked="md"
-                    small
-                    @row-clicked="onRowClicked"
-                >
-                  <template #cell(actions)="row">
-                    <div class="text-right">
-                      <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info"
-                                @click="row.toggleDetails">
-                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-                      </b-button>
-                    </div>
+            <div v-if="item.records">
+              <b-table
+                  responsive
+                  striped
+                  hover
+                  sticky-header
+                  outlined
+                  :items="item.records"
+                  :fields="fields"
+                  stacked="md"
+                  small
+              >
 
-                  </template>
+                <template #cell(structure)="data">
+                  <molecular-structure-img :structure="data.item.structure" height="50" width="50"/>
+                </template>
 
-                  <template #row-details="row">
-                    <b-card>
-                      <LitRecordDetails :record="row.item"></LitRecordDetails>
-                    </b-card>
-                  </template>
+                <template #cell(actions)="row">
+                  <div class="text-right">
+                    <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info"
+                              @click="row.toggleDetails">
+                      {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                    </b-button>
+                  </div>
 
-                  <template #table-busy>
-                    <div class="text-center text-danger my-2">
-                      <b-spinner class="align-middle"></b-spinner>
-                      <strong>Loading...</strong>
-                    </div>
-                  </template>
+                </template>
 
-                </b-table>
-              </div>
+                <template #row-details="row">
+                  <b-card>
+                    <lit-record-details :record="row.item"/>
+                  </b-card>
+                </template>
+
+                <template #table-busy>
+                  <div class="text-center text-danger my-2">
+                    <b-spinner class="align-middle"></b-spinner>
+                    <strong>Loading...</strong>
+                  </div>
+                </template>
+
+              </b-table>
+            </div>
           </b-col>
         </b-row>
 
@@ -108,6 +112,7 @@
 <script>
 import {configurationService} from "@/services/configuraion-service";
 import LitRecordDetails from "./LitRecordDetails"
+import MolecularStructureImg from "@/components/common/MolecularStructureImg";
 
 const {utils} = AiravataAPI;
 
@@ -116,7 +121,8 @@ export default {
     dp: Object
   },
   components: {
-    LitRecordDetails
+    LitRecordDetails,
+    MolecularStructureImg
   },
   data() {
     return {
@@ -153,9 +159,6 @@ export default {
       setTimeout(() => {
         this.$router.push({name: 'data-product-list', query: {type: 'lit'}});
       }, 3000);
-    },
-    onRowClicked(item) {
-      console.log(JSON.stringify(item))
     }
   }
 }

@@ -36,19 +36,9 @@
             :busy="isBusy"
             @row-clicked="onRowClicked"
         >
-          <template #cell(actions)="row">
-            <div class="text-right">
-              <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
-                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-              </b-button>
-            </div>
 
-          </template>
-
-          <template #row-details="row">
-            <b-card>
-              <pre>{{ formattedJson(row) }}</pre>
-            </b-card>
+          <template #cell(structure)="data">
+            <molecular-structure-img :structure="data.item.structure" height="50" width="50"/>
           </template>
 
           <template #table-busy>
@@ -84,11 +74,15 @@
 
 <script>
 import {configurationService} from "@/services/configuraion-service";
+import MolecularStructureImg from "@/components/common/MolecularStructureImg";
 
 const {utils} = AiravataAPI;
 
 export default {
   name: "SMILESDataProductTable",
+  components: {
+    MolecularStructureImg
+  },
   data() {
     return {
       items: [],
@@ -103,11 +97,6 @@ export default {
   computed: {
     fields() {
       return configurationService.getDisplayableColumns(this.type);
-    },
-    formattedJson() {
-      return (row) => {
-        return JSON.stringify(row.item, null, 2);
-      };
     }
   },
   mounted() {
@@ -140,7 +129,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .table-container {
   overflow-x: scroll;
   overflow-y: auto;
