@@ -1,65 +1,79 @@
 <template>
-  <div class="file-upload">
-    <div class="file-upload__content">
-      <label class="upload__label" :class="{'upload__label--has-file': file, 'no-click': uploading}">
-        <img class="upload-input__icon" src="../assets/icons/file-upload.svg"/>
-        <span class="upload-input__text">{{ file ? file.name : 'Drag and drop your file or click to browse' }}</span>
-        <span class="upload-size__text">Max. file size 2 GB</span>
-        <input class="file-upload__input" type="file" @change="onFileSelected" ref="fileInput"/>
-      </label>
-      <div style="display: flex; justify-content: center;">
-        <div class="text-label">
-          <span>Or</span>
+  <div>
+    <div style="height: 50px;">
+      <b-alert
+          :show="dismissCountDown"
+          fade
+          variant="info"
+      >Upload Successful!
+      </b-alert>
+    </div>
+    <b-container fluid class="container">
+      <div class="content">
+        <label class="upload__label" :class="{'upload__label--has-file': file, 'no-click': uploading}">
+          <img class="upload-input__icon" src="../assets/icons/file-upload.svg"/>
+          <span class="upload-input__text">{{ file ? file.name : 'Drag and drop your file or click to browse' }}</span>
+          <span class="upload-size__text">Max. file size 2 GB</span>
+          <input class="file-upload__input" type="file" @change="onFileSelected" ref="fileInput"/>
+
+          <div class="progress-bar-wrapper">
+            <b-progress v-if="progress !== 0" :value="progress" variant="dark" striped class="mt-2"></b-progress>
+          </div>
+        </label>
+
+        <div style="display: flex; justify-content: center;">
+          <div class="text-label">
+            <span>Or</span>
+          </div>
         </div>
-      </div>
-      <label class="input__label">
+        <label class="input__label">
         <span class="upload-input__text">
           <img class="upload-input__icon" src="../assets/icons/fill-up-form.svg"/>
           Fill up a form
         </span>
-        <input class="file-upload__input" type="button" @click="fillUpForm"/>
-      </label>
-      <div class="upload-container">
-        <div style="display: flex; justify-content: center;">
-          <div class="text-label">
-            <span>To</span>
+          <input class="file-upload__input" type="button" @click="fillUpForm"/>
+        </label>
+        <div class="upload-container">
+          <div style="display: flex; justify-content: center;">
+            <div class="text-label">
+              <span>To</span>
+            </div>
           </div>
-        </div>
-        <div class="upload-checkboxes" :class="{ 'no-click': uploading}">
-          <label>
-            <input type="radio" v-model="selectedDatabase" value="Literature Database">
-            <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Literature Database' }">Literature Database</span>
-          </label>
-          <label>
-            <input type="radio" v-model="selectedDatabase" value="Computational Database">
-            <span class="checkbox-label"
-                  :class="{ 'checkbox-selected': selectedDatabase === 'Computational Database' }">Computational Database</span>
-          </label>
-          <label>
-            <input type="radio" v-model="selectedDatabase" value="Experimental Database">
-            <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Experimental Database' }">Experimental Database</span>
-          </label>
-        </div>
-        <div class="progress-bar-container" v-if="progress !== 0">
-          <div class="file-upload__progress" v-if="uploading">
-            <div class="file-upload__progress-bar" :style="{ width: progress + '%' }"/>
+          <div class="upload-checkboxes" :class="{ 'no-click': uploading}">
+            <label>
+              <input type="radio" v-model="selectedDatabase" value="Literature Database">
+              <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Literature Database' }">Literature Database</span>
+            </label>
+            <label>
+              <input type="radio" v-model="selectedDatabase" value="Computational Database">
+              <span class="checkbox-label"
+                    :class="{ 'checkbox-selected': selectedDatabase === 'Computational Database' }">Computational Database</span>
+            </label>
+            <label>
+              <input type="radio" v-model="selectedDatabase" value="Experimental Database">
+              <span class="checkbox-label"
+                    :class="{ 'checkbox-selected': selectedDatabase === 'Experimental Database' }">Experimental Database</span>
+            </label>
           </div>
         </div>
       </div>
-    </div>
-    <div class="file-upload__footer">
-      <div class="mr-3">
-        <button class="discard_button" :class="{'discard_button--disabled' : !file || uploading}"
-                :disabled="!file || uploading" @click="discard">Discard
-        </button>
-        <button class="btn btn-primary" :disabled="!file || uploading" @click="uploadFile">Next</button>
+      <div class="file-upload__footer">
+        <div class="mr-3">
+          <button class="discard_button" :class="{'discard_button--disabled' : !file || uploading}"
+                  :disabled="!file || uploading" @click="discard">Discard
+          </button>
+          <button class="btn btn-primary" :disabled="!file || uploading" @click="uploadFile">Next</button>
+        </div>
       </div>
-    </div>
+    </b-container>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export default {
   name: "FileUpload",
@@ -70,19 +84,19 @@ export default {
       uploading: false,
       selectedDatabase: 'Computational Database',
       formOpen: false,
-      progress: 0
+      progress: 0,
+      dismissCountDown: 0,
     };
   },
 
   computed: {
     uploadUrl() {
-      const URL_PREFIX = 'http://127.0.0.1:8000/smiles/';
       if (this.selectedDatabase === 'Literature Database') {
-        return URL_PREFIX + 'literature-dp/upload';
+        return '/smiles/lit-dp/upload';
       } else if (this.selectedDatabase === 'Experimental Database') {
-        return URL_PREFIX + 'experimental-dp/upload';
+        return '/smiles/exp-dp/upload';
       } else if (this.selectedDatabase === 'Computational Database') {
-        return URL_PREFIX + 'computational-dp/upload';
+        return '/smiles/comp-dp/upload';
       } else {
         return '';
       }
@@ -107,16 +121,14 @@ export default {
                 this.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               }
             })
-            .then(response => {
+            .then(() => {
               this.uploading = false;
               this.progress = 0;
               this.file = null;
               this.$refs.fileInput.value = '';
-              alert("File upload successful!");
-              console.log(response)
+              this.dismissCountDown = 3;
             })
-            .catch(error => {
-              console.log(error);
+            .catch(() => {
               this.uploading = false;
               this.progress = 0;
               this.file = null;
@@ -134,15 +146,22 @@ export default {
 
 <style scoped>
 
-.file-upload {
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+}
+
+.content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 600px;
-  padding: 20px;
-  position: relative;
-  min-height: 100vh;
+  width: 80vw;
+  max-width: 600px;
+  margin-bottom: 20vh;
 }
 
 .upload__label,
@@ -203,23 +222,11 @@ export default {
   margin-right: 5px;
 }
 
-.progress-bar-container {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.file-upload__progress {
-  background-color: #ccc;
-  border-radius: 10px;
-  height: 10px;
-  width: 100%;
-  overflow: hidden;
-}
-
-.file-upload__progress-bar {
-  height: 100%;
-  background-color: #333;
-  transition: width 0.2s ease-in-out;
+.progress-bar-wrapper {
+  position: relative;
+  height: 20px;
+  width: 80%;
+  margin-top: 10px;
 }
 
 .checkbox-label {
@@ -273,18 +280,10 @@ input[type="radio"]:checked + .checkbox-label::before {
   pointer-events: none;
 }
 
-.file-upload__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-}
-
 .file-upload__footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  width: 100%;
+  width: calc(100vw - 70px); /* subtract the width of the navbar from the viewport width */
   height: 60px;
   background-color: white;
   display: flex;

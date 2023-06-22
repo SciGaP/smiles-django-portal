@@ -4,6 +4,10 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_airavata.settings")
+celery_app = Celery("smiles")
+celery_app.config_from_object("django.conf:settings", namespace="CELERY")
+
 
 class Settings:
     WEBPACK_LOADER = {
@@ -47,9 +51,7 @@ class SmilesDjangoPortalConfig(AppConfig):
     # for more details for more details.
 
     def ready(self):
-        app = Celery("smiles")
-        app.config_from_object("django.conf:settings", namespace="CELERY")
-        app.autodiscover_tasks()
+        celery_app.autodiscover_tasks()
 
     def merge_settings(self, settings_module):
         WEBPACK_LOADER = getattr(settings_module, "WEBPACK_LOADER", {})

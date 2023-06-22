@@ -20,7 +20,7 @@
 
 syntax = "proto3";
 
-package smiles.model;
+package smiles.model.exp;
 import "google/protobuf/struct.proto";
 
 message ExperimentalDP {
@@ -28,73 +28,98 @@ message ExperimentalDP {
   optional string parent_data_product_id = 2;
   optional string name = 3;
 
-  optional string mol_id = 4;
-  optional string cas_nr = 5;
-  optional string smiles = 6;
-  optional string smiles_stereo = 7;
-  optional string inchi = 8;
-  optional google.protobuf.Value molfile_blob_source = 9;
-  optional string emp_formula = 10;
-  optional string emp_formula_sort = 11;
-  optional string emp_formula_source = 12;
-  optional double mw = 13;
-  optional double mw_monoiso = 14;
-  optional double rdb = 15;
-  optional string mw_source = 16;
-  optional string validated_by = 17;
-  optional string journal = 18;
-  optional string auth_of_intr = 19;
-  optional string jour_cit = 20;
-  optional int32 year_publ = 21;
-  optional string doi_link = 22;
-  optional string comp_class = 23;
-  optional string cuniq = 24;
-  optional bool calc_perf = 25;
-  optional string org_met = 26;
-  optional int64 mol_chrg = 27;
-  optional string state_ofmat = 28;
-  optional string color_white = 29;
-  optional string color_uv = 30;
-  optional double absorb_max = 31;
-  optional string solvent_ae = 32;
-  optional double absorb = 33;
-  optional double conc = 34;
-  optional double extinc = 35;
-  optional double emis_max = 36;
-  optional double temp_abs = 37;
-  optional double emis_qy = 38;
-  optional double temp_ems = 39;
-  optional double lifetime = 40;
-  optional double temp_cv = 41;
-  optional double reduc_pot = 42;
-  optional string hw_or_pk_rp = 43;
-  optional double oxid_pot = 44;
-  optional string hw_or_pk_op = 45;
-  optional string solvent_cv = 46;
-  optional string electrolyte = 47;
-  optional string ref_electrd = 48;
-  optional string inter_thngs = 49;
-  optional double density_20 = 50;
-  optional string density_20_source = 51;
-  optional double default_warn_level = 52;
-  optional double n_20 = 53;
-  optional string n_20_source = 54;
-  optional double mp_low = 55;
-  optional double mp_high = 56;
-  optional string mp_source = 57;
-  optional double bp_low = 58;
-  optional double bp_high = 59;
-  optional double bp_press = 60;
-  optional string press_unit = 61;
-  optional string bp_source = 62;
-  optional string safety_r = 63;
-  optional string safety_h = 64;
-  optional string safety_s = 65;
-  optional string safety_p = 66;
-  optional string safety_text = 67;
-  optional string safety_sym = 68;
-  optional string safety_sym_ghs = 69;
-  optional string safety_source = 70;
-  optional string comment_mol = 71;
+  optional string dye_family = 4; // Values - Acridinium, Pyrylium, Cyanine, Quinolinium, Rhodamine, etc.
+  optional bytes structure = 5;
+  repeated string other_names = 6;
+  optional string note = 7;
+
+  optional string mol_id = 8;
+  optional string cas_nr = 9;
+  optional double mw = 10;
+  optional string mw_source = 11;
+  optional double mw_monoiso = 12;
+  optional double rdb = 13;
+  optional string validated_by = 14;
+
+  optional string journal = 15;
+  optional string auth_of_intr = 16;
+  optional string jour_cit = 17;
+  optional int32 year_publ = 18;
+  optional string doi_link = 19;
+
+  optional string comp_class = 20;  // this is an alternative name for the Dye Family
+  optional string cuniq = 21;
+  optional bool calc_perf = 22;
+  optional string org_met = 23;
+  optional int64 mol_chrg = 24;
+  optional string inter_thngs = 25;
+
+  optional StructuralData structural_data = 26;
+  optional SpectralData spectral_data = 27;
+  optional ElectroChemical electro_chemical = 28;
+
+  // The following fields are deprecated and may be removed in a future version
+  optional double density_20 = 929;
+  optional string density_20_source = 930;
+  optional double default_warn_level = 931;
+  optional double n_20 = 932;
+  optional string n_20_source = 933;
+  optional double mp_low = 934;
+  optional double mp_high = 935;
+  optional string mp_source = 936;
+  optional double bp_low = 937;
+  optional double bp_high = 938;
+  optional double bp_press = 939;
+  optional string press_unit = 940;
+  optional string bp_source = 941;
+  optional string safety_r = 942;
+  optional string safety_h = 943;
+  optional string safety_s = 944;
+  optional string safety_p = 945;
+  optional string safety_text = 946;
+  optional string safety_sym = 947;
+  optional string safety_sym_ghs = 948;
+  optional string safety_source = 949;
 }
 
+
+// Redox Properties
+message ElectroChemical {
+  optional double temp_cv = 1;
+  optional double reduc_pot = 2;
+  optional string hw_or_pk_rp = 3;
+  optional double oxid_pot = 4;
+  optional string hw_or_pk_op = 5;
+  optional string solvent_cv = 6;
+  optional string electrolyte = 7;
+  optional string ref_electrd = 8;
+}
+
+
+// Spectral Data
+message SpectralData {
+  optional string state_ofmat = 1;
+  optional string color_white = 2;
+  optional string color_uv = 3;
+  optional double absorb_max = 4;
+  optional string solvent_ae = 5;
+  optional double absorb = 6;
+  optional double conc = 7;
+  optional double extinc = 8;
+  optional double emis_max = 9;
+  optional double temp_abs = 10;
+  optional double emis_qy = 11;
+  optional double temp_ems = 12;
+  optional double lifetime = 13;
+}
+
+// Structural Data
+message StructuralData {
+  optional string smiles = 1;
+  optional string smiles_stereo = 2;
+  optional string inchi = 3;
+  optional google.protobuf.Value molfile_blob_source = 4;
+  optional string emp_formula = 5;
+  optional string emp_formula_sort = 6;
+  optional string emp_formula_source = 7;
+}

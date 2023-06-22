@@ -1,16 +1,18 @@
 <template>
   <b-container fluid>
-    <b-row class="m-2 mb-4 d-flex justify-content-center">
-      <b-col lg="5" class="my-3">
+    <b-row class="d-flex justify-content-center">
+      <b-col lg="8" class="my-3">
         <b-form-group>
           <b-input-group>
-            <b-form-input
-                id="filter-input"
-                v-model="filter"
-                type="search"
-                placeholder="Type to Search"
-                style="border-radius: 10px;"
-            ></b-form-input>
+            <div class="position-relative">
+              <b-form-input id="filter-input"
+                            v-model="filter"
+                            type="search"
+                            placeholder="Type to Search"
+                            class="rounded-pill pl-5 search-bar"
+              ></b-form-input>
+              <img src="../assets/icons/search-icon.svg" alt="Search" class="position-absolute search-icon">
+            </div>
           </b-input-group>
         </b-form-group>
       </b-col>
@@ -33,24 +35,10 @@
             @filtered="onFiltered"
             :busy="isBusy"
             @row-clicked="onRowClicked"
-            thead-class="my-header"
         >
-          <template #cell(actions)="row">
-            <div class="text-right">
-              <b-button :pressed="row.detailsShowing" size="sm" variant="outline-info" @click="row.toggleDetails">
-                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-              </b-button>
-              <b-button size="sm" variant="outline-danger" @click="deleteRecord(row)">
-                Delete
-              </b-button>
-            </div>
 
-          </template>
-
-          <template #row-details="row">
-            <b-card>
-              <pre>{{ formattedJson(row) }}</pre>
-            </b-card>
+          <template #cell(structure)="data">
+            <molecular-structure-img :structure="data.item.structure" height="50" width="50"/>
           </template>
 
           <template #table-busy>
@@ -64,7 +52,7 @@
       </div>
     </div>
 
-    <div class="text-right">
+    <div class="pagination-container">
       <b-row class="mb-4">
         <b-col sm="7" md="3" class="my-1 ml-auto pr-5">
           <b-pagination
@@ -85,17 +73,22 @@
 </template>
 
 <script>
-import {smilesDPService} from "@/services/smiles-dp-service";
 import {configurationService} from "@/services/configuraion-service";
+import MolecularStructureImg from "@/components/common/MolecularStructureImg";
+
+const {utils} = AiravataAPI;
 
 export default {
   name: "SMILESDataProductTable",
+  components: {
+    MolecularStructureImg
+  },
   data() {
     return {
       items: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 15,
+      perPage: 20,
       filter: null,
       type: this.$route.query.type,
       isBusy: true,
@@ -104,11 +97,6 @@ export default {
   computed: {
     fields() {
       return configurationService.getDisplayableColumns(this.type);
-    },
-    formattedJson() {
-      return (row) => {
-        return JSON.stringify(row.item, null, 2);
-      };
     }
   },
   mounted() {
@@ -116,44 +104,20 @@ export default {
   },
   methods: {
     loadSMILESDataProducts() {
-      this.params = `page=${this.currentPage}&size=${this.perPage}`;
-      smilesDPService.getSMILESDataProducts(this.type, this.params).then((response) => {
-        if (response.data) {
-          this.items = response.data;
-          // Set the initial number of items
-          this.totalRows = this.items.length
-        }
-      });
+      utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`)
+          .then(response => {
+            if (response) {
+              this.items = response;
+              // Set the initial number of items
+              this.totalRows = this.items.length
+            }
+          });
       this.isBusy = false;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length
       this.currentPage = 1
-    },
-    deleteRecord(data) {
-      this.$bvModal
-          .msgBoxConfirm("Do you want to delete the record?", {
-            title: "Record Delete Confirmation",
-            size: "mm",
-            buttonSize: "sm",
-            okVariant: "danger",
-            okTitle: "YES",
-            cancelTitle: "NO",
-            footerClass: "p-2",
-            hideHeaderClose: false,
-            centered: true,
-          })
-          .then((value) => {
-            console.log(data.item.data_product_id)
-            if (value) {
-              smilesDPService.deleteSMILESDataProduct(this.type, data.item.data_product_id)
-              const index = this.items.findIndex(item => item.data_product_id === data.item.data_product_id);
-              if (index !== -1) {
-                this.items.splice(index, 1);
-              }
-            }
-          });
     },
     onRowClicked(item) {
       this.$router.push({
@@ -165,14 +129,32 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .table-container {
   overflow-x: scroll;
+  overflow-y: auto;
   border: 1px solid gray;
   border-radius: 20px;
-  padding: 10px;
-  margin: 20px;
+  margin: 5px 10px;
   background: white;
+  max-height: 73vh;
+}
+
+.search-bar {
+  width: 60vw;
+}
+
+.search-icon {
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.pagination-container {
+  text-align: right;
+  height: 10%;
 }
 
 </style>

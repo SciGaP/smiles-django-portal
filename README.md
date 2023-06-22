@@ -14,7 +14,7 @@ A Portal to support SMILES Project
 	
 	```
 	# Max upload size is set to 2GB
-	MAX_UPLOAD_SIZE = 1024 * 1024 * 1024 * 2  
+	FILE_UPLOAD_MAX_FILE_SIZE = 1024 * 1024 * 1024 * 2
 	
 	# Celery settings
 	CELERY_BROKER_URL = "redis://localhost:6379"

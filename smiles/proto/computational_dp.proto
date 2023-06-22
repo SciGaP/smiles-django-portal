@@ -20,7 +20,7 @@
 
 syntax = "proto3";
 
-package smiles.model;
+package smiles.model.comp;
 import "google/protobuf/struct.proto";
 
 message ComputationalDP {
@@ -28,99 +28,103 @@ message ComputationalDP {
   optional string parent_data_product_id = 2;
   optional string name = 3;
 
-  optional string ProjectName = 4;
-  optional string ExperimentName = 5;
-  optional string Username = 6;
-  optional string Id = 7;
-  optional int64 IndexedTime = 8;
-  optional ExecutionEnvironment ExecutionEnvironment = 9;
-  optional CalculatedProperties CalculatedProperties = 10;
-  optional FinalMoleculeStructuralFormats FinalMoleculeStructuralFormats = 11;
-  optional Molecule Molecule = 12;
-  optional Calculation Calculation = 13;
-  optional Identifiers Identifiers = 14;
-  optional Files Files = 15;
-  optional InputFileConfiguration InputFileConfiguration = 16;
+  optional string dye_family = 4; // Values - Acridinium, Pyrylium, Cyanine, Quinolinium, Rhodamine, etc.
+  optional bytes structure = 5;
+  repeated string other_names = 6;
+  optional string note = 7;
+
+  optional string project_name = 8;
+  optional string experiment_name = 9;
+  optional string username = 10;
+  optional int64 indexed_time = 11;
+  optional ExecutionEnvironment execution_environment = 12;
+  optional CalculatedProperties calculated_properties = 13;
+  optional FinalMoleculeStructuralFormats final_molecule_structural_formats = 14;
+  optional Molecule molecule = 15;
+  optional Calculation calculation = 16;
+  optional Identifiers identifiers = 17;
+  optional Files files = 18;
+  optional InputFileConfiguration input_file_configuration = 19;
 }
 
 message ExecutionEnvironment {
-  optional string CalcBy = 1;
-  optional double JobCPURunTime = 2;
-  optional string CalcMachine = 3;
-  optional int32 ActualJobRunTime = 4;
-  optional string FinTime = 5;
-  optional int32 Memory = 6;
-  optional int32 NProcShared = 7;
-  optional int64 FinTimeStamp = 8;
+  optional string calc_by = 1;
+  optional double job_cpu_runtime = 2;
+  optional string calc_machine = 3;
+  optional int32 actual_job_runtime = 4;
+  optional string fin_time = 5;
+  optional int32 memory = 6;
+  optional int32 n_proc_shared = 7;
+  optional int64 fin_timestamp = 8;
 }
 
 message CalculatedProperties {
-  optional int32 Homos = 1;
-  optional double Energy = 2;
-  optional Dipole Dipole = 3;
-  optional double HF = 4;
-  repeated double MaximumGradientDistribution = 5 [packed = true];
-  repeated double RMSGradientDistribution = 6 [packed = true];
-  repeated int32 Iterations = 7 [packed = true];
-  optional double HomoEigenvalue = 8;
-  repeated string HomoEigenvalues = 9;
-  optional double LumoEigenvalue = 10;
-  repeated string LumoEigenvalues = 11;
-  optional double Thermal = 12;
-  optional double Enthalpy = 13;
-  optional double Gibbs = 14;
-  repeated double EnergyDistribution = 15 [packed = true];
-  optional int32 NImag = 16;
-  optional double ZeroPointEnergy = 17;
+  optional int32 homos = 1;
+  optional double energy = 2;
+  optional Dipole dipole = 3;
+  optional double hf = 4;
+  repeated double maximum_gradient_distribution = 5 [packed = true];
+  repeated double rms_gradient_distribution = 6 [packed = true];
+  repeated int32 iterations = 7 [packed = true];
+  optional double homo_eigen_value = 8;
+  repeated string homo_eigen_values = 9;
+  optional double lumo_eigen_value = 10;
+  repeated string lumo_eigen_values = 11;
+  optional double thermal = 12;
+  optional double enthalpy = 13;
+  optional double gibbs = 14;
+  repeated double energy_distribution = 15 [packed = true];
+  optional int32 n_imag = 16;
+  optional double zero_point_energy = 17;
 }
 
 message FinalMoleculeStructuralFormats {
-  optional string SDF = 1;
-  optional string PDB = 2;
+  optional string sdf = 1;
+  optional string pdb = 2;
 }
 
 message Molecule {
-  optional string Formula = 1;
-  optional int32 NAtom = 2;
-  optional int32 Multiplicity = 3;
-  optional int32 Charge = 4;
-  optional string OrbSym = 5;
-  optional string ElecSym = 6;
+  optional string formula = 1;
+  optional int32 n_atom = 2;
+  optional int32 multiplicity = 3;
+  optional int32 charge = 4;
+  optional string orb_sym = 5;
+  optional string elec_sym = 6;
 }
 
 message Calculation {
-  optional string JobStatus = 1;
-  optional string Basis = 2;
-  optional int32 NMO = 3;
-  optional string Keywords = 4;
-  optional int32 NBasis = 5;
-  optional google.protobuf.Value MoEnergies = 6;
-  optional string Package = 7;
-  optional string CalcType = 8;
-  optional string Methods = 9;
+  optional string job_status = 1;
+  optional string basis = 2;
+  optional int32 nmo = 3;
+  optional string keywords = 4;
+  optional int32 n_basis = 5;
+  optional google.protobuf.Value mo_energies = 6;
+  optional string package = 7;
+  optional string calc_type = 8;
+  optional string methods = 9;
 }
 
 message Identifiers {
-  optional string InChIKey = 1;
-  optional string CanonicalSMILES = 2;
-  optional string InChI = 3;
-  optional string SMILES = 4;
+  optional string inchi_key = 1;
+  optional string canonical_smiles = 2;
+  optional string inchi = 3;
+  optional string smiles = 4;
 }
 
 message Files {
-  optional string SMILESFile = 1;
-  optional string SDFStructureFile = 2;
-  optional string GaussianOutputFile = 3;
-  optional string GaussianInputFile = 4;
-  optional string PDBStructureFile = 5;
-  optional string InChIFile = 6;
-  optional string GaussianCheckpointFile = 7;
-  optional string GaussianFCheckpointFile = 8;
+  optional string smiles_file = 1;
+  optional string sdf_structure_file = 2;
+  optional string gaussian_output_file = 3;
+  optional string gaussian_input_file = 4;
+  optional string pdb_structure_file = 5;
+  optional string inchi_file = 6;
+  optional string gaussian_checkpoint_file = 7;
+  optional string gaussian_f_checkpoint_file = 8;
 }
 
 message InputFileConfiguration {
-  optional string Link0Commands = 1;
-  optional string RouteCommands = 2;
+  optional string link_0_commands = 1;
+  optional string route_commands = 2;
 }
 
 message Dipole {

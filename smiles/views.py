@@ -12,29 +12,31 @@ from .apps import SmilesDjangoPortalConfig
 
 
 class ComputationalDPView(View):
-    UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/computational-dp/upload'
+    UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/comp-dp/upload'
 
     def post(self, request):
         data = json.loads(request.body)
-        result_dp = smiles_dp_util.create_smiles_data_product(request, smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
-
+        result_dp = smiles_dp_util.create_smiles_data_product(extract_request_data(request),
+                                                              smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
         return JsonResponse({'data_product_id': result_dp.data_product_id}, status=201)
 
     def get_one(self, request, dp_id):
         try:
-            result = smiles_dp_util.get_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.COMPUTATIONAL)
+            result = smiles_dp_util.get_smiles_data_product(extract_request_data(request), dp_id,
+                                                            smiles_dp_util.SmilesDP.COMPUTATIONAL)
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
 
     def get(self, request):
-        result = smiles_dp_util.get_smiles_data_products(request, smiles_dp_util.SmilesDP.COMPUTATIONAL)
+        result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
+                                                         smiles_dp_util.SmilesDP.COMPUTATIONAL)
         return JsonResponse(result, safe=False, status=200)
 
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id,
+            updated_dp = smiles_dp_util.update_smiles_data_product(extract_request_data(request), dp_id,
                                                                    smiles_dp_util.SmilesDP.COMPUTATIONAL, data)
             if updated_dp:
                 return JsonResponse(updated_dp, status=200)
@@ -46,7 +48,7 @@ class ComputationalDPView(View):
 
     def delete(self, request, dp_id):
         try:
-            smiles_dp_util.delete_smiles_data_product(request, dp_id)
+            smiles_dp_util.delete_smiles_data_product(extract_request_data(request), dp_id)
             return HttpResponse()
         except Exception as e:
             return HttpResponseNotFound(str(e))
@@ -69,30 +71,33 @@ ComputationalDPView = login_required(ComputationalDPView.as_view())
 
 
 class ExperimentalDPView(View):
-    UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/experimental-dp/upload'
+    UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/exp-dp/upload'
 
     def post(self, request):
         data = json.loads(request.body)
-        result_dp = smiles_dp_util.create_smiles_data_product(request, smiles_dp_util.SmilesDP.EXPERIMENTAL, data)
+        result_dp = smiles_dp_util.create_smiles_data_product(extract_request_data(request),
+                                                              smiles_dp_util.SmilesDP.EXPERIMENTAL, data)
 
         return JsonResponse({'data_product_id': result_dp.data_product_id}, status=201)
 
     def get_one(self, request, dp_id):
         try:
-            result = smiles_dp_util.get_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.EXPERIMENTAL)
+            result = smiles_dp_util.get_smiles_data_product(extract_request_data(request), dp_id,
+                                                            smiles_dp_util.SmilesDP.EXPERIMENTAL)
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
 
     def get(self, request):
-        result = smiles_dp_util.get_smiles_data_products(request, smiles_dp_util.SmilesDP.EXPERIMENTAL)
+        result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
+                                                         smiles_dp_util.SmilesDP.EXPERIMENTAL)
         return JsonResponse(result, safe=False, status=200)
 
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.EXPERIMENTAL,
-                                                                   data)
+            updated_dp = smiles_dp_util.update_smiles_data_product(extract_request_data(request), dp_id,
+                                                                   smiles_dp_util.SmilesDP.EXPERIMENTAL, data)
             if updated_dp:
                 return JsonResponse(updated_dp, status=200)
             else:
@@ -103,7 +108,7 @@ class ExperimentalDPView(View):
 
     def delete(self, request, dp_id):
         try:
-            smiles_dp_util.delete_smiles_data_product(request, dp_id)
+            smiles_dp_util.delete_smiles_data_product(extract_request_data(request), dp_id)
             return HttpResponse()
         except Exception as e:
             return HttpResponseNotFound(str(e))
@@ -127,30 +132,33 @@ ExperimentalDPView = login_required(ExperimentalDPView.as_view())
 
 
 class LiteratureDPView(View):
-    UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/literature-dp/upload'
+    UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/lit-dp/upload'
 
     def post(self, request):
         data = json.loads(request.body)
-        result_dp = smiles_dp_util.create_smiles_data_product(request, smiles_dp_util.SmilesDP.LITERATURE, data)
+        result_dp = smiles_dp_util.create_smiles_data_product(extract_request_data(request),
+                                                              smiles_dp_util.SmilesDP.LITERATURE, data)
 
         return JsonResponse({'data_product_id': result_dp.data_product_id}, status=201)
 
     def get_one(self, request, dp_id):
         try:
-            result = smiles_dp_util.get_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.LITERATURE)
+            result = smiles_dp_util.get_smiles_data_product(extract_request_data(request), dp_id,
+                                                            smiles_dp_util.SmilesDP.LITERATURE)
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
 
     def get(self, request):
-        result = smiles_dp_util.get_smiles_data_products(request, smiles_dp_util.SmilesDP.EXPERIMENTAL)
+        result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
+                                                         smiles_dp_util.SmilesDP.LITERATURE)
         return JsonResponse(result, safe=False, status=200)
 
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
-            updated_dp = smiles_dp_util.update_smiles_data_product(request, dp_id, smiles_dp_util.SmilesDP.LITERATURE,
-                                                                   data)
+            updated_dp = smiles_dp_util.update_smiles_data_product(extract_request_data(request), dp_id,
+                                                                   smiles_dp_util.SmilesDP.LITERATURE, data)
             if updated_dp:
                 return JsonResponse(updated_dp, status=200)
             else:
@@ -161,7 +169,7 @@ class LiteratureDPView(View):
 
     def delete(self, request, dp_id):
         try:
-            smiles_dp_util.delete_smiles_data_product(request, dp_id)
+            smiles_dp_util.delete_smiles_data_product(extract_request_data(request), dp_id)
             return HttpResponse()
         except Exception as e:
             return HttpResponseNotFound(str(e))
@@ -199,4 +207,12 @@ def upload_smile_dps(request, dp_type):
     filename = fs.save(file.name, file)
     file_path = os.path.join(settings.MEDIA_ROOT, filename)
 
-    smiles_dp_util.upload_smiles_data_products.delay(file_path, dp_type.value)
+    request_data = extract_request_data(request)
+    smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value)
+
+
+def extract_request_data(request):
+    return {
+        'user_id': str(request.user.id),
+        'tenant_id': "demotenant"
+    }
