@@ -123,30 +123,29 @@ def upload_smiles_data_products(request_data, filename, dp_id):
 
 
 def get_smiles_dp(dp_type, data=None):
-    match dp_type:
-        case SmilesDP.COMPUTATIONAL:
-            smiles_dp = comp_pb2.ComputationalDP()
-            if data is not None:
-                if data.get("calculation")["mo_energies"] is not None:
-                    pb_value = Value()
-                    str_mo_energies = json.dumps(data.get("calculation")["mo_energies"], cls=DecimalEncoder)
-                    ParseDict(str_mo_energies, pb_value)
-                    del data.get("calculation")["mo_energies"]
+    if dp_type == SmilesDP.COMPUTATIONAL:
+        smiles_dp = comp_pb2.ComputationalDP()
+        if data is not None:
+            if data.get("calculation")["mo_energies"] is not None:
+                pb_value = Value()
+                str_mo_energies = json.dumps(data.get("calculation")["mo_energies"], cls=DecimalEncoder)
+                ParseDict(str_mo_energies, pb_value)
+                del data.get("calculation")["mo_energies"]
 
-                smiles_dp = ParseDict(data, smiles_dp, ignore_unknown_fields=True)
-                if pb_value is not None:
-                    smiles_dp.calculation.mo_energies.CopyFrom(pb_value)
+            smiles_dp = ParseDict(data, smiles_dp, ignore_unknown_fields=True)
+            if pb_value is not None:
+                smiles_dp.calculation.mo_energies.CopyFrom(pb_value)
 
-        case SmilesDP.EXPERIMENTAL:
-            smiles_dp = exp_pb2.ExperimentalDP()
-            ParseDict(data, smiles_dp) if data is not None else None
+    elif dp_type == SmilesDP.EXPERIMENTAL:
+        smiles_dp = exp_pb2.ExperimentalDP()
+        ParseDict(data, smiles_dp) if data is not None else None
 
-        case SmilesDP.LITERATURE:
-            smiles_dp = lit_pb2.LiteratureDP()
-            ParseDict(data, smiles_dp) if data is not None else None
+    elif dp_type == SmilesDP.LITERATURE:
+        smiles_dp = lit_pb2.LiteratureDP()
+        ParseDict(data, smiles_dp) if data is not None else None
 
-        case _:
-            raise Exception("Undefined SMILES data product type: " + str(dp_type))
+    else:
+        raise Exception("Undefined SMILES data product type: " + str(dp_type))
 
     return smiles_dp
 
