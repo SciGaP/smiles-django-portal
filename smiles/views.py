@@ -7,6 +7,7 @@ from django.views import View
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from . import smiles_dp_util
+from . import smiles_data_migration
 from django.shortcuts import render
 from .apps import SmilesDjangoPortalConfig
 
@@ -208,7 +209,11 @@ def upload_smile_dps(request, dp_type):
     file_path = os.path.join(settings.MEDIA_ROOT, filename)
 
     request_data = extract_request_data(request)
-    smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value)
+    old_schema_param = request.GET.get('oldSchema', 'false').lower()
+    if old_schema_param == 'true':
+        smiles_data_migration.migrate_smiles_dps(request_data, file_path, dp_type.value)
+    else:
+        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value)
 
 
 def extract_request_data(request):

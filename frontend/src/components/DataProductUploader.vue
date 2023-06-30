@@ -91,15 +91,22 @@ export default {
 
   computed: {
     uploadUrl() {
+      let baseUrl = '';
       if (this.selectedDatabase === 'Literature Database') {
-        return '/smiles/lit-dp/upload';
+        baseUrl = '/smiles/lit-dp/upload';
       } else if (this.selectedDatabase === 'Experimental Database') {
-        return '/smiles/exp-dp/upload';
+        baseUrl = '/smiles/exp-dp/upload';
       } else if (this.selectedDatabase === 'Computational Database') {
-        return '/smiles/comp-dp/upload';
+        baseUrl = '/smiles/comp-dp/upload';
       } else {
-        return '';
+        return ''
       }
+
+      if (this.$route.query.oldSchema) {
+        baseUrl += '?oldSchema=' + this.$route.query.oldSchema;
+      }
+
+      return baseUrl
     }
   },
 
