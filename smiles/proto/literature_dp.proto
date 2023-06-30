@@ -49,13 +49,14 @@ message Record {
   optional bytes structure = 3;
   repeated string other_names = 4;
   optional bool smiles_validation_failed = 5;
-  optional ElectroChemicalPotentials electrochemical_potentials = 6;
-  optional FluorescenceLifetime fluorescence_lifetimes = 7;
+  optional ElectroChemicalPotential electrochemical_potential = 6;
+  optional FluorescenceLifetime fluorescence_lifetime = 7;
   optional SpectralData spectral_data = 8;
+  repeated string related_records = 9;
 
 }
 
-message ElectroChemicalPotentials {
+message ElectroChemicalPotential {
   optional Cathodic cathodic = 1;
   optional Anodic anodic = 2;
   optional string value_quoted_ref = 3;
@@ -96,9 +97,9 @@ message SpectralData {
   optional double absorb_max = 2;
   optional double emis_max = 3;
   optional double lifetime = 4;
-  optional double quantum_yield = 3434;
-  optional EmisnSpectra emisn_spectra = 35355;
-  optional AbsorpSpectra absorp_spectra = 64534;
+  optional double quantum_yield = 5;
+  optional EmisnSpectra emisn_spectra = 6;
+  optional AbsorpSpectra absorp_spectra = 7;
 }
 
 message EmisnSpectra {
