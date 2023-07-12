@@ -58,6 +58,8 @@ message ExperimentalDP {
   optional SpectralData spectral_data = 27;
   optional ElectroChemical electro_chemical = 28;
 
+  repeated string related_records = 29;
+
   // The following fields are deprecated and may be removed in a future version
   optional double density_20 = 929;
   optional string density_20_source = 930;

@@ -45,6 +45,8 @@ message ComputationalDP {
   optional Identifiers identifiers = 17;
   optional Files files = 18;
   optional InputFileConfiguration input_file_configuration = 19;
+
+  repeated string related_records = 20;
 }
 
 message ExecutionEnvironment {
