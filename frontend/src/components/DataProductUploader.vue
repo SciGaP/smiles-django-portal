@@ -11,7 +11,7 @@
     <b-container fluid class="container">
       <div class="content">
         <label class="upload__label" :class="{'upload__label--has-file': file, 'no-click': uploading}">
-          <img class="upload-input__icon" src="../assets/icons/file-upload.svg"/>
+          <img class="upload-input__icon" src="../assets/icons/file-upload.svg" alt="upload-input-icon"/>
           <span class="upload-input__text">{{ file ? file.name : 'Drag and drop your file or click to browse' }}</span>
           <span class="upload-size__text">Max. file size 2 GB</span>
           <input class="file-upload__input" type="file" @change="onFileSelected" ref="fileInput"/>
@@ -28,7 +28,7 @@
         </div>
         <label class="input__label">
         <span class="upload-input__text">
-          <img class="upload-input__icon" src="../assets/icons/fill-up-form.svg"/>
+          <img class="upload-input__icon" src="../assets/icons/fill-up-form.svg" alt="upload-input-icon"/>
           Fill up a form
         </span>
           <input class="file-upload__input" type="button" @click="fillUpForm"/>
@@ -90,23 +90,29 @@ export default {
   },
 
   computed: {
-    uploadUrl() {
+    uploadInfo() {
       let baseUrl = '';
+      let dp_type = '';
+
       if (this.selectedDatabase === 'Literature Database') {
         baseUrl = '/smiles/lit-dp/upload';
+        dp_type = 'lit';
       } else if (this.selectedDatabase === 'Experimental Database') {
         baseUrl = '/smiles/exp-dp/upload';
+        dp_type = 'exp';
       } else if (this.selectedDatabase === 'Computational Database') {
         baseUrl = '/smiles/comp-dp/upload';
-      } else {
-        return ''
+        dp_type = 'comp';
       }
 
       if (this.$route.query.oldSchema) {
         baseUrl += '?oldSchema=' + this.$route.query.oldSchema;
       }
 
-      return baseUrl
+      return {
+        uploadUrl: baseUrl,
+        dp_type: dp_type
+      };
     }
   },
 
@@ -123,7 +129,7 @@ export default {
         const formData = new FormData();
         formData.append("file", this.file);
         axios
-            .post(this.uploadUrl, formData, {
+            .post(this.uploadInfo.uploadUrl, formData, {
               onUploadProgress: (progressEvent) => {
                 this.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               }
@@ -134,6 +140,7 @@ export default {
               this.file = null;
               this.$refs.fileInput.value = '';
               this.dismissCountDown = 3;
+              this.redirectToHome();
             })
             .catch(() => {
               this.uploading = false;
@@ -146,6 +153,11 @@ export default {
     discard() {
       this.file = null;
       this.selectedDatabase = 'Computational Database';
+    },
+    redirectToHome() {
+      setTimeout(() => {
+        this.$router.push({name: 'data-product-list', query: {type: this.uploadInfo.dp_type}});
+      }, 2000);
     },
   }
 };
