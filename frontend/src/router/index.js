@@ -12,7 +12,8 @@ const routes = [
     {
         path: '/upload-dps',
         name: 'data-product-upload',
-        component: DataProductUpload
+        component: DataProductUpload,
+        props: true
     },
     {
         path: '/dps',

@@ -1,5 +1,14 @@
 <template>
   <b-container fluid>
+    <b-row class="d-flex justify-content-end mt-2 mr-2 mb-0">
+      <b-col lg="auto" xs="12">
+        <b-button variant="primary" @click="redirectToUpload">
+          <img :src="plusButtonIcon" alt="Plus Button Icon" class="icon">
+          New
+        </b-button>
+      </b-col>
+    </b-row>
+
     <b-row class="d-flex justify-content-center">
       <b-col lg="8" class="my-3">
         <b-form-group>
@@ -75,6 +84,7 @@
 <script>
 import {configurationService} from "@/services/configuraion-service";
 import MolecularStructureImg from "@/components/common/MolecularStructureImg";
+import plusButtonIcon from '@/assets/icons/plus.svg';
 
 const {utils} = AiravataAPI;
 
@@ -92,6 +102,7 @@ export default {
       filter: null,
       type: this.$route.query.type,
       isBusy: true,
+      plusButtonIcon
     }
   },
   computed: {
@@ -124,6 +135,9 @@ export default {
         name: this.type + '-data-product-detailed',
         params: {type: this.type.toString(), id: item.data_product_id, dp: item}
       })
+    },
+    redirectToUpload() {
+      this.$router.push({ name: 'data-product-upload', params: { dp_type: this.type } });
     }
   }
 }

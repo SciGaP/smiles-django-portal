@@ -41,18 +41,18 @@
           </div>
           <div class="upload-checkboxes" :class="{ 'no-click': uploading}">
             <label>
-              <input type="radio" v-model="selectedDatabase" value="Literature Database">
-              <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Literature Database' }">Literature Database</span>
+              <input type="radio" v-model="selectedDatabase" value="lit">
+              <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'lit' }">Literature Database</span>
             </label>
             <label>
-              <input type="radio" v-model="selectedDatabase" value="Computational Database">
+              <input type="radio" v-model="selectedDatabase" value="comp">
               <span class="checkbox-label"
-                    :class="{ 'checkbox-selected': selectedDatabase === 'Computational Database' }">Computational Database</span>
+                    :class="{ 'checkbox-selected': selectedDatabase === 'comp' }">Computational Database</span>
             </label>
             <label>
-              <input type="radio" v-model="selectedDatabase" value="Experimental Database">
+              <input type="radio" v-model="selectedDatabase" value="exp">
               <span class="checkbox-label"
-                    :class="{ 'checkbox-selected': selectedDatabase === 'Experimental Database' }">Experimental Database</span>
+                    :class="{ 'checkbox-selected': selectedDatabase === 'exp' }">Experimental Database</span>
             </label>
           </div>
         </div>
@@ -78,29 +78,40 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export default {
   name: "FileUpload",
 
+  props: {
+    dp_type: {
+      type: String,
+      default: 'comp',
+    }
+  },
   data() {
     return {
       file: null,
       uploading: false,
-      selectedDatabase: 'Computational Database',
+      selectedDatabase: this.dp_type,
       formOpen: false,
       progress: 0,
       dismissCountDown: 0,
     };
   },
-
+  created() {
+    const routeDpType = this.$route.params.dp_type;
+    if (routeDpType) {
+      this.selectedDatabase = routeDpType;
+    }
+  },
   computed: {
     uploadInfo() {
       let baseUrl = '';
       let dp_type = '';
 
-      if (this.selectedDatabase === 'Literature Database') {
+      if (this.selectedDatabase === 'lit') {
         baseUrl = '/smiles/lit-dp/upload';
         dp_type = 'lit';
-      } else if (this.selectedDatabase === 'Experimental Database') {
+      } else if (this.selectedDatabase === 'exp') {
         baseUrl = '/smiles/exp-dp/upload';
         dp_type = 'exp';
-      } else if (this.selectedDatabase === 'Computational Database') {
+      } else if (this.selectedDatabase === 'comp') {
         baseUrl = '/smiles/comp-dp/upload';
         dp_type = 'comp';
       }
@@ -152,7 +163,7 @@ export default {
     },
     discard() {
       this.file = null;
-      this.selectedDatabase = 'Computational Database';
+      this.selectedDatabase = 'comp';
     },
     redirectToHome() {
       setTimeout(() => {
