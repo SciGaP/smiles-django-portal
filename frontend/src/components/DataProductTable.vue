@@ -93,6 +93,12 @@ export default {
   components: {
     MolecularStructureImg
   },
+  props: {
+    type: {
+      type: String,
+      default: "lit"
+    }
+  },
   data() {
     return {
       items: [],
@@ -100,7 +106,6 @@ export default {
       currentPage: 1,
       perPage: 20,
       filter: null,
-      type: this.$route.query.type,
       isBusy: true,
       plusButtonIcon
     }

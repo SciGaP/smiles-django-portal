@@ -167,7 +167,7 @@ export default {
     },
     redirectToHome() {
       setTimeout(() => {
-        this.$router.push({name: 'data-product-list', query: {type: this.uploadInfo.dp_type}});
+        this.$router.push({name: this.uploadInfo.dp_type + '-data-product-list'});
       }, 2000);
     },
   }

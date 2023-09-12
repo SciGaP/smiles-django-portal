@@ -31,24 +31,32 @@ class SmilesDjangoPortalConfig(AppConfig):
     label = name
     verbose_name = "SMILES Django Portal"
     url_prefix = "smiles"
-    settings = Settings()
-
-    # The following are Airavata Django Portal specific custom Django app settings
-
-    # Set url_home to a namespaced URL that will be the homepage when the custom
-    # app is selected from the main menu
-    # url_home = "smiles:home"
-
-    # Set fa_icon_class to a FontAwesome CSS class for an icon to associate with
-    # the custom app. Find an icon class at https://fontawesome.com/icons?d=gallery&p=2&s=regular,solid&m=free
+    url_app_name = label
+    url_home = url_app_name + ":home"
     fa_icon_class = "fa-circle"
-
-    # Second level navigation. Defines sub-navigation that displays on the left
-    # hand side navigation bar in the Django Portal. This is optional but
-    # recommended if your custom Django app has multiple entry points. See the
-    # description of *nav* in
-    # https://apache-airavata-django-portal.readthedocs.io/en/latest/dev/new_django_app/#appconfig-settings
-    # for more details for more details.
+    settings = Settings()
+    nav = [
+        {
+            'label': 'Literature Data Products',
+            'icon': 'fa fa-book',
+            'url': 'smiles:lit-dp-list',
+        },
+        {
+            'label': 'Computational Data Products',
+            'icon': 'fa fa-database',
+            'url': 'smiles:comp-dp-list',
+        },
+        {
+            'label': 'Experimental Data Products',
+            'icon': 'fa fa-flask',
+            'url': 'smiles:exp-dp-list',
+        },
+        {
+            'label': 'Upload Data Products',
+            'icon': 'fa fa-upload',
+            'url': 'smiles:upload-dps',
+        },
+    ]
 
     def ready(self):
         celery_app.autodiscover_tasks()
