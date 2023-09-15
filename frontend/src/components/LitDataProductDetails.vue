@@ -157,7 +157,7 @@ export default {
     },
     redirectToHome() {
       setTimeout(() => {
-        this.$router.push({name: 'data-product-list', query: {type: 'lit'}});
+        this.$router.push({name: 'lit-data-product-list'});
       }, 3000);
     }
   }

@@ -7,7 +7,6 @@ A Portal to support SMILES Project
 1. Follow the instructions for installing the
    [Airavata Django Portal](https://github.com/apache/airavata-django-portal)
 
-   
 2. settings.py file
 
 	For the correct operation of this Django project, the following configurations should be added to your `settings.py` file:

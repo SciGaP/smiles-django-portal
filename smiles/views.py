@@ -200,6 +200,13 @@ def home(request):
     })
 
 
+@login_required
+def dp_list(request):
+    return render(request, "smiles/application.html", {
+        'project_name': "SMILES Django Portal"
+    })
+
+
 def upload_smile_dps(request, dp_type):
     file = request.FILES['file']
     if file.size > settings.FILE_UPLOAD_MAX_FILE_SIZE:

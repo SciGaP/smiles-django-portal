@@ -340,7 +340,7 @@ export default {
     },
     redirectToHome() {
       setTimeout(() => {
-        this.$router.push({name: 'data-product-list', query: {type: 'comp'}});
+        this.$router.push({name: 'comp-data-product-list'});
       }, 3000);
     }
   }

@@ -2,8 +2,14 @@ from django.urls import re_path
 from . import views
 from .views import ComputationalDPView, ExperimentalDPView, LiteratureDPView
 
+app_name = 'smiles'
+
 urlpatterns = [
     re_path('home/', views.home, name='home'),
+    re_path('home/lit-dp-list', views.dp_list, name='lit-dp-list'),
+    re_path('home/comp-dp-list', views.dp_list, name='comp-dp-list'),
+    re_path('home/exp-dp-list', views.dp_list, name='exp-dp-list'),
+    re_path('home/upload-dps', views.dp_list, name='upload-dps'),
 
     re_path(r'^comp-dp/?$', ComputationalDPView, name="create-comp-dp"),
     re_path(r"^comp-dp/(?P<dp_id>[^/]+)/$", ComputationalDPView, name="get-comp-dp"),

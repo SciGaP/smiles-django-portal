@@ -11,7 +11,7 @@
     <b-container fluid class="container">
       <div class="content">
         <label class="upload__label" :class="{'upload__label--has-file': file, 'no-click': uploading}">
-          <img class="upload-input__icon" src="../assets/icons/file-upload.svg"/>
+          <img class="upload-input__icon" src="../assets/icons/file-upload.svg" alt="upload-input-icon"/>
           <span class="upload-input__text">{{ file ? file.name : 'Drag and drop your file or click to browse' }}</span>
           <span class="upload-size__text">Max. file size 2 GB</span>
           <input class="file-upload__input" type="file" @change="onFileSelected" ref="fileInput"/>
@@ -28,7 +28,7 @@
         </div>
         <label class="input__label">
         <span class="upload-input__text">
-          <img class="upload-input__icon" src="../assets/icons/fill-up-form.svg"/>
+          <img class="upload-input__icon" src="../assets/icons/fill-up-form.svg" alt="upload-input-icon"/>
           Fill up a form
         </span>
           <input class="file-upload__input" type="button" @click="fillUpForm"/>
@@ -41,18 +41,18 @@
           </div>
           <div class="upload-checkboxes" :class="{ 'no-click': uploading}">
             <label>
-              <input type="radio" v-model="selectedDatabase" value="Literature Database">
-              <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'Literature Database' }">Literature Database</span>
+              <input type="radio" v-model="selectedDatabase" value="lit">
+              <span class="checkbox-label" :class="{ 'checkbox-selected': selectedDatabase === 'lit' }">Literature Database</span>
             </label>
             <label>
-              <input type="radio" v-model="selectedDatabase" value="Computational Database">
+              <input type="radio" v-model="selectedDatabase" value="comp">
               <span class="checkbox-label"
-                    :class="{ 'checkbox-selected': selectedDatabase === 'Computational Database' }">Computational Database</span>
+                    :class="{ 'checkbox-selected': selectedDatabase === 'comp' }">Computational Database</span>
             </label>
             <label>
-              <input type="radio" v-model="selectedDatabase" value="Experimental Database">
+              <input type="radio" v-model="selectedDatabase" value="exp">
               <span class="checkbox-label"
-                    :class="{ 'checkbox-selected': selectedDatabase === 'Experimental Database' }">Experimental Database</span>
+                    :class="{ 'checkbox-selected': selectedDatabase === 'exp' }">Experimental Database</span>
             </label>
           </div>
         </div>
@@ -78,35 +78,52 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export default {
   name: "FileUpload",
 
+  props: {
+    dp_type: {
+      type: String,
+      default: 'comp',
+    }
+  },
   data() {
     return {
       file: null,
       uploading: false,
-      selectedDatabase: 'Computational Database',
+      selectedDatabase: this.dp_type,
       formOpen: false,
       progress: 0,
       dismissCountDown: 0,
     };
   },
-
+  created() {
+    const routeDpType = this.$route.params.dp_type;
+    if (routeDpType) {
+      this.selectedDatabase = routeDpType;
+    }
+  },
   computed: {
-    uploadUrl() {
+    uploadInfo() {
       let baseUrl = '';
-      if (this.selectedDatabase === 'Literature Database') {
+      let dp_type = '';
+
+      if (this.selectedDatabase === 'lit') {
         baseUrl = '/smiles/lit-dp/upload';
-      } else if (this.selectedDatabase === 'Experimental Database') {
+        dp_type = 'lit';
+      } else if (this.selectedDatabase === 'exp') {
         baseUrl = '/smiles/exp-dp/upload';
-      } else if (this.selectedDatabase === 'Computational Database') {
+        dp_type = 'exp';
+      } else if (this.selectedDatabase === 'comp') {
         baseUrl = '/smiles/comp-dp/upload';
-      } else {
-        return ''
+        dp_type = 'comp';
       }
 
       if (this.$route.query.oldSchema) {
         baseUrl += '?oldSchema=' + this.$route.query.oldSchema;
       }
 
-      return baseUrl
+      return {
+        uploadUrl: baseUrl,
+        dp_type: dp_type
+      };
     }
   },
 
@@ -123,7 +140,7 @@ export default {
         const formData = new FormData();
         formData.append("file", this.file);
         axios
-            .post(this.uploadUrl, formData, {
+            .post(this.uploadInfo.uploadUrl, formData, {
               onUploadProgress: (progressEvent) => {
                 this.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               }
@@ -134,6 +151,7 @@ export default {
               this.file = null;
               this.$refs.fileInput.value = '';
               this.dismissCountDown = 3;
+              this.redirectToHome();
             })
             .catch(() => {
               this.uploading = false;
@@ -145,7 +163,12 @@ export default {
     },
     discard() {
       this.file = null;
-      this.selectedDatabase = 'Computational Database';
+      this.selectedDatabase = 'comp';
+    },
+    redirectToHome() {
+      setTimeout(() => {
+        this.$router.push({name: this.uploadInfo.dp_type + '-data-product-list'});
+      }, 2000);
     },
   }
 };

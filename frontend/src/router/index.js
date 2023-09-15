@@ -12,12 +12,32 @@ const routes = [
     {
         path: '/upload-dps',
         name: 'data-product-upload',
-        component: DataProductUpload
+        component: DataProductUpload,
+        props: true
     },
     {
-        path: '/dps',
-        name: 'data-product-list',
-        component: DataProductTable
+        path: '/lit-dp-list',
+        name: 'lit-data-product-list',
+        component: DataProductTable,
+        props: {
+            type: 'lit'
+        }
+    },
+    {
+        path: '/comp-dp-list',
+        name: 'comp-data-product-list',
+        component: DataProductTable,
+        props: {
+            type: 'comp'
+        }
+    },
+    {
+        path: '/exp-dp-list',
+        name: 'exp-data-product-list',
+        component: DataProductTable,
+        props: {
+            type: 'exp'
+        }
     },
     {
         path: '/dp/exp/:id',
@@ -39,8 +59,7 @@ const routes = [
     },
     {
         path: '/',
-        name: 'data-product-list ',
-        component: DataProductUpload
+        redirect: '/lit-dp-list'
     },
 ]
 
