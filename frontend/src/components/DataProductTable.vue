@@ -27,39 +27,46 @@
       </b-col>
     </b-row>
 
-    <div class="table-container">
-      <div style="margin-top: 60px;">
-        <b-table
-            responsive
-            hover
-            sticky-header
-            :items="items"
-            :fields="fields"
-            :current-page="currentPage"
-            :per-page="perPage"
-            :filter="filter"
-            stacked="md"
-            show-empty
-            small
-            @filtered="onFiltered"
-            :busy="isBusy"
-            @row-clicked="onRowClicked"
-        >
+    <b-row>
+      <div class="table-container" :class="{ 'table-container-reduced': selectedRow }">
+        <div style="margin-top: 60px;">
+          <b-table
+              responsive
+              hover
+              sticky-header
+              :items="items"
+              :fields="fields"
+              :current-page="currentPage"
+              :per-page="perPage"
+              :filter="filter"
+              stacked="md"
+              show-empty
+              small
+              @filtered="onFiltered"
+              :busy="isBusy"
+              @row-clicked="onRowClicked"
+              @row-dblclicked="onRowDoubleClicked"
+          >
 
-          <template #cell(structure)="data">
-            <molecular-structure-img :structure="data.item.structure" height="50" width="50"/>
-          </template>
+            <template #cell(structure)="data">
+              <molecular-structure-img :structure="data.item.structure" height="50" width="50"/>
+            </template>
 
-          <template #table-busy>
-            <div class="text-center text-danger my-2">
-              <b-spinner class="align-middle"></b-spinner>
-              <strong>Loading...</strong>
-            </div>
-          </template>
+            <template #table-busy>
+              <div class="text-center text-danger my-2">
+                <b-spinner class="align-middle"></b-spinner>
+                <strong>Loading...</strong>
+              </div>
+            </template>
 
-        </b-table>
+          </b-table>
+        </div>
       </div>
-    </div>
+
+      <div v-if="selectedRow" class="sidebar">
+        <home-page-structure-view :dp="selectedRow" :key="selectedRow"/>
+      </div>
+    </b-row>
 
     <div class="pagination-container">
       <b-row class="mb-4">
@@ -84,6 +91,7 @@
 <script>
 import {configurationService} from "@/services/configuraion-service";
 import MolecularStructureImg from "@/components/common/MolecularStructureImg";
+import HomePageStructureView from "@/components/HomePageStructureView.vue"
 import plusButtonIcon from '@/assets/icons/plus.svg';
 
 const {utils} = AiravataAPI;
@@ -91,7 +99,8 @@ const {utils} = AiravataAPI;
 export default {
   name: "SMILESDataProductTable",
   components: {
-    MolecularStructureImg
+    MolecularStructureImg,
+    HomePageStructureView
   },
   props: {
     type: {
@@ -107,7 +116,8 @@ export default {
       perPage: 20,
       filter: null,
       isBusy: true,
-      plusButtonIcon
+      plusButtonIcon,
+      selectedRow: null,
     }
   },
   computed: {
@@ -136,20 +146,33 @@ export default {
       this.currentPage = 1
     },
     onRowClicked(item) {
+      if (this.selectedRow) {
+        this.$set(this.selectedRow, '_rowVariant', '');
+      }
+
+      if (this.selectedRow === item) {
+        this.selectedRow = null;
+      } else {
+        this.$set(item, '_rowVariant', 'secondary');
+        this.selectedRow = item;
+      }
+    },
+    onRowDoubleClicked(item) {
       this.$router.push({
         name: this.type + '-data-product-detailed',
         params: {type: this.type.toString(), id: item.data_product_id, dp: item}
       })
     },
     redirectToUpload() {
-      this.$router.push({ name: 'data-product-upload', params: { dp_type: this.type } });
+      this.$router.push({name: 'data-product-upload', params: {dp_type: this.type}});
     }
   }
 }
 </script>
 
 <style scoped>
-.table-container {
+.table-container,
+.table-container-reduced {
   overflow-x: scroll;
   overflow-y: auto;
   border: 1px solid gray;
@@ -157,6 +180,12 @@ export default {
   margin: 5px 10px;
   background: white;
   max-height: 73vh;
+  width: 100vw;
+  transition: width 0.5s ease;
+}
+
+.table-container-reduced {
+  width: 60vw;
 }
 
 .search-bar {
@@ -174,6 +203,18 @@ export default {
 .pagination-container {
   text-align: right;
   height: 10%;
+}
+
+.sidebar {
+  right: 0;
+  min-width: 33vw;
+  z-index: 1;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid gray;
+  border-radius: 20px;
+  margin: 5px 5px 5px 5px;
+  background: white;
+  max-height: 73vh;
 }
 
 </style>
