@@ -35,7 +35,10 @@ def migrate_smiles_dps(request_data, filename, dp_id):
 
 def to_snake_case(key):
     special_cases = {"InChI": "inchi", "InChIFile": "inchi_file", "InChIKey": "inchi_key",
-                     "Link0Commands": "link_0_commands"}
+                     "Link0Commands": "link_0_commands", "JobCPURunTime": "job_cpu_runtime",
+                     "FinTimeStamp": "fin_timestamp", "HomoEigenvalue": "homo_eigen_value",
+                     "HomoEigenvalues": "homo_eigen_values", "LumoEigenvalue": "lumo_eigen_value",
+                     "LumoEigenvalues": "lumo_eigen_values"}
     if key in special_cases:
         return special_cases[key]
     s = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', key)
@@ -61,22 +64,49 @@ def upload_computational_data_products(request_data, filename):
 
         for j in jsons:
             try:
-                del j["_id"]
+                if j.get("_id"):
+                    del j["_id"]
                 j = transform_keys(j)
 
-                if j.get("calculation")["mo_energies"] is not None:
+                pb_value = None
+                if j.get("calculation") and j.get("calculation")["mo_energies"] is not None:
                     pb_value = Value()
                     str_mo_energies = json.dumps(j.get("calculation")["mo_energies"], cls=DecimalEncoder)
                     ParseDict(str_mo_energies, pb_value)
                     del j.get("calculation")["mo_energies"]
 
-                if j.get("calculated_properties")["dipole"] is not None:
-                    dipole = comp_pb2.Dipole()
-                    dipole_values = j.get("calculated_properties")["dipole"].split(",")
-                    dipole.x = float(dipole_values[0])
-                    dipole.y = float(dipole_values[1])
-                    dipole.z = float(dipole_values[2])
-                    del j.get("calculated_properties")["dipole"]
+                dipole = None
+                homo_eigenvalues_list = None
+                lumo_eigenvalues_list = None
+
+                if j.get("calculated_properties"):
+                    cp = j.get("calculated_properties")
+
+                    if "dipole" in cp:
+                        dipole = comp_pb2.Dipole()
+                        dipole_values = j.get("calculated_properties")["dipole"].split(",")
+                        dipole.x = float(dipole_values[0])
+                        dipole.y = float(dipole_values[1])
+                        dipole.z = float(dipole_values[2])
+                        del j.get("calculated_properties")["dipole"]
+
+                    # Process HomoEigenvalues
+                    if "homo_eigen_values" in cp:
+                        homo_eigenvalues_str = cp["homo_eigen_values"]
+                        homo_eigenvalues_list = process_eigenvalues(homo_eigenvalues_str)
+                        del cp["homo_eigen_values"]
+
+                    # Process LumoEigenvalues
+                    if "lumo_eigen_values" in cp:
+                        lumo_eigenvalues_str = cp["lumo_eigen_values"]
+                        lumo_eigenvalues_list = process_eigenvalues(lumo_eigenvalues_str)
+                        del cp["lumo_eigen_values"]
+
+                    if "enthalpy" in cp:
+                        cp["enthalpy"] = float(j.get("calculated_properties")["enthalpy"].strip().rstrip(';'))
+
+                    if "gibbs" in cp:
+                        cp["gibbs"] = float(j.get("calculated_properties")["gibbs"].strip().rstrip(';'))
 
                 computational_dp = ParseDict(j, smiles_dp_util.get_smiles_dp(SmilesDP.COMPUTATIONAL),
                                              ignore_unknown_fields=True)
@@ -86,8 +116,18 @@ def upload_computational_data_products(request_data, filename):
                 if dipole is not None:
                     computational_dp.calculated_properties.dipole.CopyFrom(dipole)
 
+                if homo_eigenvalues_list is not None:
+                    computational_dp.calculated_properties.homo_eigen_values.extend(homo_eigenvalues_list)
+
+                if lumo_eigenvalues_list is not None:
+                    computational_dp.calculated_properties.lumo_eigen_values.extend(lumo_eigenvalues_list)
+
+                if not j.get("name") and j.get("id") is not None:
+                    computational_dp.name = j.get("id")
+
                 data_product = smiles_dp_util.map_smiles_dp_to_catalog_dp(request_data, computational_dp,
                                                                           SmilesDP.COMPUTATIONAL)
+
                 catalog_service = dcs.DataCatalogService(request_data)
                 result_dp = catalog_service.create_data_product(data_product)
                 metadata_util.add_dp_to_schemas(request_data, result_dp)
@@ -98,6 +138,20 @@ def upload_computational_data_products(request_data, filename):
                 continue
 
         print("Computational DP success count/error count %d/%d" % (count, failed_count))
+
+
+def process_eigenvalues(eigenvalues_str):
+    # Split the string on comma and process each value
+    eigenvalues = eigenvalues_str.split(",")
+    processed_eigenvalues = []
+
+    for value in eigenvalues:
+        # Remove any additional text (like 'Homo - 1 :') and strip whitespace
+        processed_value = value.split(":")[-1].strip()
+        if processed_value:
+            processed_eigenvalues.append(processed_value)
+
+    return processed_eigenvalues
 
 
 def transform_experimental_dp(old_json):
@@ -186,15 +240,19 @@ def upload_experimental_data_products(request_data, filename):
         error_count = 0
         for j in jsons:
             try:
-                del j["_id"]
+                if j.get("_id"):
+                    del j["_id"]
                 if j["mol_chrg"] == "":
                     j["mol_chrg"] = None
 
                 j = transform_experimental_dp(j)
 
-                if j.get("year_publ") is not None and j.get("year_publ"):
-                    j["year_publ"] = int(j.get("year_publ"))
-                else:
+                try:
+                    if j.get("year_publ") is not None and j.get("year_publ"):
+                        j["year_publ"] = int(j["year_publ"])
+                    else:
+                        del j["year_publ"]
+                except ValueError:
                     del j["year_publ"]
 
                 if j.get("calc_perf") is not None and j.get("calc_perf"):
@@ -298,7 +356,8 @@ def upload_literature_data_products(request_data, filename):
         error_count = 0
         for j in jsons:
             try:
-                del j["_id"]
+                if j.get("_id"):
+                    del j["_id"]
 
                 j = transform_literature_dp(j)
 
