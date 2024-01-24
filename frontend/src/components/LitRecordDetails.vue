@@ -111,11 +111,11 @@
               </div>
               <div class="dp-row">
                 <div class="dp-key">Absorb Max</div>
-                <div class="dp-value">{{ record.spectral_data.absorb_max }}</div>
+                <div class="dp-value">{{ record.spectral_data.absorb_max_nm }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Emission Max</div>
-                <div class="dp-value">{{ record.spectral_data.emis_max }}</div>
+                <div class="dp-value">{{ record.spectral_data.emis_max_nm }}</div>
               </div>
               <div class="dp-row">
                 <div class="dp-key">Quantum Yield</div>

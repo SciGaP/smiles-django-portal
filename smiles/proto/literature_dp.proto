@@ -30,9 +30,10 @@ message LiteratureDP {
   optional string note = 4;
   optional string user = 5;
   optional string search_keywords = 6;
-  optional string redox_info = 7;
-  optional Biblio biblio = 8;
-  repeated Record records = 9;
+  optional int32 search_keywords_count = 7;
+  optional string redox_info = 8;
+  optional Biblio biblio = 9;
+  repeated Record records = 10;
 }
 
 message Biblio {
@@ -40,7 +41,11 @@ message Biblio {
   optional string published_date = 2;
   optional string title = 3;
   optional string publisher = 4;
-
+  optional string html_info = 5;
+  repeated string authors = 6;
+  optional string corresponding_author = 7;
+  optional string corresponding_address = 8;
+  optional string journal_reference = 9;    // Journal id - volume - starting page number
 }
 
 message Record {
@@ -53,6 +58,7 @@ message Record {
   optional FluorescenceLifetime fluorescence_lifetime = 7;
   optional SpectralData spectral_data = 8;
   repeated string related_records = 9;
+  optional double molecular_weight = 10;
 
 }
 
@@ -94,12 +100,13 @@ message FluorescenceLifetime {
 
 message SpectralData {
   optional string solvent = 1;
-  optional double absorb_max = 2;
-  optional double emis_max = 3;
-  optional double lifetime = 4;
+  optional double absorb_max_nm = 2;
+  optional double emis_max_nm = 3;
+  repeated double lifetime = 4;
   optional double quantum_yield = 5;
-  optional EmisnSpectra emisn_spectra = 6;
-  optional AbsorpSpectra absorp_spectra = 7;
+  optional double molar_absorb_coefficient = 6;
+  optional EmisnSpectra emisn_spectra = 7;
+  optional AbsorpSpectra absorp_spectra = 8;
 }
 
 message EmisnSpectra {
@@ -107,6 +114,7 @@ message EmisnSpectra {
   optional string solvent = 2;
   optional double temperature = 3;
   optional string temperature_units = 4;
+  optional double emission_fwhm_nm = 5; // Emission FWHM in nm
 }
 
 message AbsorpSpectra {
@@ -114,6 +122,7 @@ message AbsorpSpectra {
   optional string solvent = 2;
   optional double temperature = 3;
   optional string temperature_units = 4;
+  optional double absorption_fwhm_nm = 5; // Absorption FWHM in nm
 }
 
 message Peak {
