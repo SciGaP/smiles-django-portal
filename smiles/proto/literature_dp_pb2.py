@@ -4,9 +4,8 @@
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
-from google.protobuf import message as _message
-from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf.internal import builder as _builder
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -14,121 +13,34 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13literature_dp.proto\x12\x10smiles.model.lit\"\xfa\x02\n\x0cLiteratureDP\x12\x17\n\x0f\x64\x61ta_product_id\x18\x01 \x01(\t\x12#\n\x16parent_data_product_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x11\n\x04name\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x11\n\x04note\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x11\n\x04user\x18\x05 \x01(\tH\x03\x88\x01\x01\x12\x1c\n\x0fsearch_keywords\x18\x06 \x01(\tH\x04\x88\x01\x01\x12\x17\n\nredox_info\x18\x07 \x01(\tH\x05\x88\x01\x01\x12-\n\x06\x62iblio\x18\x08 \x01(\x0b\x32\x18.smiles.model.lit.BiblioH\x06\x88\x01\x01\x12)\n\x07records\x18\t \x03(\x0b\x32\x18.smiles.model.lit.RecordB\x19\n\x17_parent_data_product_idB\x07\n\x05_nameB\x07\n\x05_noteB\x07\n\x05_userB\x12\n\x10_search_keywordsB\r\n\x0b_redox_infoB\t\n\x07_biblio\"\x96\x01\n\x06\x42iblio\x12\x10\n\x03\x64oi\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x1b\n\x0epublished_date\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x12\n\x05title\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x16\n\tpublisher\x18\x04 \x01(\tH\x03\x88\x01\x01\x42\x06\n\x04_doiB\x11\n\x0f_published_dateB\x08\n\x06_titleB\x0c\n\n_publisher\"\x8e\x04\n\x06Record\x12\x13\n\x06smiles\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x17\n\ndye_family\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x16\n\tstructure\x18\x03 \x01(\x0cH\x02\x88\x01\x01\x12\x13\n\x0bother_names\x18\x04 \x03(\t\x12%\n\x18smiles_validation_failed\x18\x05 \x01(\x08H\x03\x88\x01\x01\x12R\n\x19\x65lectrochemical_potential\x18\x06 \x01(\x0b\x32*.smiles.model.lit.ElectroChemicalPotentialH\x04\x88\x01\x01\x12J\n\x15\x66luorescence_lifetime\x18\x07 \x01(\x0b\x32&.smiles.model.lit.FluorescenceLifetimeH\x05\x88\x01\x01\x12:\n\rspectral_data\x18\x08 \x01(\x0b\x32\x1e.smiles.model.lit.SpectralDataH\x06\x88\x01\x01\x12\x17\n\x0frelated_records\x18\t \x03(\tB\t\n\x07_smilesB\r\n\x0b_dye_familyB\x0c\n\n_structureB\x1b\n\x19_smiles_validation_failedB\x1c\n\x1a_electrochemical_potentialB\x18\n\x16_fluorescence_lifetimeB\x10\n\x0e_spectral_data\"\xd8\x04\n\x18\x45lectroChemicalPotential\x12\x31\n\x08\x63\x61thodic\x18\x01 \x01(\x0b\x32\x1a.smiles.model.lit.CathodicH\x00\x88\x01\x01\x12-\n\x06\x61nodic\x18\x02 \x01(\x0b\x32\x18.smiles.model.lit.AnodicH\x01\x88\x01\x01\x12\x1d\n\x10value_quoted_ref\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x1e\n\x11\x64\x61ta_measured_ref\x18\x04 \x01(\tH\x03\x88\x01\x01\x12\x13\n\x06method\x18\x05 \x01(\tH\x04\x88\x01\x01\x12\x18\n\x0btemperature\x18\x06 \x01(\x01H\x05\x88\x01\x01\x12\x16\n\tdata_type\x18\x07 \x01(\tH\x06\x88\x01\x01\x12&\n\x19json_extraction_completed\x18\x08 \x01(\x08H\x07\x88\x01\x01\x12\x1c\n\x0fhuman_validator\x18\t \x01(\tH\x08\x88\x01\x01\x12 \n\x13\x65lec_val_status_red\x18\n \x01(\tH\t\x88\x01\x01\x12\x1f\n\x12\x65lec_val_status_ox\x18\x0b \x01(\tH\n\x88\x01\x01\x42\x0b\n\t_cathodicB\t\n\x07_anodicB\x13\n\x11_value_quoted_refB\x14\n\x12_data_measured_refB\t\n\x07_methodB\x0e\n\x0c_temperatureB\x0c\n\n_data_typeB\x1c\n\x1a_json_extraction_completedB\x12\n\x10_human_validatorB\x16\n\x14_elec_val_status_redB\x15\n\x13_elec_val_status_ox\"\x98\x01\n\x08\x43\x61thodic\x12\x12\n\x05red_v\x18\x01 \x01(\x01H\x00\x88\x01\x01\x12\x15\n\x08hw_or_pk\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x14\n\x07solvent\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x18\n\x0b\x65lectrolyte\x18\x04 \x01(\tH\x03\x88\x01\x01\x42\x08\n\x06_red_vB\x0b\n\t_hw_or_pkB\n\n\x08_solventB\x0e\n\x0c_electrolyte\"\x94\x01\n\x06\x41nodic\x12\x11\n\x04ox_v\x18\x01 \x01(\x01H\x00\x88\x01\x01\x12\x15\n\x08hw_or_pk\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x14\n\x07solvent\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x18\n\x0b\x65lectrolyte\x18\x04 \x01(\tH\x03\x88\x01\x01\x42\x07\n\x05_ox_vB\x0b\n\t_hw_or_pkB\n\n\x08_solventB\x0e\n\x0c_electrolyte\"\x9e\x01\n\x14\x46luorescenceLifetime\x12\x14\n\x07solvent\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0btemperature\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x12\n\x05units\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x12\n\x05value\x18\x04 \x01(\x01H\x03\x88\x01\x01\x42\n\n\x08_solventB\x0e\n\x0c_temperatureB\x08\n\x06_unitsB\x08\n\x06_value\"\xed\x02\n\x0cSpectralData\x12\x14\n\x07solvent\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x17\n\nabsorb_max\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x15\n\x08\x65mis_max\x18\x03 \x01(\x01H\x02\x88\x01\x01\x12\x15\n\x08lifetime\x18\x04 \x01(\x01H\x03\x88\x01\x01\x12\x1a\n\rquantum_yield\x18\x05 \x01(\x01H\x04\x88\x01\x01\x12:\n\remisn_spectra\x18\x06 \x01(\x0b\x32\x1e.smiles.model.lit.EmisnSpectraH\x05\x88\x01\x01\x12<\n\x0e\x61\x62sorp_spectra\x18\x07 \x01(\x0b\x32\x1f.smiles.model.lit.AbsorpSpectraH\x06\x88\x01\x01\x42\n\n\x08_solventB\r\n\x0b_absorb_maxB\x0b\n\t_emis_maxB\x0b\n\t_lifetimeB\x10\n\x0e_quantum_yieldB\x10\n\x0e_emisn_spectraB\x11\n\x0f_absorp_spectra\"\xb7\x01\n\x0c\x45misnSpectra\x12%\n\x05peaks\x18\x01 \x03(\x0b\x32\x16.smiles.model.lit.Peak\x12\x14\n\x07solvent\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0btemperature\x18\x03 \x01(\x01H\x01\x88\x01\x01\x12\x1e\n\x11temperature_units\x18\x04 \x01(\tH\x02\x88\x01\x01\x42\n\n\x08_solventB\x0e\n\x0c_temperatureB\x14\n\x12_temperature_units\"\xb8\x01\n\rAbsorpSpectra\x12%\n\x05peaks\x18\x01 \x03(\x0b\x32\x16.smiles.model.lit.Peak\x12\x14\n\x07solvent\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0btemperature\x18\x03 \x01(\x01H\x01\x88\x01\x01\x12\x1e\n\x11temperature_units\x18\x04 \x01(\tH\x02\x88\x01\x01\x42\n\n\x08_solventB\x0e\n\x0c_temperatureB\x14\n\x12_temperature_units\"\xac\x02\n\x04Peak\x12\x17\n\nextinction\x18\x01 \x01(\x05H\x00\x88\x01\x01\x12\x1d\n\x10\x65xtinction_units\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x12\n\x05units\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x12\n\x05value\x18\x04 \x01(\x01H\x03\x88\x01\x01\x12$\n\x17value_validation_failed\x18\x05 \x01(\x08H\x04\x88\x01\x01\x12)\n\x1c\x65xtinction_validation_failed\x18\x06 \x01(\x08H\x05\x88\x01\x01\x42\r\n\x0b_extinctionB\x13\n\x11_extinction_unitsB\x08\n\x06_unitsB\x08\n\x06_valueB\x1a\n\x18_value_validation_failedB\x1f\n\x1d_extinction_validation_failedb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13literature_dp.proto\x12\x10smiles.model.lit\"\xb8\x03\n\x0cLiteratureDP\x12\x17\n\x0f\x64\x61ta_product_id\x18\x01 \x01(\t\x12#\n\x16parent_data_product_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x11\n\x04name\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x11\n\x04note\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x11\n\x04user\x18\x05 \x01(\tH\x03\x88\x01\x01\x12\x1c\n\x0fsearch_keywords\x18\x06 \x01(\tH\x04\x88\x01\x01\x12\"\n\x15search_keywords_count\x18\x07 \x01(\x05H\x05\x88\x01\x01\x12\x17\n\nredox_info\x18\x08 \x01(\tH\x06\x88\x01\x01\x12-\n\x06\x62iblio\x18\t \x01(\x0b\x32\x18.smiles.model.lit.BiblioH\x07\x88\x01\x01\x12)\n\x07records\x18\n \x03(\x0b\x32\x18.smiles.model.lit.RecordB\x19\n\x17_parent_data_product_idB\x07\n\x05_nameB\x07\n\x05_noteB\x07\n\x05_userB\x12\n\x10_search_keywordsB\x18\n\x16_search_keywords_countB\r\n\x0b_redox_infoB\t\n\x07_biblio\"\xfd\x02\n\x06\x42iblio\x12\x10\n\x03\x64oi\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x1b\n\x0epublished_date\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x12\n\x05title\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x16\n\tpublisher\x18\x04 \x01(\tH\x03\x88\x01\x01\x12\x16\n\thtml_info\x18\x05 \x01(\tH\x04\x88\x01\x01\x12\x0f\n\x07\x61uthors\x18\x06 \x03(\t\x12!\n\x14\x63orresponding_author\x18\x07 \x01(\tH\x05\x88\x01\x01\x12\"\n\x15\x63orresponding_address\x18\x08 \x01(\tH\x06\x88\x01\x01\x12\x1e\n\x11journal_reference\x18\t \x01(\tH\x07\x88\x01\x01\x42\x06\n\x04_doiB\x11\n\x0f_published_dateB\x08\n\x06_titleB\x0c\n\n_publisherB\x0c\n\n_html_infoB\x17\n\x15_corresponding_authorB\x18\n\x16_corresponding_addressB\x14\n\x12_journal_reference\"\xc2\x04\n\x06Record\x12\x13\n\x06smiles\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x17\n\ndye_family\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x16\n\tstructure\x18\x03 \x01(\x0cH\x02\x88\x01\x01\x12\x13\n\x0bother_names\x18\x04 \x03(\t\x12%\n\x18smiles_validation_failed\x18\x05 \x01(\x08H\x03\x88\x01\x01\x12R\n\x19\x65lectrochemical_potential\x18\x06 \x01(\x0b\x32*.smiles.model.lit.ElectroChemicalPotentialH\x04\x88\x01\x01\x12J\n\x15\x66luorescence_lifetime\x18\x07 \x01(\x0b\x32&.smiles.model.lit.FluorescenceLifetimeH\x05\x88\x01\x01\x12:\n\rspectral_data\x18\x08 \x01(\x0b\x32\x1e.smiles.model.lit.SpectralDataH\x06\x88\x01\x01\x12\x17\n\x0frelated_records\x18\t \x03(\t\x12\x1d\n\x10molecular_weight\x18\n \x01(\x01H\x07\x88\x01\x01\x42\t\n\x07_smilesB\r\n\x0b_dye_familyB\x0c\n\n_structureB\x1b\n\x19_smiles_validation_failedB\x1c\n\x1a_electrochemical_potentialB\x18\n\x16_fluorescence_lifetimeB\x10\n\x0e_spectral_dataB\x13\n\x11_molecular_weight\"\xd8\x04\n\x18\x45lectroChemicalPotential\x12\x31\n\x08\x63\x61thodic\x18\x01 \x01(\x0b\x32\x1a.smiles.model.lit.CathodicH\x00\x88\x01\x01\x12-\n\x06\x61nodic\x18\x02 \x01(\x0b\x32\x18.smiles.model.lit.AnodicH\x01\x88\x01\x01\x12\x1d\n\x10value_quoted_ref\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x1e\n\x11\x64\x61ta_measured_ref\x18\x04 \x01(\tH\x03\x88\x01\x01\x12\x13\n\x06method\x18\x05 \x01(\tH\x04\x88\x01\x01\x12\x18\n\x0btemperature\x18\x06 \x01(\x01H\x05\x88\x01\x01\x12\x16\n\tdata_type\x18\x07 \x01(\tH\x06\x88\x01\x01\x12&\n\x19json_extraction_completed\x18\x08 \x01(\x08H\x07\x88\x01\x01\x12\x1c\n\x0fhuman_validator\x18\t \x01(\tH\x08\x88\x01\x01\x12 \n\x13\x65lec_val_status_red\x18\n \x01(\tH\t\x88\x01\x01\x12\x1f\n\x12\x65lec_val_status_ox\x18\x0b \x01(\tH\n\x88\x01\x01\x42\x0b\n\t_cathodicB\t\n\x07_anodicB\x13\n\x11_value_quoted_refB\x14\n\x12_data_measured_refB\t\n\x07_methodB\x0e\n\x0c_temperatureB\x0c\n\n_data_typeB\x1c\n\x1a_json_extraction_completedB\x12\n\x10_human_validatorB\x16\n\x14_elec_val_status_redB\x15\n\x13_elec_val_status_ox\"\x98\x01\n\x08\x43\x61thodic\x12\x12\n\x05red_v\x18\x01 \x01(\x01H\x00\x88\x01\x01\x12\x15\n\x08hw_or_pk\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x14\n\x07solvent\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x18\n\x0b\x65lectrolyte\x18\x04 \x01(\tH\x03\x88\x01\x01\x42\x08\n\x06_red_vB\x0b\n\t_hw_or_pkB\n\n\x08_solventB\x0e\n\x0c_electrolyte\"\x94\x01\n\x06\x41nodic\x12\x11\n\x04ox_v\x18\x01 \x01(\x01H\x00\x88\x01\x01\x12\x15\n\x08hw_or_pk\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x14\n\x07solvent\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x18\n\x0b\x65lectrolyte\x18\x04 \x01(\tH\x03\x88\x01\x01\x42\x07\n\x05_ox_vB\x0b\n\t_hw_or_pkB\n\n\x08_solventB\x0e\n\x0c_electrolyte\"\x9e\x01\n\x14\x46luorescenceLifetime\x12\x14\n\x07solvent\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0btemperature\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x12\n\x05units\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x12\n\x05value\x18\x04 \x01(\x01H\x03\x88\x01\x01\x42\n\n\x08_solventB\x0e\n\x0c_temperatureB\x08\n\x06_unitsB\x08\n\x06_value\"\xab\x03\n\x0cSpectralData\x12\x14\n\x07solvent\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x1a\n\rabsorb_max_nm\x18\x02 \x01(\x01H\x01\x88\x01\x01\x12\x18\n\x0b\x65mis_max_nm\x18\x03 \x01(\x01H\x02\x88\x01\x01\x12\x10\n\x08lifetime\x18\x04 \x03(\x01\x12\x1a\n\rquantum_yield\x18\x05 \x01(\x01H\x03\x88\x01\x01\x12%\n\x18molar_absorb_coefficient\x18\x06 \x01(\x01H\x04\x88\x01\x01\x12:\n\remisn_spectra\x18\x07 \x01(\x0b\x32\x1e.smiles.model.lit.EmisnSpectraH\x05\x88\x01\x01\x12<\n\x0e\x61\x62sorp_spectra\x18\x08 \x01(\x0b\x32\x1f.smiles.model.lit.AbsorpSpectraH\x06\x88\x01\x01\x42\n\n\x08_solventB\x10\n\x0e_absorb_max_nmB\x0e\n\x0c_emis_max_nmB\x10\n\x0e_quantum_yieldB\x1b\n\x19_molar_absorb_coefficientB\x10\n\x0e_emisn_spectraB\x11\n\x0f_absorp_spectra\"\xeb\x01\n\x0c\x45misnSpectra\x12%\n\x05peaks\x18\x01 \x03(\x0b\x32\x16.smiles.model.lit.Peak\x12\x14\n\x07solvent\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0btemperature\x18\x03 \x01(\x01H\x01\x88\x01\x01\x12\x1e\n\x11temperature_units\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x1d\n\x10\x65mission_fwhm_nm\x18\x05 \x01(\x01H\x03\x88\x01\x01\x42\n\n\x08_solventB\x0e\n\x0c_temperatureB\x14\n\x12_temperature_unitsB\x13\n\x11_emission_fwhm_nm\"\xf0\x01\n\rAbsorpSpectra\x12%\n\x05peaks\x18\x01 \x03(\x0b\x32\x16.smiles.model.lit.Peak\x12\x14\n\x07solvent\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0btemperature\x18\x03 \x01(\x01H\x01\x88\x01\x01\x12\x1e\n\x11temperature_units\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x1f\n\x12\x61\x62sorption_fwhm_nm\x18\x05 \x01(\x01H\x03\x88\x01\x01\x42\n\n\x08_solventB\x0e\n\x0c_temperatureB\x14\n\x12_temperature_unitsB\x15\n\x13_absorption_fwhm_nm\"\xac\x02\n\x04Peak\x12\x17\n\nextinction\x18\x01 \x01(\x05H\x00\x88\x01\x01\x12\x1d\n\x10\x65xtinction_units\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x12\n\x05units\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x12\n\x05value\x18\x04 \x01(\x01H\x03\x88\x01\x01\x12$\n\x17value_validation_failed\x18\x05 \x01(\x08H\x04\x88\x01\x01\x12)\n\x1c\x65xtinction_validation_failed\x18\x06 \x01(\x08H\x05\x88\x01\x01\x42\r\n\x0b_extinctionB\x13\n\x11_extinction_unitsB\x08\n\x06_unitsB\x08\n\x06_valueB\x1a\n\x18_value_validation_failedB\x1f\n\x1d_extinction_validation_failedb\x06proto3')
 
-
-
-_LITERATUREDP = DESCRIPTOR.message_types_by_name['LiteratureDP']
-_BIBLIO = DESCRIPTOR.message_types_by_name['Biblio']
-_RECORD = DESCRIPTOR.message_types_by_name['Record']
-_ELECTROCHEMICALPOTENTIAL = DESCRIPTOR.message_types_by_name['ElectroChemicalPotential']
-_CATHODIC = DESCRIPTOR.message_types_by_name['Cathodic']
-_ANODIC = DESCRIPTOR.message_types_by_name['Anodic']
-_FLUORESCENCELIFETIME = DESCRIPTOR.message_types_by_name['FluorescenceLifetime']
-_SPECTRALDATA = DESCRIPTOR.message_types_by_name['SpectralData']
-_EMISNSPECTRA = DESCRIPTOR.message_types_by_name['EmisnSpectra']
-_ABSORPSPECTRA = DESCRIPTOR.message_types_by_name['AbsorpSpectra']
-_PEAK = DESCRIPTOR.message_types_by_name['Peak']
-LiteratureDP = _reflection.GeneratedProtocolMessageType('LiteratureDP', (_message.Message,), {
-  'DESCRIPTOR' : _LITERATUREDP,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.LiteratureDP)
-  })
-_sym_db.RegisterMessage(LiteratureDP)
-
-Biblio = _reflection.GeneratedProtocolMessageType('Biblio', (_message.Message,), {
-  'DESCRIPTOR' : _BIBLIO,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.Biblio)
-  })
-_sym_db.RegisterMessage(Biblio)
-
-Record = _reflection.GeneratedProtocolMessageType('Record', (_message.Message,), {
-  'DESCRIPTOR' : _RECORD,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.Record)
-  })
-_sym_db.RegisterMessage(Record)
-
-ElectroChemicalPotential = _reflection.GeneratedProtocolMessageType('ElectroChemicalPotential', (_message.Message,), {
-  'DESCRIPTOR' : _ELECTROCHEMICALPOTENTIAL,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.ElectroChemicalPotential)
-  })
-_sym_db.RegisterMessage(ElectroChemicalPotential)
-
-Cathodic = _reflection.GeneratedProtocolMessageType('Cathodic', (_message.Message,), {
-  'DESCRIPTOR' : _CATHODIC,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.Cathodic)
-  })
-_sym_db.RegisterMessage(Cathodic)
-
-Anodic = _reflection.GeneratedProtocolMessageType('Anodic', (_message.Message,), {
-  'DESCRIPTOR' : _ANODIC,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.Anodic)
-  })
-_sym_db.RegisterMessage(Anodic)
-
-FluorescenceLifetime = _reflection.GeneratedProtocolMessageType('FluorescenceLifetime', (_message.Message,), {
-  'DESCRIPTOR' : _FLUORESCENCELIFETIME,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.FluorescenceLifetime)
-  })
-_sym_db.RegisterMessage(FluorescenceLifetime)
-
-SpectralData = _reflection.GeneratedProtocolMessageType('SpectralData', (_message.Message,), {
-  'DESCRIPTOR' : _SPECTRALDATA,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.SpectralData)
-  })
-_sym_db.RegisterMessage(SpectralData)
-
-EmisnSpectra = _reflection.GeneratedProtocolMessageType('EmisnSpectra', (_message.Message,), {
-  'DESCRIPTOR' : _EMISNSPECTRA,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.EmisnSpectra)
-  })
-_sym_db.RegisterMessage(EmisnSpectra)
-
-AbsorpSpectra = _reflection.GeneratedProtocolMessageType('AbsorpSpectra', (_message.Message,), {
-  'DESCRIPTOR' : _ABSORPSPECTRA,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.AbsorpSpectra)
-  })
-_sym_db.RegisterMessage(AbsorpSpectra)
-
-Peak = _reflection.GeneratedProtocolMessageType('Peak', (_message.Message,), {
-  'DESCRIPTOR' : _PEAK,
-  '__module__' : 'literature_dp_pb2'
-  # @@protoc_insertion_point(class_scope:smiles.model.lit.Peak)
-  })
-_sym_db.RegisterMessage(Peak)
-
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'literature_dp_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _LITERATUREDP._serialized_start=42
-  _LITERATUREDP._serialized_end=420
-  _BIBLIO._serialized_start=423
-  _BIBLIO._serialized_end=573
-  _RECORD._serialized_start=576
-  _RECORD._serialized_end=1102
-  _ELECTROCHEMICALPOTENTIAL._serialized_start=1105
-  _ELECTROCHEMICALPOTENTIAL._serialized_end=1705
-  _CATHODIC._serialized_start=1708
-  _CATHODIC._serialized_end=1860
-  _ANODIC._serialized_start=1863
-  _ANODIC._serialized_end=2011
-  _FLUORESCENCELIFETIME._serialized_start=2014
-  _FLUORESCENCELIFETIME._serialized_end=2172
-  _SPECTRALDATA._serialized_start=2175
-  _SPECTRALDATA._serialized_end=2540
-  _EMISNSPECTRA._serialized_start=2543
-  _EMISNSPECTRA._serialized_end=2726
-  _ABSORPSPECTRA._serialized_start=2729
-  _ABSORPSPECTRA._serialized_end=2913
-  _PEAK._serialized_start=2916
-  _PEAK._serialized_end=3216
+  _globals['_LITERATUREDP']._serialized_start=42
+  _globals['_LITERATUREDP']._serialized_end=482
+  _globals['_BIBLIO']._serialized_start=485
+  _globals['_BIBLIO']._serialized_end=866
+  _globals['_RECORD']._serialized_start=869
+  _globals['_RECORD']._serialized_end=1447
+  _globals['_ELECTROCHEMICALPOTENTIAL']._serialized_start=1450
+  _globals['_ELECTROCHEMICALPOTENTIAL']._serialized_end=2050
+  _globals['_CATHODIC']._serialized_start=2053
+  _globals['_CATHODIC']._serialized_end=2205
+  _globals['_ANODIC']._serialized_start=2208
+  _globals['_ANODIC']._serialized_end=2356
+  _globals['_FLUORESCENCELIFETIME']._serialized_start=2359
+  _globals['_FLUORESCENCELIFETIME']._serialized_end=2517
+  _globals['_SPECTRALDATA']._serialized_start=2520
+  _globals['_SPECTRALDATA']._serialized_end=2947
+  _globals['_EMISNSPECTRA']._serialized_start=2950
+  _globals['_EMISNSPECTRA']._serialized_end=3185
+  _globals['_ABSORPSPECTRA']._serialized_start=3188
+  _globals['_ABSORPSPECTRA']._serialized_end=3428
+  _globals['_PEAK']._serialized_start=3431
+  _globals['_PEAK']._serialized_end=3731
 # @@protoc_insertion_point(module_scope)
