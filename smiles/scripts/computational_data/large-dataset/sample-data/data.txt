@@ -1,0 +1,3 @@
+Index,Experimental Emission max (eV),SC-IMOM Emission (eV)
+1,3.0240047073170735,2.917409438
+2,2.755204288888889,2.494699317
