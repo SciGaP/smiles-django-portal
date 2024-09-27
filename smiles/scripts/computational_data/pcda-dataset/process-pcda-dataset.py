@@ -66,7 +66,6 @@ with open(data_file, 'r', newline='', encoding='utf-8') as csvfile_in:
 
         records.append(record)
 
-# Step 3: Write the records to the JSON output file
 with open(output_file, 'w', encoding='utf-8') as jsonfile:
     json.dump(records, jsonfile, ensure_ascii=False, indent=2)
 

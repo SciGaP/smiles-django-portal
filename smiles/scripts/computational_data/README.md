@@ -1,0 +1,1 @@
+To generate data compatible with the Computational Schema, run the two scripts located in `large-dataset` and `pcda-dataset`, replacing the sample data.

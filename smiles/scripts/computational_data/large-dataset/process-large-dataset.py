@@ -10,7 +10,6 @@ output_file = 'data.json'
 
 index_to_dye_family = {}
 
-
 for dye_family_file in os.listdir(dye_family_dir):
     if dye_family_file.endswith('.txt'):
         dye_family_name = os.path.splitext(dye_family_file)[0]

@@ -168,5 +168,5 @@ message IPQuantities {
 
 message OptimizedGeometry {
   bytes xyz = 1;
-  string type = 2;
+  string type = 2; // ground_state_geometry, IMOM_geometry, TDDFT_geometry
 }
