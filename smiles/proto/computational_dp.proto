@@ -78,11 +78,24 @@ message CalculatedProperties {
   repeated double energy_distribution = 15 [packed = true];
   optional int32 n_imag = 16;
   optional double zero_point_energy = 17;
+
+  optional Value experimental_absorption_max = 18;
+  optional Value experimental_emission_max = 19;
+  optional Value imom_absorption = 20;
+  optional Value sc_imom_absorption = 21;
+  optional Value sc_imom_emission = 22;
+  optional Value tddft_absorption = 23;
+  optional Value tddft_absorption_s2 = 24;
+  optional Value tddft_emission = 25;
+
+  optional EAQuantities ea_quantities = 26;
+  optional IPQuantities ip_quantities = 27;
 }
 
 message FinalMoleculeStructuralFormats {
   optional string sdf = 1;
   optional string pdb = 2;
+  optional bytes xyz = 3;
 }
 
 message Molecule {
@@ -133,4 +146,21 @@ message Dipole {
   double x = 1;
   double y = 2;
   double z = 3;
+}
+
+message Value {
+  double value = 1;
+  string unit = 2; // eV, kcal/mol, kJ/mol
+}
+
+message EAQuantities {
+  optional double electron_affinity_ev = 1;
+  optional double adiabatic_electron_affinity = 2;
+  optional double reduction_potential = 3;
+}
+
+message IPQuantities {
+  optional double ionization_potential = 1;
+  optional double adiabatic_ip = 2;
+  optional double oxidation_potential = 3;
 }
