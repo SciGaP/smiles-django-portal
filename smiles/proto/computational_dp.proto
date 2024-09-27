@@ -96,6 +96,7 @@ message FinalMoleculeStructuralFormats {
   optional string sdf = 1;
   optional string pdb = 2;
   optional bytes xyz = 3;
+  repeated OptimizedGeometry optimized_geometries = 4;
 }
 
 message Molecule {
@@ -163,4 +164,9 @@ message IPQuantities {
   optional double ionization_potential = 1;
   optional double adiabatic_ip = 2;
   optional double oxidation_potential = 3;
+}
+
+message OptimizedGeometry {
+  bytes xyz = 1;
+  string type = 2;
 }
