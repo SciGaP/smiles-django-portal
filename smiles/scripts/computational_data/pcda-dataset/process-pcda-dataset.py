@@ -17,9 +17,7 @@ with open(data_file, 'r', newline='', encoding='utf-8') as csvfile_in:
             'data_product_id': f'comp_{index}',
             'name': index,
             'calculated_properties': {},
-            'final_molecule_structural_formats': {
-                'optimized_geometries': []
-            }
+            'optimized_geometries': []
         }
 
         property_mapping = {
@@ -57,7 +55,7 @@ with open(data_file, 'r', newline='', encoding='utf-8') as csvfile_in:
                         with open(xyz_file_path, 'rb') as xyz_file:
                             xyz_bytes = xyz_file.read()
                             xyz_base64 = base64.b64encode(xyz_bytes).decode('utf-8')
-                            record['final_molecule_structural_formats']['optimized_geometries'].append({
+                            record['optimized_geometries'].append({
                                 'xyz': xyz_base64,
                                 'type': geometry_type
                             })

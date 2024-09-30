@@ -47,6 +47,7 @@ message ComputationalDP {
   optional InputFileConfiguration input_file_configuration = 19;
 
   repeated string related_records = 20;
+  repeated OptimizedGeometry optimized_geometries = 21;
 }
 
 message ExecutionEnvironment {
@@ -96,7 +97,6 @@ message FinalMoleculeStructuralFormats {
   optional string sdf = 1;
   optional string pdb = 2;
   optional bytes xyz = 3;
-  repeated OptimizedGeometry optimized_geometries = 4;
 }
 
 message Molecule {
