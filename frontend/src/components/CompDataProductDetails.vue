@@ -6,12 +6,12 @@
 
 
     <div class="layout-container">
-      <!-- 左侧导航栏 -->
+      <!-- Left Sidebar Navigation -->
       <div class="navigation">
         <h2>{{ item.name }}</h2>
         <nav class="side-nav">
           <ul>
-            <!-- 导航项 -->
+            <!-- Navigation Items -->
             <li v-for="section in sections" :key="section.id" :class="{ active: currentSection === section.id }">
               <a href="#" @click.prevent="scrollToSection(section.id)">
                 {{ section.label }}
@@ -21,7 +21,7 @@
         </nav>
       </div>
 
-      <!-- 右侧数据详情 -->
+      <!-- Right-Side Data Details -->
       <div class="details-content">
         <div v-if="item">
           <b-container fluid>
