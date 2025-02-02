@@ -559,3 +559,229 @@ class DataCatalogAPIService(object):
             data__catalog__pb2.DataProductSearchResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class SharingServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GrantPermissionToUser = channel.unary_unary(
+                '/SharingService/GrantPermissionToUser',
+                request_serializer=data__catalog__pb2.GrantPermissionRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.GrantPermissionResponse.FromString,
+                )
+        self.RevokePermissionFromUser = channel.unary_unary(
+                '/SharingService/RevokePermissionFromUser',
+                request_serializer=data__catalog__pb2.RevokePermissionRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.RevokePermissionResponse.FromString,
+                )
+        self.GrantPermissionToGroup = channel.unary_unary(
+                '/SharingService/GrantPermissionToGroup',
+                request_serializer=data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.GrantPermissionResponse.FromString,
+                )
+        self.RevokePermissionFromGroup = channel.unary_unary(
+                '/SharingService/RevokePermissionFromGroup',
+                request_serializer=data__catalog__pb2.RevokePermissionFromGroupRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.RevokePermissionResponse.FromString,
+                )
+        self.SearchUsers = channel.unary_unary(
+                '/SharingService/SearchUsers',
+                request_serializer=data__catalog__pb2.SearchRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.SearchUsersResponse.FromString,
+                )
+        self.SearchGroups = channel.unary_unary(
+                '/SharingService/SearchGroups',
+                request_serializer=data__catalog__pb2.SearchRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.SearchGroupsResponse.FromString,
+                )
+
+
+class SharingServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GrantPermissionToUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RevokePermissionFromUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GrantPermissionToGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RevokePermissionFromGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SearchUsers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SearchGroups(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_SharingServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GrantPermissionToUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.GrantPermissionToUser,
+                    request_deserializer=data__catalog__pb2.GrantPermissionRequest.FromString,
+                    response_serializer=data__catalog__pb2.GrantPermissionResponse.SerializeToString,
+            ),
+            'RevokePermissionFromUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.RevokePermissionFromUser,
+                    request_deserializer=data__catalog__pb2.RevokePermissionRequest.FromString,
+                    response_serializer=data__catalog__pb2.RevokePermissionResponse.SerializeToString,
+            ),
+            'GrantPermissionToGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.GrantPermissionToGroup,
+                    request_deserializer=data__catalog__pb2.GrantPermissionToGroupRequest.FromString,
+                    response_serializer=data__catalog__pb2.GrantPermissionResponse.SerializeToString,
+            ),
+            'RevokePermissionFromGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.RevokePermissionFromGroup,
+                    request_deserializer=data__catalog__pb2.RevokePermissionFromGroupRequest.FromString,
+                    response_serializer=data__catalog__pb2.RevokePermissionResponse.SerializeToString,
+            ),
+            'SearchUsers': grpc.unary_unary_rpc_method_handler(
+                    servicer.SearchUsers,
+                    request_deserializer=data__catalog__pb2.SearchRequest.FromString,
+                    response_serializer=data__catalog__pb2.SearchUsersResponse.SerializeToString,
+            ),
+            'SearchGroups': grpc.unary_unary_rpc_method_handler(
+                    servicer.SearchGroups,
+                    request_deserializer=data__catalog__pb2.SearchRequest.FromString,
+                    response_serializer=data__catalog__pb2.SearchGroupsResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'SharingService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class SharingService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GrantPermissionToUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SharingService/GrantPermissionToUser',
+            data__catalog__pb2.GrantPermissionRequest.SerializeToString,
+            data__catalog__pb2.GrantPermissionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RevokePermissionFromUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SharingService/RevokePermissionFromUser',
+            data__catalog__pb2.RevokePermissionRequest.SerializeToString,
+            data__catalog__pb2.RevokePermissionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GrantPermissionToGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SharingService/GrantPermissionToGroup',
+            data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
+            data__catalog__pb2.GrantPermissionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RevokePermissionFromGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SharingService/RevokePermissionFromGroup',
+            data__catalog__pb2.RevokePermissionFromGroupRequest.SerializeToString,
+            data__catalog__pb2.RevokePermissionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SearchUsers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SharingService/SearchUsers',
+            data__catalog__pb2.SearchRequest.SerializeToString,
+            data__catalog__pb2.SearchUsersResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SearchGroups(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/SharingService/SearchGroups',
+            data__catalog__pb2.SearchRequest.SerializeToString,
+            data__catalog__pb2.SearchGroupsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

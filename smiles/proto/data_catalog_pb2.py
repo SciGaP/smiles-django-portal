@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x64\x61ta_catalog.proto\"A\n\x08UserInfo\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x16\n\ttenant_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0c\n\n_tenant_id\"C\n\tGroupInfo\x12\x10\n\x08group_id\x18\x01 \x01(\t\x12\x16\n\ttenant_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0c\n\n_tenant_id\"\xcc\x01\n\x0b\x44\x61taProduct\x12\x17\n\x0f\x64\x61ta_product_id\x18\x01 \x01(\t\x12#\n\x16parent_data_product_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x15\n\x08metadata\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x18\n\x10metadata_schemas\x18\x05 \x03(\t\x12\x18\n\x05owner\x18\x06 \x01(\x0b\x32\t.UserInfoB\x19\n\x17_parent_data_product_idB\x0b\n\t_metadata\"%\n\x0eMetadataSchema\x12\x13\n\x0bschema_name\x18\x01 \x01(\t\"v\n\x13MetadataSchemaField\x12\x13\n\x0bschema_name\x18\x01 \x01(\t\x12\x12\n\nfield_name\x18\x02 \x01(\t\x12\x11\n\tjson_path\x18\x03 \x01(\t\x12#\n\nvalue_type\x18\x04 \x01(\x0e\x32\x0f.FieldValueType\"\\\n\x18\x44\x61taProductCreateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\"?\n\x19\x44\x61taProductCreateResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"\\\n\x18\x44\x61taProductUpdateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\"?\n\x19\x44\x61taProductUpdateResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"N\n\x15\x44\x61taProductGetRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\"<\n\x16\x44\x61taProductGetResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"Q\n\x18\x44\x61taProductDeleteRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\"\x1b\n\x19\x44\x61taProductDeleteResponse\"s\n%DataProductAddToMetadataSchemaRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\x12\x13\n\x0bschema_name\x18\x03 \x01(\t\"L\n&DataProductAddToMetadataSchemaResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"x\n*DataProductRemoveFromMetadataSchemaRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\x12\x13\n\x0bschema_name\x18\x03 \x01(\t\"Q\n+DataProductRemoveFromMetadataSchemaResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"E\n\x18\x44\x61taProductSearchRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x0b\n\x03sql\x18\x02 \x01(\t\"@\n\x19\x44\x61taProductSearchResponse\x12#\n\rdata_products\x18\x01 \x03(\x0b\x32\x0c.DataProduct\"M\n\x18MetadataSchemaGetRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x13\n\x0bschema_name\x18\x02 \x01(\t\"E\n\x19MetadataSchemaGetResponse\x12(\n\x0fmetadata_schema\x18\x01 \x01(\x0b\x32\x0f.MetadataSchema\"9\n\x19MetadataSchemaListRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\"G\n\x1aMetadataSchemaListResponse\x12)\n\x10metadata_schemas\x18\x01 \x03(\x0b\x32\x0f.MetadataSchema\"e\n\x1bMetadataSchemaCreateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12(\n\x0fmetadata_schema\x18\x02 \x01(\x0b\x32\x0f.MetadataSchema\"H\n\x1cMetadataSchemaCreateResponse\x12(\n\x0fmetadata_schema\x18\x01 \x01(\x0b\x32\x0f.MetadataSchema\"e\n\x1bMetadataSchemaDeleteRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12(\n\x0fmetadata_schema\x18\x02 \x01(\x0b\x32\x0f.MetadataSchema\"\x1e\n\x1cMetadataSchemaDeleteResponse\"f\n\x1dMetadataSchemaFieldGetRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x13\n\x0bschema_name\x18\x02 \x01(\t\x12\x12\n\nfield_name\x18\x03 \x01(\t\"U\n\x1eMetadataSchemaFieldGetResponse\x12\x33\n\x15metadata_schema_field\x18\x01 \x01(\x0b\x32\x14.MetadataSchemaField\"u\n MetadataSchemaFieldCreateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x33\n\x15metadata_schema_field\x18\x02 \x01(\x0b\x32\x14.MetadataSchemaField\"X\n!MetadataSchemaFieldCreateResponse\x12\x33\n\x15metadata_schema_field\x18\x01 \x01(\x0b\x32\x14.MetadataSchemaField\"u\n MetadataSchemaFieldUpdateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x33\n\x15metadata_schema_field\x18\x02 \x01(\x0b\x32\x14.MetadataSchemaField\"X\n!MetadataSchemaFieldUpdateResponse\x12\x33\n\x15metadata_schema_field\x18\x01 \x01(\x0b\x32\x14.MetadataSchemaField\"u\n MetadataSchemaFieldDeleteRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x33\n\x15metadata_schema_field\x18\x02 \x01(\x0b\x32\x14.MetadataSchemaField\"#\n!MetadataSchemaFieldDeleteResponse\"S\n\x1eMetadataSchemaFieldListRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x13\n\x0bschema_name\x18\x02 \x01(\t\"W\n\x1fMetadataSchemaFieldListResponse\x12\x34\n\x16metadata_schema_fields\x18\x01 \x03(\x0b\x32\x14.MetadataSchemaField*g\n\nPermission\x12\t\n\x05OWNER\x10\x00\x12\x08\n\x04READ\x10\x01\x12\x11\n\rREAD_METADATA\x10\x02\x12\t\n\x05WRITE\x10\x03\x12\x12\n\x0eWRITE_METADATA\x10\x04\x12\x12\n\x0eMANAGE_SHARING\x10\x05*Q\n\x0e\x46ieldValueType\x12\n\n\x06STRING\x10\x00\x12\x0b\n\x07INTEGER\x10\x01\x12\t\n\x05\x46LOAT\x10\x02\x12\x0b\n\x07\x42OOLEAN\x10\x03\x12\x0e\n\nDATESTRING\x10\x04\x32\xcb\x0b\n\x15\x44\x61taCatalogAPIService\x12L\n\x11\x63reateDataProduct\x12\x19.DataProductCreateRequest\x1a\x1a.DataProductCreateResponse\"\x00\x12L\n\x11updateDataProduct\x12\x19.DataProductUpdateRequest\x1a\x1a.DataProductUpdateResponse\"\x00\x12\x43\n\x0egetDataProduct\x12\x16.DataProductGetRequest\x1a\x17.DataProductGetResponse\"\x00\x12L\n\x11\x64\x65leteDataProduct\x12\x19.DataProductDeleteRequest\x1a\x1a.DataProductDeleteResponse\"\x00\x12L\n\x11getMetadataSchema\x12\x19.MetadataSchemaGetRequest\x1a\x1a.MetadataSchemaGetResponse\"\x00\x12U\n\x14\x63reateMetadataSchema\x12\x1c.MetadataSchemaCreateRequest\x1a\x1d.MetadataSchemaCreateResponse\"\x00\x12U\n\x14\x64\x65leteMetadataSchema\x12\x1c.MetadataSchemaDeleteRequest\x1a\x1d.MetadataSchemaDeleteResponse\"\x00\x12O\n\x12getMetadataSchemas\x12\x1a.MetadataSchemaListRequest\x1a\x1b.MetadataSchemaListResponse\"\x00\x12[\n\x16getMetadataSchemaField\x12\x1e.MetadataSchemaFieldGetRequest\x1a\x1f.MetadataSchemaFieldGetResponse\"\x00\x12\x64\n\x19\x63reateMetadataSchemaField\x12!.MetadataSchemaFieldCreateRequest\x1a\".MetadataSchemaFieldCreateResponse\"\x00\x12\x64\n\x19updateMetadataSchemaField\x12!.MetadataSchemaFieldUpdateRequest\x1a\".MetadataSchemaFieldUpdateResponse\"\x00\x12\x64\n\x19\x64\x65leteMetadataSchemaField\x12!.MetadataSchemaFieldDeleteRequest\x1a\".MetadataSchemaFieldDeleteResponse\"\x00\x12^\n\x17getMetadataSchemaFields\x12\x1f.MetadataSchemaFieldListRequest\x1a .MetadataSchemaFieldListResponse\"\x00\x12s\n\x1e\x61\x64\x64\x44\x61taProductToMetadataSchema\x12&.DataProductAddToMetadataSchemaRequest\x1a\'.DataProductAddToMetadataSchemaResponse\"\x00\x12\x82\x01\n#removeDataProductFromMetadataSchema\x12+.DataProductRemoveFromMetadataSchemaRequest\x1a,.DataProductRemoveFromMetadataSchemaResponse\"\x00\x12M\n\x12searchDataProducts\x12\x19.DataProductSearchRequest\x1a\x1a.DataProductSearchResponse\"\x00\x42\'\n#org.apache.airavata.datacatalog.apiP\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x64\x61ta_catalog.proto\"A\n\x08UserInfo\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x16\n\ttenant_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0c\n\n_tenant_id\"C\n\tGroupInfo\x12\x10\n\x08group_id\x18\x01 \x01(\t\x12\x16\n\ttenant_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0c\n\n_tenant_id\"\xcc\x01\n\x0b\x44\x61taProduct\x12\x17\n\x0f\x64\x61ta_product_id\x18\x01 \x01(\t\x12#\n\x16parent_data_product_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x15\n\x08metadata\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x18\n\x10metadata_schemas\x18\x05 \x03(\t\x12\x18\n\x05owner\x18\x06 \x01(\x0b\x32\t.UserInfoB\x19\n\x17_parent_data_product_idB\x0b\n\t_metadata\"%\n\x0eMetadataSchema\x12\x13\n\x0bschema_name\x18\x01 \x01(\t\"v\n\x13MetadataSchemaField\x12\x13\n\x0bschema_name\x18\x01 \x01(\t\x12\x12\n\nfield_name\x18\x02 \x01(\t\x12\x11\n\tjson_path\x18\x03 \x01(\t\x12#\n\nvalue_type\x18\x04 \x01(\x0e\x32\x0f.FieldValueType\"\\\n\x18\x44\x61taProductCreateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\"?\n\x19\x44\x61taProductCreateResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"\\\n\x18\x44\x61taProductUpdateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\"?\n\x19\x44\x61taProductUpdateResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"N\n\x15\x44\x61taProductGetRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\"<\n\x16\x44\x61taProductGetResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"Q\n\x18\x44\x61taProductDeleteRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\"\x1b\n\x19\x44\x61taProductDeleteResponse\"s\n%DataProductAddToMetadataSchemaRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\x12\x13\n\x0bschema_name\x18\x03 \x01(\t\"L\n&DataProductAddToMetadataSchemaResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"x\n*DataProductRemoveFromMetadataSchemaRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x17\n\x0f\x64\x61ta_product_id\x18\x02 \x01(\t\x12\x13\n\x0bschema_name\x18\x03 \x01(\t\"Q\n+DataProductRemoveFromMetadataSchemaResponse\x12\"\n\x0c\x64\x61ta_product\x18\x01 \x01(\x0b\x32\x0c.DataProduct\"E\n\x18\x44\x61taProductSearchRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x0b\n\x03sql\x18\x02 \x01(\t\"@\n\x19\x44\x61taProductSearchResponse\x12#\n\rdata_products\x18\x01 \x03(\x0b\x32\x0c.DataProduct\"M\n\x18MetadataSchemaGetRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x13\n\x0bschema_name\x18\x02 \x01(\t\"E\n\x19MetadataSchemaGetResponse\x12(\n\x0fmetadata_schema\x18\x01 \x01(\x0b\x32\x0f.MetadataSchema\"9\n\x19MetadataSchemaListRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\"G\n\x1aMetadataSchemaListResponse\x12)\n\x10metadata_schemas\x18\x01 \x03(\x0b\x32\x0f.MetadataSchema\"e\n\x1bMetadataSchemaCreateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12(\n\x0fmetadata_schema\x18\x02 \x01(\x0b\x32\x0f.MetadataSchema\"H\n\x1cMetadataSchemaCreateResponse\x12(\n\x0fmetadata_schema\x18\x01 \x01(\x0b\x32\x0f.MetadataSchema\"e\n\x1bMetadataSchemaDeleteRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12(\n\x0fmetadata_schema\x18\x02 \x01(\x0b\x32\x0f.MetadataSchema\"\x1e\n\x1cMetadataSchemaDeleteResponse\"f\n\x1dMetadataSchemaFieldGetRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x13\n\x0bschema_name\x18\x02 \x01(\t\x12\x12\n\nfield_name\x18\x03 \x01(\t\"U\n\x1eMetadataSchemaFieldGetResponse\x12\x33\n\x15metadata_schema_field\x18\x01 \x01(\x0b\x32\x14.MetadataSchemaField\"u\n MetadataSchemaFieldCreateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x33\n\x15metadata_schema_field\x18\x02 \x01(\x0b\x32\x14.MetadataSchemaField\"X\n!MetadataSchemaFieldCreateResponse\x12\x33\n\x15metadata_schema_field\x18\x01 \x01(\x0b\x32\x14.MetadataSchemaField\"u\n MetadataSchemaFieldUpdateRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x33\n\x15metadata_schema_field\x18\x02 \x01(\x0b\x32\x14.MetadataSchemaField\"X\n!MetadataSchemaFieldUpdateResponse\x12\x33\n\x15metadata_schema_field\x18\x01 \x01(\x0b\x32\x14.MetadataSchemaField\"u\n MetadataSchemaFieldDeleteRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x33\n\x15metadata_schema_field\x18\x02 \x01(\x0b\x32\x14.MetadataSchemaField\"#\n!MetadataSchemaFieldDeleteResponse\"S\n\x1eMetadataSchemaFieldListRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\x13\n\x0bschema_name\x18\x02 \x01(\t\"W\n\x1fMetadataSchemaFieldListResponse\x12\x34\n\x16metadata_schema_fields\x18\x01 \x03(\x0b\x32\x14.MetadataSchemaField\"\xb6\x01\n\x16GrantPermissionRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\x12\x1f\n\npermission\x18\x03 \x01(\x0e\x32\x0b.Permission\x12&\n\x0eshared_by_user\x18\x04 \x01(\x0b\x32\t.UserInfoH\x00\x88\x01\x01\x42\x11\n\x0f_shared_by_user\"\x19\n\x17GrantPermissionResponse\"|\n\x17RevokePermissionRequest\x12\x1c\n\tuser_info\x18\x01 \x01(\x0b\x32\t.UserInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\x12\x1f\n\npermission\x18\x03 \x01(\x0e\x32\x0b.Permission\"\x1a\n\x18RevokePermissionResponse\"\xbf\x01\n\x1dGrantPermissionToGroupRequest\x12\x1e\n\ngroup_info\x18\x01 \x01(\x0b\x32\n.GroupInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\x12\x1f\n\npermission\x18\x03 \x01(\x0e\x32\x0b.Permission\x12&\n\x0eshared_by_user\x18\x04 \x01(\x0b\x32\t.UserInfoH\x00\x88\x01\x01\x42\x11\n\x0f_shared_by_user\"\x87\x01\n RevokePermissionFromGroupRequest\x12\x1e\n\ngroup_info\x18\x01 \x01(\x0b\x32\n.GroupInfo\x12\"\n\x0c\x64\x61ta_product\x18\x02 \x01(\x0b\x32\x0c.DataProduct\x12\x1f\n\npermission\x18\x03 \x01(\x0e\x32\x0b.Permission\"1\n\rSearchRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\ttenant_id\x18\x02 \x01(\t\"/\n\x13SearchUsersResponse\x12\x18\n\x05users\x18\x01 \x03(\x0b\x32\t.UserInfo\"2\n\x14SearchGroupsResponse\x12\x1a\n\x06groups\x18\x01 \x03(\x0b\x32\n.GroupInfo*g\n\nPermission\x12\t\n\x05OWNER\x10\x00\x12\x08\n\x04READ\x10\x01\x12\x11\n\rREAD_METADATA\x10\x02\x12\t\n\x05WRITE\x10\x03\x12\x12\n\x0eWRITE_METADATA\x10\x04\x12\x12\n\x0eMANAGE_SHARING\x10\x05*Q\n\x0e\x46ieldValueType\x12\n\n\x06STRING\x10\x00\x12\x0b\n\x07INTEGER\x10\x01\x12\t\n\x05\x46LOAT\x10\x02\x12\x0b\n\x07\x42OOLEAN\x10\x03\x12\x0e\n\nDATESTRING\x10\x04\x32\xcb\x0b\n\x15\x44\x61taCatalogAPIService\x12L\n\x11\x63reateDataProduct\x12\x19.DataProductCreateRequest\x1a\x1a.DataProductCreateResponse\"\x00\x12L\n\x11updateDataProduct\x12\x19.DataProductUpdateRequest\x1a\x1a.DataProductUpdateResponse\"\x00\x12\x43\n\x0egetDataProduct\x12\x16.DataProductGetRequest\x1a\x17.DataProductGetResponse\"\x00\x12L\n\x11\x64\x65leteDataProduct\x12\x19.DataProductDeleteRequest\x1a\x1a.DataProductDeleteResponse\"\x00\x12L\n\x11getMetadataSchema\x12\x19.MetadataSchemaGetRequest\x1a\x1a.MetadataSchemaGetResponse\"\x00\x12U\n\x14\x63reateMetadataSchema\x12\x1c.MetadataSchemaCreateRequest\x1a\x1d.MetadataSchemaCreateResponse\"\x00\x12U\n\x14\x64\x65leteMetadataSchema\x12\x1c.MetadataSchemaDeleteRequest\x1a\x1d.MetadataSchemaDeleteResponse\"\x00\x12O\n\x12getMetadataSchemas\x12\x1a.MetadataSchemaListRequest\x1a\x1b.MetadataSchemaListResponse\"\x00\x12[\n\x16getMetadataSchemaField\x12\x1e.MetadataSchemaFieldGetRequest\x1a\x1f.MetadataSchemaFieldGetResponse\"\x00\x12\x64\n\x19\x63reateMetadataSchemaField\x12!.MetadataSchemaFieldCreateRequest\x1a\".MetadataSchemaFieldCreateResponse\"\x00\x12\x64\n\x19updateMetadataSchemaField\x12!.MetadataSchemaFieldUpdateRequest\x1a\".MetadataSchemaFieldUpdateResponse\"\x00\x12\x64\n\x19\x64\x65leteMetadataSchemaField\x12!.MetadataSchemaFieldDeleteRequest\x1a\".MetadataSchemaFieldDeleteResponse\"\x00\x12^\n\x17getMetadataSchemaFields\x12\x1f.MetadataSchemaFieldListRequest\x1a .MetadataSchemaFieldListResponse\"\x00\x12s\n\x1e\x61\x64\x64\x44\x61taProductToMetadataSchema\x12&.DataProductAddToMetadataSchemaRequest\x1a\'.DataProductAddToMetadataSchemaResponse\"\x00\x12\x82\x01\n#removeDataProductFromMetadataSchema\x12+.DataProductRemoveFromMetadataSchemaRequest\x1a,.DataProductRemoveFromMetadataSchemaResponse\"\x00\x12M\n\x12searchDataProducts\x12\x19.DataProductSearchRequest\x1a\x1a.DataProductSearchResponse\"\x00\x32\xd4\x03\n\x0eSharingService\x12L\n\x15GrantPermissionToUser\x12\x17.GrantPermissionRequest\x1a\x18.GrantPermissionResponse\"\x00\x12Q\n\x18RevokePermissionFromUser\x12\x18.RevokePermissionRequest\x1a\x19.RevokePermissionResponse\"\x00\x12T\n\x16GrantPermissionToGroup\x12\x1e.GrantPermissionToGroupRequest\x1a\x18.GrantPermissionResponse\"\x00\x12[\n\x19RevokePermissionFromGroup\x12!.RevokePermissionFromGroupRequest\x1a\x19.RevokePermissionResponse\"\x00\x12\x35\n\x0bSearchUsers\x12\x0e.SearchRequest\x1a\x14.SearchUsersResponse\"\x00\x12\x37\n\x0cSearchGroups\x12\x0e.SearchRequest\x1a\x15.SearchGroupsResponse\"\x00\x42\'\n#org.apache.airavata.datacatalog.apiP\x01\x62\x06proto3')
 
 _PERMISSION = DESCRIPTOR.enum_types_by_name['Permission']
 Permission = enum_type_wrapper.EnumTypeWrapper(_PERMISSION)
@@ -71,6 +71,15 @@ _METADATASCHEMAFIELDDELETEREQUEST = DESCRIPTOR.message_types_by_name['MetadataSc
 _METADATASCHEMAFIELDDELETERESPONSE = DESCRIPTOR.message_types_by_name['MetadataSchemaFieldDeleteResponse']
 _METADATASCHEMAFIELDLISTREQUEST = DESCRIPTOR.message_types_by_name['MetadataSchemaFieldListRequest']
 _METADATASCHEMAFIELDLISTRESPONSE = DESCRIPTOR.message_types_by_name['MetadataSchemaFieldListResponse']
+_GRANTPERMISSIONREQUEST = DESCRIPTOR.message_types_by_name['GrantPermissionRequest']
+_GRANTPERMISSIONRESPONSE = DESCRIPTOR.message_types_by_name['GrantPermissionResponse']
+_REVOKEPERMISSIONREQUEST = DESCRIPTOR.message_types_by_name['RevokePermissionRequest']
+_REVOKEPERMISSIONRESPONSE = DESCRIPTOR.message_types_by_name['RevokePermissionResponse']
+_GRANTPERMISSIONTOGROUPREQUEST = DESCRIPTOR.message_types_by_name['GrantPermissionToGroupRequest']
+_REVOKEPERMISSIONFROMGROUPREQUEST = DESCRIPTOR.message_types_by_name['RevokePermissionFromGroupRequest']
+_SEARCHREQUEST = DESCRIPTOR.message_types_by_name['SearchRequest']
+_SEARCHUSERSRESPONSE = DESCRIPTOR.message_types_by_name['SearchUsersResponse']
+_SEARCHGROUPSRESPONSE = DESCRIPTOR.message_types_by_name['SearchGroupsResponse']
 UserInfo = _reflection.GeneratedProtocolMessageType('UserInfo', (_message.Message,), {
   'DESCRIPTOR' : _USERINFO,
   '__module__' : 'data_catalog_pb2'
@@ -330,15 +339,79 @@ MetadataSchemaFieldListResponse = _reflection.GeneratedProtocolMessageType('Meta
   })
 _sym_db.RegisterMessage(MetadataSchemaFieldListResponse)
 
+GrantPermissionRequest = _reflection.GeneratedProtocolMessageType('GrantPermissionRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GRANTPERMISSIONREQUEST,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:GrantPermissionRequest)
+  })
+_sym_db.RegisterMessage(GrantPermissionRequest)
+
+GrantPermissionResponse = _reflection.GeneratedProtocolMessageType('GrantPermissionResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GRANTPERMISSIONRESPONSE,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:GrantPermissionResponse)
+  })
+_sym_db.RegisterMessage(GrantPermissionResponse)
+
+RevokePermissionRequest = _reflection.GeneratedProtocolMessageType('RevokePermissionRequest', (_message.Message,), {
+  'DESCRIPTOR' : _REVOKEPERMISSIONREQUEST,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:RevokePermissionRequest)
+  })
+_sym_db.RegisterMessage(RevokePermissionRequest)
+
+RevokePermissionResponse = _reflection.GeneratedProtocolMessageType('RevokePermissionResponse', (_message.Message,), {
+  'DESCRIPTOR' : _REVOKEPERMISSIONRESPONSE,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:RevokePermissionResponse)
+  })
+_sym_db.RegisterMessage(RevokePermissionResponse)
+
+GrantPermissionToGroupRequest = _reflection.GeneratedProtocolMessageType('GrantPermissionToGroupRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GRANTPERMISSIONTOGROUPREQUEST,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:GrantPermissionToGroupRequest)
+  })
+_sym_db.RegisterMessage(GrantPermissionToGroupRequest)
+
+RevokePermissionFromGroupRequest = _reflection.GeneratedProtocolMessageType('RevokePermissionFromGroupRequest', (_message.Message,), {
+  'DESCRIPTOR' : _REVOKEPERMISSIONFROMGROUPREQUEST,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:RevokePermissionFromGroupRequest)
+  })
+_sym_db.RegisterMessage(RevokePermissionFromGroupRequest)
+
+SearchRequest = _reflection.GeneratedProtocolMessageType('SearchRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SEARCHREQUEST,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:SearchRequest)
+  })
+_sym_db.RegisterMessage(SearchRequest)
+
+SearchUsersResponse = _reflection.GeneratedProtocolMessageType('SearchUsersResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SEARCHUSERSRESPONSE,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:SearchUsersResponse)
+  })
+_sym_db.RegisterMessage(SearchUsersResponse)
+
+SearchGroupsResponse = _reflection.GeneratedProtocolMessageType('SearchGroupsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SEARCHGROUPSRESPONSE,
+  '__module__' : 'data_catalog_pb2'
+  # @@protoc_insertion_point(class_scope:SearchGroupsResponse)
+  })
+_sym_db.RegisterMessage(SearchGroupsResponse)
+
 _DATACATALOGAPISERVICE = DESCRIPTOR.services_by_name['DataCatalogAPIService']
+_SHARINGSERVICE = DESCRIPTOR.services_by_name['SharingService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n#org.apache.airavata.datacatalog.apiP\001'
-  _PERMISSION._serialized_start=3166
-  _PERMISSION._serialized_end=3269
-  _FIELDVALUETYPE._serialized_start=3271
-  _FIELDVALUETYPE._serialized_end=3352
+  _PERMISSION._serialized_start=4016
+  _PERMISSION._serialized_end=4119
+  _FIELDVALUETYPE._serialized_start=4121
+  _FIELDVALUETYPE._serialized_end=4202
   _USERINFO._serialized_start=22
   _USERINFO._serialized_end=87
   _GROUPINFO._serialized_start=89
@@ -413,6 +486,26 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _METADATASCHEMAFIELDLISTREQUEST._serialized_end=3075
   _METADATASCHEMAFIELDLISTRESPONSE._serialized_start=3077
   _METADATASCHEMAFIELDLISTRESPONSE._serialized_end=3164
-  _DATACATALOGAPISERVICE._serialized_start=3355
-  _DATACATALOGAPISERVICE._serialized_end=4838
+  _GRANTPERMISSIONREQUEST._serialized_start=3167
+  _GRANTPERMISSIONREQUEST._serialized_end=3349
+  _GRANTPERMISSIONRESPONSE._serialized_start=3351
+  _GRANTPERMISSIONRESPONSE._serialized_end=3376
+  _REVOKEPERMISSIONREQUEST._serialized_start=3378
+  _REVOKEPERMISSIONREQUEST._serialized_end=3502
+  _REVOKEPERMISSIONRESPONSE._serialized_start=3504
+  _REVOKEPERMISSIONRESPONSE._serialized_end=3530
+  _GRANTPERMISSIONTOGROUPREQUEST._serialized_start=3533
+  _GRANTPERMISSIONTOGROUPREQUEST._serialized_end=3724
+  _REVOKEPERMISSIONFROMGROUPREQUEST._serialized_start=3727
+  _REVOKEPERMISSIONFROMGROUPREQUEST._serialized_end=3862
+  _SEARCHREQUEST._serialized_start=3864
+  _SEARCHREQUEST._serialized_end=3913
+  _SEARCHUSERSRESPONSE._serialized_start=3915
+  _SEARCHUSERSRESPONSE._serialized_end=3962
+  _SEARCHGROUPSRESPONSE._serialized_start=3964
+  _SEARCHGROUPSRESPONSE._serialized_end=4014
+  _DATACATALOGAPISERVICE._serialized_start=4205
+  _DATACATALOGAPISERVICE._serialized_end=5688
+  _SHARINGSERVICE._serialized_start=5691
+  _SHARINGSERVICE._serialized_end=6159
 # @@protoc_insertion_point(module_scope)
