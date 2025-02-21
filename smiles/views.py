@@ -11,6 +11,12 @@ from . import smiles_data_migration
 from django.shortcuts import render
 from .apps import SmilesDjangoPortalConfig
 
+from smiles.sharing_service import SharingService
+from smiles.proto.data_catalog_pb2 import UserInfo, GroupInfo
+from smiles.proto.data_catalog_pb2_grpc import DataCatalogAPIServiceStub
+from smiles.proto.data_catalog_pb2 import SearchRequest
+from django.views.decorators.csrf import csrf_exempt
+import grpc
 
 class ComputationalDPView(View):
     UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/comp-dp/upload'
@@ -28,12 +34,22 @@ class ComputationalDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-
+    '''    
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
                                                          smiles_dp_util.SmilesDP.COMPUTATIONAL)
         return JsonResponse(result, safe=False, status=200)
-
+    '''
+    def get(self, request):
+        page = int(request.GET.get("page", 1))
+        size = int(request.GET.get("size", 20))
+        result = smiles_dp_util.get_smiles_data_products(
+            extract_request_data(request),
+            smiles_dp_util.SmilesDP.COMPUTATIONAL,
+            page,
+            size
+        )
+        return JsonResponse(result, safe=False, status=200)    
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -88,12 +104,23 @@ class ExperimentalDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-
+    '''
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
                                                          smiles_dp_util.SmilesDP.EXPERIMENTAL)
         return JsonResponse(result, safe=False, status=200)
-
+    '''
+    def get(self, request):
+        page = int(request.GET.get("page", 1))
+        size = int(request.GET.get("size", 20))
+        result = smiles_dp_util.get_smiles_data_products(
+            extract_request_data(request),
+            smiles_dp_util.SmilesDP.EXPERIMENTAL,
+            page,
+            size
+        )
+        return JsonResponse(result, safe=False, status=200)
+    
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -149,12 +176,23 @@ class LiteratureDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-
+    '''
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
                                                          smiles_dp_util.SmilesDP.LITERATURE)
         return JsonResponse(result, safe=False, status=200)
-
+    '''
+    def get(self, request):
+        page = int(request.GET.get("page", 1))
+        size = int(request.GET.get("size", 20))
+        result = smiles_dp_util.get_smiles_data_products(
+            extract_request_data(request),
+            smiles_dp_util.SmilesDP.LITERATURE,
+            page,
+            size
+        )
+        return JsonResponse(result, safe=False, status=200)
+    
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -220,7 +258,7 @@ def upload_smile_dps(request, dp_type):
     if old_schema_param == 'true':
         smiles_data_migration.migrate_smiles_dps(request_data, file_path, dp_type.value)
     else:
-        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value)
+        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value) # removed the '.delay' just for the sake of debugging
 
 
 def extract_request_data(request):
@@ -228,3 +266,78 @@ def extract_request_data(request):
         'user_id': str(request.user.id),
         'tenant_id': "demotenant"
     }
+###################
+@csrf_exempt
+def unified_smiles_action(request):
+    
+    action_type = request.GET.get('action', '').strip()  # get action: 'search' or 'share'?
+
+    if action_type == 'search':
+        return search_users_and_groups_logic(request)
+    elif action_type == 'share':
+        return share_data_products_logic(request)
+    else:
+        return JsonResponse({'error': 'Invalid action type'}, status=400)
+
+
+def search_users_and_groups_logic(request):
+    search_term = request.GET.get("query", "").strip()  
+    tenant_id = request.GET.get("tenant_id", "").strip()
+    
+
+    if not tenant_id:
+        tenant_id = "demotenant"  # if no tenant_id，assisn to "demotenant"
+       
+
+    results = {"users": [], "groups": []}
+    try:
+        # 
+        with grpc.insecure_channel('localhost:6565') as channel:
+            sharing_service = SharingService(channel)
+            
+            users = sharing_service.search_users(search_term, tenant_id)
+            groups = sharing_service.search_groups(search_term, tenant_id)
+            
+
+            
+            results["users"] = [{"id": user.user_id, "name": user.user_id} for user in users]
+            results["groups"] = [{"id": group.group_id, "name": group.group_id} for group in groups]
+
+    except grpc.RpcError as e:
+        print(f"gRPC failure: {e.details()}")  
+        return JsonResponse({"error": f"gRPC error: {e.details()}"}, status=500)
+
+    return JsonResponse(results, safe=False)
+
+
+def share_data_products_logic(request):
+   
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+    data = json.loads(request.body)
+    data_product_ids = data.get('data_product_ids', [])
+    share_type = data.get('share_type')  # 'user' or 'group'
+    share_target = data.get('share_target')  # user_id or group_id
+    permission = data.get('permission', 'READ') 
+
+    try:
+        with grpc.insecure_channel('localhost:6565') as channel:
+            sharing_service = SharingService(channel)
+
+            if share_type == 'user':
+                user_info = UserInfo(user_id=share_target)
+                sharing_service.share_with_user(user_info, data_product_ids, permission)
+            elif share_type == 'group':
+                group_info = GroupInfo(group_id=share_target)
+                sharing_service.share_with_group(group_info, data_product_ids, permission)
+            else:
+                return JsonResponse({'error': 'Invalid share type'}, status=400)
+
+        return JsonResponse({'message': 'Data products shared successfully'})
+
+    except grpc.RpcError as e:
+        
+        return JsonResponse({"error": f"gRPC error: {e.details()}"}, status=500)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
