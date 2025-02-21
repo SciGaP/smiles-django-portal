@@ -48,8 +48,9 @@ def delete_smiles_data_product(request_data, data_product_id: str):
     if catalog_dp.data_product_id:
         catalog_service.delete_data_product(data_product_id)
 
-
-def get_smiles_data_products(request_data, dp_type):
+#def get_smiles_data_products(request_data, dp_type):
+def get_smiles_data_products(request_data, dp_type, page=1, size=20):
+    #set size=20 because the table size on frontend is 20 
     catalog_service = dcs.DataCatalogService(request_data)
     filtered_schema_list = metadata_util.get_metadata_schemas(request_data, dp_type.prefix)
 
@@ -60,13 +61,29 @@ def get_smiles_data_products(request_data, dp_type):
     else:
         raise Exception("No Schemas have been defined")
 
-    data_products = catalog_service.search_data_products(sql)
+    #data_products = catalog_service.search_data_products(sql)
+    #smiles_products = [
+    #    MessageToDict(map_catalog_dp_to_smiles_dp(data_product, dp_type), preserving_proto_field_name=True) for
+    #    data_product in data_products]
+
+    #return smiles_products
+
+    response = catalog_service.search_data_products(sql, page, size)
+    # response is DataProductSearchResponse
+    data_products = response.data_products
+    total_count = response.total_count
+
+    # convert DataProduct to Python dict
     smiles_products = [
-        MessageToDict(map_catalog_dp_to_smiles_dp(data_product, dp_type), preserving_proto_field_name=True) for
-        data_product in data_products]
+        MessageToDict(map_catalog_dp_to_smiles_dp(dp, dp_type), preserving_proto_field_name=True)
+        for dp in data_products
+    ]
 
-    return smiles_products
-
+    # return a dict: data_products and total_count
+    return {
+        "data_products": smiles_products,
+        "total_count": total_count
+    }
 
 def map_smiles_dp_to_catalog_dp(request_data, smiles_dp, dp_type) -> dc_pb2.DataProduct:
     data_catalog_product = dc_pb2.DataProduct()

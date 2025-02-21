@@ -57,9 +57,11 @@
             </th>
           </tr>
           </thead>
-          <!-- Table Body -->
+          <!-- Table Body 
+           -  v-for="item in paginatedItems"
+           +  v-for="item in filteredItems"-->
           <tbody>
-          <tr v-for="item in paginatedItems" :key="item.data_product_id" :class="{'bg-gray-50': selectedRow === item}" @click="onRowClicked(item)" @dblclick="onRowDoubleClicked(item)" class="hover:bg-gray-100 cursor-pointer transition-colors duration-200">
+          <tr v-for="item in filteredItems" :key="item.data_product_id" :class="{'bg-gray-50': selectedRow === item}" @click="onRowClicked(item)" @dblclick="onRowDoubleClicked(item)" class="hover:bg-gray-100 cursor-pointer transition-colors duration-200">
             <!-- select one -->
             <td>
               <input
@@ -75,7 +77,8 @@
                 <molecular-structure-img :structure="item.structure" height="50" width="50"/>
               </div>
               <div v-else>
-                {{ item[field.key] }}
+                <!--{{ item[field.key] }}-->
+                {{ getValueByPath(item, field.key) }}
               </div>
             </td>
           </tr>
@@ -196,16 +199,19 @@ export default {
         return this.items;
       }
       const filter = this.filter.toLowerCase();
+      // only filter this branch（this.items）
       return this.items.filter((item) => {
         return Object.values(item).some((value) => {
           return String(value).toLowerCase().includes(filter);
         });
       });
     },
+    /*
     paginatedItems() {
       const start = (this.currentPage - 1) * this.perPage;
       return this.filteredItems.slice(start, start + this.perPage);
     },
+    */
   },
   watch: {
     filter() {
@@ -223,6 +229,12 @@ export default {
     this.loadSMILESDataProducts();
   },
   methods: {
+    getValueByPath(obj, path) {
+    if (!obj || !path) return "";
+    // for every key
+    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
+    },    
+    /*
     loadSMILESDataProducts() {
       this.isBusy = true;
       utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`).then((response) => {
@@ -237,6 +249,25 @@ export default {
     updateTotalPages() {
       this.totalPages = Math.ceil(this.filteredItems.length / this.perPage) || 1;
     },
+    */
+    loadSMILESDataProducts() {
+      this.isBusy = true;
+      utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`)
+        .then((response) => {
+          if (response) {
+           // from backend： { data_products: [...], total_count: 123 }
+           this.items = response.data_products;
+           this.totalRows = response.total_count;
+
+            this.updateTotalPages();
+          }
+          this.isBusy = false;
+        });
+    },
+    // use totalRows to calculate totalPages
+    updateTotalPages() {
+     this.totalPages = Math.ceil(this.totalRows / this.perPage) || 1;
+    },   
     onRowClicked(item) {
       if (this.selectedRow) {
         this.$set(this.selectedRow, "_rowVariant", "");
@@ -262,11 +293,13 @@ export default {
     prevPage() {
       if (this.currentPage > 1) {
         this.currentPage--;
+      this.loadSMILESDataProducts();
       }
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
+      this.loadSMILESDataProducts();
       }
     },
     openShareModal() {
@@ -313,12 +346,13 @@ export default {
             console.error("Error:", error);
           });
     },
-      
+    // -   this.selectedItems = this.paginatedItems.map((item) => item.data_product_id);
+    //+   this.selectedItems = this.filteredItems.map((item) => item.data_product_id);
     toggleSelectAll() {
       this.selectAll = !this.selectAll; 
       if (this.selectAll) {
         
-        this.selectedItems = this.paginatedItems.map((item) => item.data_product_id);
+        this.selectedItems = this.filteredItems.map((item) => item.data_product_id);
       } else {
         
         this.selectedItems = [];
@@ -336,10 +370,16 @@ export default {
         this.selectedItems.push(itemId);
       }
 
-    
+    //const allSelected =
+    //-  this.paginatedItems.length > 0 &&
+    //-  this.paginatedItems.every((item) =>
+    //+  this.filteredItems.length > 0 &&
+    //+  this.filteredItems.every((item) =>
+    //this.selectedItems.includes(item.data_product_id)
+    //);
     const allSelected =
-      this.paginatedItems.length > 0 &&
-      this.paginatedItems.every((item) =>
+      this.filteredItems.length > 0 &&
+      this.filteredItems.every((item) =>
         this.selectedItems.includes(item.data_product_id)
       );
       if (allSelected !== this.selectAll) {

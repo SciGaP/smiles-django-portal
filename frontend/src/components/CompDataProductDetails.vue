@@ -192,11 +192,35 @@
                   </template>
                   <div class="dp-row">
                     <div class="dp-key">SDF</div>
-                    <div class="dp-value">{{ item.final_molecule_structural_formats.sdf }}</div>
+                    <!--<div class="dp-value">{{ item.final_molecule_structural_formats.sdf }}</div>-->
+                      <div class="dp-value">
+                        <div v-if="!showSdf">
+                          <!-- click on a button -->
+                          <b-button size="sm" variant="primary" @click="showSdf = true">Show SDF</b-button>
+                        </div>
+                        <div v-else>
+                          <!-- show SDF + hide button -->
+                          <pre style="white-space: pre-wrap; max-height: 300px; overflow:auto;">
+                            {{ item.final_molecule_structural_formats.sdf }}
+                          </pre>
+                          <b-button size="sm" variant="danger" @click="showSdf = false">Hide SDF</b-button>
+                        </div>
+                      </div>                    
                   </div>
                   <div class="dp-row">
                     <div class="dp-key">PDB</div>
-                    <div class="dp-value">{{ item.final_molecule_structural_formats.pdb }}</div>
+                    <!--<div class="dp-value">{{ item.final_molecule_structural_formats.pdb }}</div>-->
+                      <div class="dp-value">
+                        <div v-if="!showPdb">
+                          <b-button size="sm" variant="primary" @click="showPdb = true">Show PDB</b-button>
+                        </div>
+                        <div v-else>
+                          <pre style="white-space: pre-wrap; max-height: 300px; overflow:auto;">
+                            {{ item.final_molecule_structural_formats.pdb }}
+                          </pre>
+                          <b-button size="sm" variant="danger" @click="showPdb = false">Hide PDB</b-button>
+                        </div>
+                      </div>                    
                   </div>
                 </b-card>
               </b-col>
@@ -338,6 +362,8 @@ export default {
     return {
       item: null,
       showAlert: false,
+      showSdf: false, //show sdf?
+      showPdb: false, //show pdb?
 
       sections: [
         {id: "summary", label: "Summary"},
