@@ -1,6 +1,6 @@
 import grpc
 from smiles.proto import data_catalog_pb2_grpc, data_catalog_pb2 as pb2
-
+from smiles.proto.data_catalog_pb2 import DataProductSearchRequest
 from typing import List
 from grpc import StatusCode, RpcError
 
@@ -11,14 +11,14 @@ class DataCatalogService:
         channel = grpc.insecure_channel('localhost:6565')
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
         self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
-
+   
     def create_data_product(self, data_catalog_product: pb2.DataProduct) -> pb2.DataProduct:
         create_request = pb2.DataProductCreateRequest(user_info=self.user_info)
         create_request.data_product.CopyFrom(data_catalog_product)
         create_response = self.stub.createDataProduct(create_request)
 
         return create_response.data_product
-
+    
     def update_data_product(self, data_catalog_product: pb2.DataProduct) -> pb2.DataProduct:
         update_request = pb2.DataProductUpdateRequest(user_info=self.user_info)
         update_request.data_product.CopyFrom(data_catalog_product)
@@ -110,9 +110,21 @@ class DataCatalogService:
         response = self.stub.removeDataProductFromMetadataSchema(request)
 
         return response.data_product
-
+    '''    
     def search_data_products(self, sql: str) -> List[pb2.DataProduct]:
         search_request = pb2.DataProductSearchRequest(user_info=self.user_info, sql=sql)
         response = self.stub.searchDataProducts(search_request)
 
         return response.data_products
+    '''
+    def search_data_products(self, sql: str, page: int = 1, page_size: int = 20):
+        # add page & page_size 
+        search_request = pb2.DataProductSearchRequest(
+            user_info=self.user_info,
+            sql=sql,
+            page=page,
+            page_size=page_size
+        )
+        response = self.stub.searchDataProducts(search_request)
+
+        return response  # returb DataProductSearchResponse    

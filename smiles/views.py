@@ -28,12 +28,22 @@ class ComputationalDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-
+    '''    
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
                                                          smiles_dp_util.SmilesDP.COMPUTATIONAL)
         return JsonResponse(result, safe=False, status=200)
-
+    '''
+    def get(self, request):
+        page = int(request.GET.get("page", 1))
+        size = int(request.GET.get("size", 20))
+        result = smiles_dp_util.get_smiles_data_products(
+            extract_request_data(request),
+            smiles_dp_util.SmilesDP.COMPUTATIONAL,
+            page,
+            size
+        )
+        return JsonResponse(result, safe=False, status=200)    
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -88,12 +98,23 @@ class ExperimentalDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-
+    '''
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
                                                          smiles_dp_util.SmilesDP.EXPERIMENTAL)
         return JsonResponse(result, safe=False, status=200)
-
+    '''
+    def get(self, request):
+        page = int(request.GET.get("page", 1))
+        size = int(request.GET.get("size", 20))
+        result = smiles_dp_util.get_smiles_data_products(
+            extract_request_data(request),
+            smiles_dp_util.SmilesDP.EXPERIMENTAL,
+            page,
+            size
+        )
+        return JsonResponse(result, safe=False, status=200)
+    
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -149,12 +170,23 @@ class LiteratureDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-
+    '''
     def get(self, request):
         result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
                                                          smiles_dp_util.SmilesDP.LITERATURE)
         return JsonResponse(result, safe=False, status=200)
-
+    '''
+    def get(self, request):
+        page = int(request.GET.get("page", 1))
+        size = int(request.GET.get("size", 20))
+        result = smiles_dp_util.get_smiles_data_products(
+            extract_request_data(request),
+            smiles_dp_util.SmilesDP.LITERATURE,
+            page,
+            size
+        )
+        return JsonResponse(result, safe=False, status=200)
+    
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -220,7 +252,7 @@ def upload_smile_dps(request, dp_type):
     if old_schema_param == 'true':
         smiles_data_migration.migrate_smiles_dps(request_data, file_path, dp_type.value)
     else:
-        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value)
+        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value) # removed the '.delay' just for the sake of debugging
 
 
 def extract_request_data(request):
