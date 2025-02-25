@@ -11,17 +11,17 @@ class DataCatalogService:
         channel = grpc.insecure_channel('localhost:6565')
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
         self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
+        
     def create_data_product(self, data_catalog_product: pb2.DataProduct) -> pb2.DataProduct:
         create_request = pb2.DataProductCreateRequest(user_info=self.user_info)
         create_request.data_product.CopyFrom(data_catalog_product)
         create_response = self.stub.createDataProduct(create_request)
-
         return create_response.data_product
+        
     def update_data_product(self, data_catalog_product: pb2.DataProduct) -> pb2.DataProduct:
         update_request = pb2.DataProductUpdateRequest(user_info=self.user_info)
         update_request.data_product.CopyFrom(data_catalog_product)
         update_response = self.stub.updateDataProduct(update_request)
-
         return update_response.data_product
 
     def get_data_product(self, dp_id: str) -> pb2.DataProduct:
