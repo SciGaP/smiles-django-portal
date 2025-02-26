@@ -117,8 +117,7 @@ class DataCatalogService:
 
         return response.data_products
     '''
-    def search_data_products(self, sql: str, page: int = 1, page_size: int = 20):
-        # add page & page_size 
+    def search_data_products(self, sql: str, page: int, page_size: int) -> pb2.DataProductSearchResponse:
         search_request = pb2.DataProductSearchRequest(
             user_info=self.user_info,
             sql=sql,
@@ -126,5 +125,5 @@ class DataCatalogService:
             page_size=page_size
         )
         response = self.stub.searchDataProducts(search_request)
+        return response
 
-        return response  # returb DataProductSearchResponse    

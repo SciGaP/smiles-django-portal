@@ -61,13 +61,6 @@ def get_smiles_data_products(request_data, dp_type, page=1, size=20):
     else:
         raise Exception("No Schemas have been defined")
 
-    #data_products = catalog_service.search_data_products(sql)
-    #smiles_products = [
-    #    MessageToDict(map_catalog_dp_to_smiles_dp(data_product, dp_type), preserving_proto_field_name=True) for
-    #    data_product in data_products]
-
-    #return smiles_products
-
     response = catalog_service.search_data_products(sql, page, size)
     # response is DataProductSearchResponse
     data_products = response.data_products
