@@ -237,7 +237,7 @@ def upload_smile_dps(request, dp_type):
     if old_schema_param == 'true':
         smiles_data_migration.migrate_smiles_dps(request_data, file_path, dp_type.value)
     else:
-        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value) # removed the '.delay' just for the sake of debugging
+        smiles_dp_util.upload_smiles_data_products.delay(request_data, file_path, dp_type.value)
 
 
 def extract_request_data(request):
