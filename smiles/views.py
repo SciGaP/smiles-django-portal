@@ -28,12 +28,7 @@ class ComputationalDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-    '''    
-    def get(self, request):
-        result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
-                                                         smiles_dp_util.SmilesDP.COMPUTATIONAL)
-        return JsonResponse(result, safe=False, status=200)
-    '''
+
     def get(self, request):
         page = int(request.GET.get("page", 1))
         size = int(request.GET.get("size", 20))
@@ -98,12 +93,7 @@ class ExperimentalDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-    '''
-    def get(self, request):
-        result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
-                                                         smiles_dp_util.SmilesDP.EXPERIMENTAL)
-        return JsonResponse(result, safe=False, status=200)
-    '''
+
     def get(self, request):
         page = int(request.GET.get("page", 1))
         size = int(request.GET.get("size", 20))
@@ -170,12 +160,7 @@ class LiteratureDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-    '''
-    def get(self, request):
-        result = smiles_dp_util.get_smiles_data_products(extract_request_data(request),
-                                                         smiles_dp_util.SmilesDP.LITERATURE)
-        return JsonResponse(result, safe=False, status=200)
-    '''
+    
     def get(self, request):
         page = int(request.GET.get("page", 1))
         size = int(request.GET.get("size", 20))

@@ -48,7 +48,6 @@ def delete_smiles_data_product(request_data, data_product_id: str):
     if catalog_dp.data_product_id:
         catalog_service.delete_data_product(data_product_id)
 
-#def get_smiles_data_products(request_data, dp_type):
 def get_smiles_data_products(request_data, dp_type, page=1, size=20):
     #set size=20 because the table size on frontend is 20 
     catalog_service = dcs.DataCatalogService(request_data)

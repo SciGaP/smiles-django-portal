@@ -15,7 +15,6 @@ import fallbackStructure from "@/assets/images/structure-fallback.svg";
 export default {
   props: {
     structure: {
-      //type: Object,
       type: String,
       required: true
     },
@@ -33,12 +32,6 @@ export default {
     }
   },
   methods: {
-    /*
-    formatImageData(structureData) {
-      return structureData
-          ? "data:image/svg+xml;base64," + structureData
-          : fallbackStructure;
-    }*/
     formatImageData(structureData) {
     if (!structureData) {
       return fallbackStructure; 

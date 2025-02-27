@@ -192,7 +192,6 @@
                   </template>
                   <div class="dp-row">
                     <div class="dp-key">SDF</div>
-                    <!--<div class="dp-value">{{ item.final_molecule_structural_formats.sdf }}</div>-->
                       <div class="dp-value">
                         <div v-if="!showSdf">
                           <!-- click on a button -->
@@ -209,7 +208,6 @@
                   </div>
                   <div class="dp-row">
                     <div class="dp-key">PDB</div>
-                    <!--<div class="dp-value">{{ item.final_molecule_structural_formats.pdb }}</div>-->
                       <div class="dp-value">
                         <div v-if="!showPdb">
                           <b-button size="sm" variant="primary" @click="showPdb = true">Show PDB</b-button>
@@ -362,8 +360,8 @@ export default {
     return {
       item: null,
       showAlert: false,
-      showSdf: false, //show sdf?
-      showPdb: false, //show pdb?
+      showSdf: false, 
+      showPdb: false, 
 
       sections: [
         {id: "summary", label: "Summary"},

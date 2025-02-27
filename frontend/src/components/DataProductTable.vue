@@ -50,7 +50,7 @@
                 <molecular-structure-img :structure="item.structure" height="50" width="50"/>
               </div>
               <div v-else>
-                {{ item[field.key] }}
+                {{ getValueByPath(item, field.key) }}
               </div>
             </td>
           </tr>
@@ -163,6 +163,11 @@ export default {
     this.loadSMILESDataProducts();
   },
   methods: {
+    getValueByPath(obj, path) {
+    if (!obj || !path) return "";
+    // for every key
+    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
+    },      
     loadSMILESDataProducts() {
       this.isBusy = true;
       utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`).then((response) => {

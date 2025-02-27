@@ -110,13 +110,7 @@ class DataCatalogService:
         response = self.stub.removeDataProductFromMetadataSchema(request)
 
         return response.data_product
-    '''    
-    def search_data_products(self, sql: str) -> List[pb2.DataProduct]:
-        search_request = pb2.DataProductSearchRequest(user_info=self.user_info, sql=sql)
-        response = self.stub.searchDataProducts(search_request)
-
-        return response.data_products
-    '''
+   
     def search_data_products(self, sql: str, page: int, page_size: int) -> pb2.DataProductSearchResponse:
         search_request = pb2.DataProductSearchRequest(
             user_info=self.user_info,
