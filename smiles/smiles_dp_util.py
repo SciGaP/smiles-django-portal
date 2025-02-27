@@ -109,6 +109,7 @@ def upload_smiles_data_products(request_data, filename, dp_id):
 
 
 def get_smiles_dp(dp_type, data=None):
+
     if dp_type == SmilesDP.COMPUTATIONAL:
         smiles_dp = comp_pb2.ComputationalDP()
         if data is not None:
@@ -134,7 +135,6 @@ def get_smiles_dp(dp_type, data=None):
         raise Exception("Undefined SMILES data product type: " + str(dp_type))
 
     return smiles_dp
-
 
 class SmilesDP(Enum):
     COMPUTATIONAL = 1

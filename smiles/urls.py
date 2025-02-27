@@ -31,4 +31,6 @@ urlpatterns = [
     re_path(r"^lit-dp/(?P<dp_id>[^/]+)/$", LiteratureDPView, name="delete-lit-dp"),
     re_path(r'lit-dp/upload/?$', LiteratureDPView, name="upload-lit-dps"),
     re_path(r"^lit-dps/?$", LiteratureDPView, name="get-lit-dps"),
+    
+    re_path(r'action/?$', views.unified_smiles_action, name="unified_smiles_action"),
 ]
