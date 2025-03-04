@@ -50,7 +50,7 @@
                 <molecular-structure-img :structure="item.structure" height="50" width="50"/>
               </div>
               <div v-else>
-                {{ item[field.key] }}
+                {{ getValueByPath(item, field.key) }}
               </div>
             </td>
           </tr>
@@ -144,8 +144,7 @@ export default {
       });
     },
     paginatedItems() {
-      const start = (this.currentPage - 1) * this.perPage;
-      return this.filteredItems.slice(start, start + this.perPage);
+      return this.items;
     },
   },
   watch: {
@@ -164,19 +163,25 @@ export default {
     this.loadSMILESDataProducts();
   },
   methods: {
+    getValueByPath(obj, path) {
+    if (!obj || !path) return "";
+    // for every key
+    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
+    },      
     loadSMILESDataProducts() {
       this.isBusy = true;
       utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`).then((response) => {
+        console.log("Server response:", response);
         if (response) {
-          this.items = response;
-          this.totalRows = this.items.length;
-          this.updateTotalPages();
+        this.items = response.data_products; 
+        this.totalRows = response.total_count;
+        this.updateTotalPages();
         }
         this.isBusy = false;
       });
     },
     updateTotalPages() {
-      this.totalPages = Math.ceil(this.filteredItems.length / this.perPage) || 1;
+      this.totalPages = Math.ceil(this.totalRows / this.perPage) || 1;
     },
     onRowClicked(item) {
       if (this.selectedRow) {
@@ -202,11 +207,13 @@ export default {
     prevPage() {
       if (this.currentPage > 1) {
         this.currentPage--;
+        this.loadSMILESDataProducts();
       }
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
+        this.loadSMILESDataProducts();
       }
     },
   },
