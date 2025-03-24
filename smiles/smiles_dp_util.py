@@ -61,7 +61,6 @@ def get_smiles_data_products(request_data, dp_type, page=1, size=20):
         raise Exception("No Schemas have been defined")
 
     response = catalog_service.search_data_products(sql, page, size)
-    # response is DataProductSearchResponse
     data_products = response.data_products
     total_count = response.total_count
 
@@ -70,8 +69,6 @@ def get_smiles_data_products(request_data, dp_type, page=1, size=20):
         MessageToDict(map_catalog_dp_to_smiles_dp(dp, dp_type), preserving_proto_field_name=True)
         for dp in data_products
     ]
-
-    # return a dict: data_products and total_count
     return {
         "data_products": smiles_products,
         "total_count": total_count

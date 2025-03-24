@@ -6,8 +6,12 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "./assets/global.css"
 
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
+Vue.use(ElementUI);
 
 new Vue({
     router,

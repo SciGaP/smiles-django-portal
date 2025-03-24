@@ -24,7 +24,18 @@
         <!-- New Text -->
         <span class="font-medium">New</span>
       </button>
-
+      <!-- Share Button -->
+      <button
+        @click="openShareModal"
+        :disabled="selectedItems.length === 0"
+        class="flex items-center bg-green-600 text-white px-4 py-2 rounded-md border border-green-600 hover:bg-green-700 disabled:opacity-50"
+      >
+        <!-- Share Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 8a3 3 0 11-6 0 3 3 0 016 0zm0 0v7m-6-7v7m6-3H9" />
+        </svg>
+        <span class="font-medium">Share</span>
+      </button>
     </div>
 
     <!-- Table and Sidebar -->
@@ -36,6 +47,10 @@
           <!-- Table Head -->
           <thead class="bg-gray-100 sticky top-0">
           <tr>
+            <!-- Select All -->
+            <th class="px-4 py-2 border-b border-gray-300">
+              <input type="checkbox" :checked="selectAll" @click.stop @change="toggleSelectAll" />
+            </th>            
             <th v-for="field in fields" :key="field.key" class="px-4 py-2 text-left text-gray-600 border-b border-gray-300">
               {{ field.label || field.key }}
             </th>
@@ -43,7 +58,16 @@
           </thead>
           <!-- Table Body -->
           <tbody>
-          <tr v-for="item in paginatedItems" :key="item.id" :class="{'bg-gray-50': selectedRow === item}" @click="onRowClicked(item)" @dblclick="onRowDoubleClicked(item)" class="hover:bg-gray-100 cursor-pointer transition-colors duration-200">
+            <tr v-for="item in paginatedItems" :key="item.data_product_id" :class="{'bg-gray-50': selectedItems.includes(item.data_product_id)}" @click="onRowClicked(item)" @dblclick="onRowDoubleClicked(item)" class="hover:bg-gray-100 cursor-pointer transition-colors duration-200">
+            <!-- Select One -->
+            <td class="px-4 py-2 border-b border-gray-200">
+              <input
+                type="checkbox"
+                :checked="selectedItems.includes(item.data_product_id)"
+                @click.stop
+                @change="toggleSelectItem(item.data_product_id)"
+              />
+            </td>
             <td v-for="field in fields" :key="field.key" class="px-4 py-2 border-b border-gray-200">
               <!-- Custom Cell Template -->
               <div v-if="field.key === 'structure'">
@@ -92,6 +116,34 @@
       </div>
     </div>
 
+    <!-- Share Modal -->
+    <div v-if="showShareModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <h3 class="text-lg font-bold mb-4">Share Data Products</h3>
+        <label for="share-type" class="block mb-2">Share with:</label>
+        <select id="share-type" v-model="shareType" class="w-full mb-4 border rounded-md p-2">
+          <option value="user">User</option>
+          <option value="group">Group</option>
+        </select>
+        <label for="share-target" class="block mb-2">User/Group ID:</label>
+        <el-autocomplete
+          id="share-target"
+          v-model="shareTarget"
+          placeholder="Enter user or group ID"
+          :fetch-suggestions="fetchSuggestions"
+          @select="onSelectSuggestion"
+          :trigger-on-focus="true"
+          :clearable="true"
+          class="w-full mb-4"
+        />
+        <div class="flex justify-end space-x-4">
+          <button @click="closeShareModal" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancel</button>
+          <button @click="submitShare" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Submit</button>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -126,6 +178,14 @@ export default {
       plusButtonIcon,
       selectedRow: null,
       totalPages: 1,
+
+      selectedItems: [],
+      selectAll: false,
+      showShareModal: false,
+      shareType: "user",
+      shareTarget: "",
+      suggestions: [],
+      isLoadingSuggestions: false,
     };
   },
   computed: {
@@ -163,6 +223,97 @@ export default {
     this.loadSMILESDataProducts();
   },
   methods: {
+    toggleSelectAll() {
+    this.selectAll = !this.selectAll;
+    if (this.selectAll) {
+      this.selectedItems = this.paginatedItems.map(item => item.data_product_id);
+    } else {
+      this.selectedItems = [];
+    }
+  },
+  toggleSelectItem(itemId) {
+    const index = this.selectedItems.indexOf(itemId);
+    if (index > -1) {
+      this.selectedItems.splice(index, 1);
+    } else {
+      this.selectedItems.push(itemId);
+    }
+    const allSelected = this.paginatedItems.length > 0 &&
+      this.paginatedItems.every(item => this.selectedItems.includes(item.data_product_id));
+    this.selectAll = allSelected;
+  },
+  openShareModal() {
+  if (this.selectedItems.length === 0) {
+    alert("Please select at least one data product.");
+    return;
+  }
+  this.showShareModal = true;
+  this.fetchSuggestions("", () => {});
+  },
+  closeShareModal() {
+    this.showShareModal = false;
+    this.shareTarget = "";
+  },
+  submitShare() {
+    if (!this.shareTarget) {
+      alert("Please specify a user or group.");
+      return;
+    }
+    const requestData = {
+      data_product_ids: this.selectedItems,
+      share_type: this.shareType,
+      share_target: this.shareTarget,
+    };
+    fetch("/smiles/share-data-product", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        alert("Error: " + data.error);
+      } else {
+        alert("Data products shared successfully!");
+        this.closeShareModal();
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+  },
+  async fetchSuggestions(queryString, callback) {
+    try {
+      //shareType (user/group)
+      const typeParam = this.shareType;  
+
+      const response = await fetch(`/smiles/action/?action=search&type=${typeParam}&query=${encodeURIComponent(queryString || "")}`);
+      const data = await response.json();
+
+      let suggestions = [];
+      if (typeParam === 'user') {
+        suggestions = data.users.map(user => ({
+          value: user.id,  // internalUserId
+          label: user.name,
+          type: 'user',
+        }));
+      } else if (typeParam === 'group') {
+        suggestions = data.groups.map(group => ({
+          value: group.name,
+          label: group.id,
+          type: 'group',
+        }));
+      }
+      callback(suggestions);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      callback([]);
+    }
+  },
+  onSelectSuggestion(selected) {
+    this.shareTarget = selected.value;
+  },
+
     getValueByPath(obj, path) {
     if (!obj || !path) return "";
     // for every key
@@ -194,6 +345,7 @@ export default {
         this.$set(item, "_rowVariant", "secondary");
         this.selectedRow = item;
       }
+      this.toggleSelectItem(item.data_product_id);
     },
     onRowDoubleClicked(item) {
       this.$router.push({
