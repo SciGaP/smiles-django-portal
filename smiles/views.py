@@ -17,7 +17,6 @@ from .airavata_portal_service import AiravataPortalAPIService
 from .data_catalog_service import DataCatalogService
 from smiles.proto import data_catalog_pb2 as pb2
 from django.views.decorators.csrf import csrf_exempt
-from grpc import StatusCode
 
 logger = logging.getLogger(__name__)
 
@@ -388,9 +387,7 @@ def share_data_product(request):
                     permission=pb2.READ
                 )
     except grpc.RpcError as e:
-        if e.code() == StatusCode.PERMISSION_DENIED:
-            return HttpResponseForbidden("You do not have the OWNER or MANAGE_SHARING permission to share this data product.")
-        else:
-            return HttpResponseBadRequest(f"Error sharing data product: {e.details()}")
+        return JsonResponse({"error": f"Error sharing data product: {e.details()}"},
+                            status=400)
 
     return JsonResponse({"status": "ok", "data_product_ids": data_product_ids})
