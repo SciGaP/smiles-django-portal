@@ -294,13 +294,13 @@ export default {
       if (typeParam === 'user') {
         suggestions = data.users.map(user => ({
           value: user.id,  // internalUserId
-          label: user.name,
+          label: user.id,
           type: 'user',
         }));
       } else if (typeParam === 'group') {
         suggestions = data.groups.map(group => ({
           value: group.name,
-          label: group.id,
+          label: group.name,
           type: 'group',
         }));
       }

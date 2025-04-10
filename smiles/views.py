@@ -252,7 +252,7 @@ def extract_request_data(request):
     groups_response = my_groups(request)
     groups_list = json.loads(groups_response.content)
     return {
-        'user_id': request.user.username + "@smiles",#airavataInternalUserId
+        'user_id': request.user.username ,#UserId
         'tenant_id': "demotenant",
         'group_ids': groups_list
     }
@@ -285,11 +285,8 @@ def search_users_groups(request):
 
         user_list = []
         for u in filtered_users:
-            display_name = (f"{u.get('firstName','')} {u.get('lastName','')}".strip()) or u.get('userId', 'unknown-user')
-            user_id = u.get('airavataInternalUserId', '')
             user_list.append({
-                "id": user_id,         # internalUserId
-                "name": display_name
+                "id": u.get('userId', 'unknown-user')
             })
         resp_data["users"] = user_list
 
@@ -311,7 +308,6 @@ def search_users_groups(request):
         group_list = []
         for g in filtered_groups:
             group_list.append({
-                "id": g.get("id", ""),
                 "name": g.get("name", "")
             })
         resp_data["groups"] = group_list
@@ -360,7 +356,7 @@ def share_data_product(request):
         return HttpResponseBadRequest("Invalid share_type")
 
     request_data = {
-        "user_id": request.user.username + "@smiles",
+        "user_id": request.user.username,
         "tenant_id": "demotenant"
     }
     catalog_service = DataCatalogService(request_data)
