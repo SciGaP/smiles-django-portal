@@ -279,8 +279,6 @@ export default {
     this.selectAll = allSelected;
   },
   openShareModal() {
-  //if (this.selectedItems.length === 0) {
-  //alert("Please select at least one data product.");
   if (this.selectedItems.length === 0) {
     alert("Please select at least one data product.");
     return;
@@ -298,7 +296,6 @@ export default {
       return;
     }
     const requestData = {
-      //data_product_ids: this.selectedItems,
       share_type: this.shareType,
       share_target: this.shareTarget,
       ...(this.selectAllGlobal
