@@ -36,6 +36,14 @@
         </svg>
         <span class="font-medium">Share</span>
       </button>
+      <button
+        @click="selectAllGlobalItems"
+        class="flex items-center bg-purple-600 text-white px-4 py-2 rounded-md border border-purple-600 hover:bg-purple-700"
+      >
+        <span class="font-medium whitespace-nowrap">
+          Select&nbsp;({{ selectedItems.length }}/{{ totalRows }})
+        </span>
+      </button>
     </div>
 
     <!-- Table and Sidebar -->
@@ -49,7 +57,7 @@
           <tr>
             <!-- Select All -->
             <th class="px-4 py-2 border-b border-gray-300">
-              <input type="checkbox" :checked="selectAll" @click.stop @change="toggleSelectAll" />
+              <input type="checkbox" :checked="paginatedItems.every(item => isChecked(item.data_product_id))" @click.stop @change="toggleSelectAll" />
             </th>            
             <th v-for="field in fields" :key="field.key" class="px-4 py-2 text-left text-gray-600 border-b border-gray-300">
               {{ field.label || field.key }}
@@ -63,7 +71,7 @@
             <td class="px-4 py-2 border-b border-gray-200">
               <input
                 type="checkbox"
-                :checked="selectedItems.includes(item.data_product_id)"
+                :checked="isChecked(item.data_product_id)"
                 @click.stop
                 @change="toggleSelectItem(item.data_product_id)"
               />
@@ -181,6 +189,7 @@ export default {
 
       selectedItems: [],
       selectAll: false,
+      selectAllGlobal: false,
       showShareModal: false,
       shareType: "user",
       shareTarget: "",
@@ -189,6 +198,12 @@ export default {
     };
   },
   computed: {
+    canShare() {
+    return this.selectAllGlobal || this.selectedItems.length > 0;
+    },
+    isChecked() {
+      return id => this.selectedItems.includes(id);
+    },
     fields() {
       return configurationService.getDisplayableColumns(this.type);
     },
@@ -231,6 +246,27 @@ export default {
       this.selectedItems = [];
     }
   },
+  selectAllGlobalItems() {
+    if (this.selectAllGlobal){
+      this.selectAllGlobal = false;
+      this.selectedItems = [];
+      this.selectAll = false;
+      return;
+    }
+    this.selectAllGlobal = true;
+    this.isBusy = true; 
+    
+    utils.FetchUtils.get(
+    `/smiles/${this.type}-dps?page=1&size=${this.totalRows}`
+    ).then(resp => {
+      const all = resp.data_products || [];
+      this.selectedItems = all.map(p => p.data_product_id);
+      this.isBusy = false;
+    }).catch(err => {
+      console.error("fetch‑all ids failed:", err);
+      this.isBusy = false;
+    });
+  },
   toggleSelectItem(itemId) {
     const index = this.selectedItems.indexOf(itemId);
     if (index > -1) {
@@ -243,6 +279,8 @@ export default {
     this.selectAll = allSelected;
   },
   openShareModal() {
+  //if (this.selectedItems.length === 0) {
+  //alert("Please select at least one data product.");
   if (this.selectedItems.length === 0) {
     alert("Please select at least one data product.");
     return;
@@ -260,9 +298,13 @@ export default {
       return;
     }
     const requestData = {
-      data_product_ids: this.selectedItems,
+      //data_product_ids: this.selectedItems,
       share_type: this.shareType,
       share_target: this.shareTarget,
+      ...(this.selectAllGlobal
+      ? { share_all: true }
+      : { data_product_ids: this.selectedItems }
+  )      
     };
     fetch("/smiles/share-data-product", {
       method: "POST",
@@ -276,6 +318,7 @@ export default {
       } else {
         alert("Data products shared successfully!");
         this.closeShareModal();
+        this.selectAllGlobal = false;
       }
     })
     .catch(error => {
@@ -326,6 +369,13 @@ export default {
         if (response) {
         this.items = response.data_products; 
         this.totalRows = response.total_count;
+        if (this.selectAllGlobal) {
+        this.items.forEach(it => {
+          if (!this.selectedItems.includes(it.data_product_id)) {
+            this.selectedItems.push(it.data_product_id);
+          }
+        });
+      }
         this.updateTotalPages();
         }
         this.isBusy = false;

@@ -346,14 +346,41 @@ def share_data_product(request):
 
     body = json.loads(request.body)
     data_product_ids = body.get("data_product_ids", [])
+    share_all= body.get("share_all", False)
     share_type = body.get("share_type")
     share_target = body.get("share_target")
 
-    if not data_product_ids:
-        return HttpResponseBadRequest("No data_product_ids provided")
-
+    if not share_all and not data_product_ids:
+        return JsonResponse(
+            {"error": "No data_product_ids provided"},
+            status=400
+        )
     if share_type not in ("user", "group"):
         return HttpResponseBadRequest("Invalid share_type")
+    if share_all:
+        data_product_ids = []
+        for dp_type in (
+            smiles_dp_util.SmilesDP.COMPUTATIONAL,
+            smiles_dp_util.SmilesDP.EXPERIMENTAL,
+            smiles_dp_util.SmilesDP.LITERATURE
+        ):
+            page, size = 1, 1000
+            while True:
+                resp = smiles_dp_util.get_smiles_data_products(
+                             extract_request_data(request),
+                             dp_type,
+                             page,
+                             size
+                )
+                prods = resp.get("data_products", [])
+                ids = [p["data_product_id"] for p in prods]
+                if not ids:
+                    break
+                data_product_ids.extend(ids)
+                if len(ids) < size:
+                    break
+                page += 1
+
 
     request_data = {
         "user_id": request.user.username,
