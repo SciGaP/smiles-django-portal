@@ -116,7 +116,21 @@
           <button @click="prevPage" :disabled="currentPage === 1" class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 transition-colors duration-200">
            Back
           </button>
-          <span class="text-gray-700">Page {{ currentPage }} of {{ totalPages }}</span>
+          <input
+              v-model.number="pageInput"
+              @keyup.enter="goToPage"
+              type="number"
+              :min="1"
+              :max="totalPages"
+              class="w-16 px-1 text-center border border-gray-300 rounded-md"
+          />
+          <button @click="goToPage"
+                  class="px-2 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                  Go
+          </button>
+          <span class="text-gray-700 whitespace-nowrap">
+            / {{ totalPages }}
+          </span>
           <button @click="nextPage" :disabled="currentPage === totalPages" class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 transition-colors duration-200">
             Next
           </button>
@@ -180,6 +194,7 @@ export default {
       items: [],
       totalRows: 1,
       currentPage: 1,
+      pageInput: 1,
       perPage: 20,
       filter: null,
       isBusy: true,
@@ -233,11 +248,24 @@ export default {
     perPage() {
       this.updateTotalPages();
     },
+    currentPage(val){
+      this.pageInput = val
+    },
   },
   mounted() {
     this.loadSMILESDataProducts();
+    this.pageInput = this.currentPage
   },
   methods: {
+    goToPage(){
+      const p = this.pageInput
+      if (p >= 1 && p <= this.totalPages){
+        this.currentPage = p
+        this.loadSMILESDataProducts()
+      }else{
+        alert(`Page must be 1–${this.totalPages}`)
+      }
+    },
     toggleSelectAll() {
     this.selectAll = !this.selectAll;
     if (this.selectAll) {
