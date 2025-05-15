@@ -16,6 +16,9 @@
 {% endblock %}
 
 {% block scripts %}
+    <script>
+      window.CURRENT_USER_ID = "{{ user.username|escapejs }}";
+    </script>
     <script src="{% static 'django_airavata_api/dist/airavata-api.js' %}"></script>
     {% render_bundle 'chunk-vendors' 'js' 'SMILES' %}
     {% render_bundle 'app' 'js' 'SMILES' %}

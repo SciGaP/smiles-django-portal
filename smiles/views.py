@@ -252,14 +252,14 @@ def extract_request_data(request):
     groups_response = my_groups(request)
     groups_list = json.loads(groups_response.content)
     return {
-        'user_id': request.user.username ,#UserId
+        'user_id': request.user.username ,
         'tenant_id': "demotenant",
         'group_ids': groups_list
     }
 
 @login_required
 def search_users_groups(request):
-    search_type = request.GET.get("type", "").strip().lower()  # user/group/...
+    search_type = request.GET.get("type", "").strip().lower()
     query = request.GET.get("query", "").strip().lower()
 
     service = AiravataPortalAPIService(request)
@@ -338,13 +338,17 @@ def my_groups(request):
 
     return JsonResponse(group_ids, safe=False)
 
-@csrf_exempt
 @login_required
 def share_data_product(request):
     if request.method != "POST":
         return HttpResponseBadRequest("Only POST is allowed")
-
-    body = json.loads(request.body)
+    try:
+        body = json.loads(request.body)
+    except (ValueError, TypeError) as e:  
+        return JsonResponse(  
+            {"error": "Invalid JSON payload"},
+            status=400
+            )
     data_product_ids = body.get("data_product_ids", [])
     share_all= body.get("share_all", False)
     share_type = body.get("share_type")
@@ -364,13 +368,13 @@ def share_data_product(request):
             smiles_dp_util.SmilesDP.EXPERIMENTAL,
             smiles_dp_util.SmilesDP.LITERATURE
         ):
-            page, size = 1, 1000
+            page, size = 1, 50
             while True:
                 resp = smiles_dp_util.get_smiles_data_products(
-                             extract_request_data(request),
-                             dp_type,
-                             page,
-                             size
+                            extract_request_data(request),
+                            dp_type,
+                            page,
+                            size
                 )
                 prods = resp.get("data_products", [])
                 ids = [p["data_product_id"] for p in prods]

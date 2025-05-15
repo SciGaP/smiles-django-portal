@@ -160,7 +160,12 @@
         />
         <div class="flex justify-end space-x-4">
           <button @click="closeShareModal" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancel</button>
-          <button @click="submitShare" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Submit</button>
+          <button 
+            @click="submitShare"
+            :disabled="!canSubmit"
+            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50">
+            Submit
+          </button>
         </div>
       </div>
     </div>
@@ -170,6 +175,12 @@
 </template>
 
 <script>
+function getCookie (name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return "";
+}
 import { configurationService } from "@/services/configuraion-service";
 import MolecularStructureImg from "@/components/common/MolecularStructureImg";
 import HomePageStructureView from "@/components/HomePageStructureView.vue";
@@ -209,10 +220,15 @@ export default {
       shareType: "user",
       shareTarget: "",
       suggestions: [],
+      currentUserId: window.CURRENT_USER_ID || "",
       isLoadingSuggestions: false,
     };
   },
   computed: {
+    canSubmit() {
+    if (!this.shareTarget) return false;
+    return this.suggestions.some(s => s.value === this.shareTarget);
+  },
     canShare() {
     return this.selectAllGlobal || this.selectedItems.length > 0;
     },
@@ -263,7 +279,7 @@ export default {
         this.currentPage = p
         this.loadSMILESDataProducts()
       }else{
-        alert(`Page must be 1–${this.totalPages}`)
+        this.pageInput = this.currentPage
       }
     },
     toggleSelectAll() {
@@ -274,7 +290,7 @@ export default {
       this.selectedItems = [];
     }
   },
-  selectAllGlobalItems() {
+  async selectAllGlobalItems() {
     if (this.selectAllGlobal){
       this.selectAllGlobal = false;
       this.selectedItems = [];
@@ -283,17 +299,28 @@ export default {
     }
     this.selectAllGlobal = true;
     this.isBusy = true; 
+    const PAGE_SIZE = 50;
+    let page = 1;
+    const allIds = new Set();
     
-    utils.FetchUtils.get(
-    `/smiles/${this.type}-dps?page=1&size=${this.totalRows}`
-    ).then(resp => {
-      const all = resp.data_products || [];
-      this.selectedItems = all.map(p => p.data_product_id);
-      this.isBusy = false;
-    }).catch(err => {
+    try {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const resp = await utils.FetchUtils.get(
+          `/smiles/${this.type}-dps?page=${page}&size=${PAGE_SIZE}&ids_only=1`
+        );
+        const list = resp.data_products || [];
+        list.forEach(p => allIds.add(p.data_product_id));
+        if (list.length < PAGE_SIZE) break;
+        page += 1;
+      }
+      this.selectedItems = Array.from(allIds);
+    } catch (err) {
       console.error("fetch‑all ids failed:", err);
+      this.selectAllGlobal = false;
+    } finally {
       this.isBusy = false;
-    });
+    }
   },
   toggleSelectItem(itemId) {
     const index = this.selectedItems.indexOf(itemId);
@@ -307,10 +334,6 @@ export default {
     this.selectAll = allSelected;
   },
   openShareModal() {
-  if (this.selectedItems.length === 0) {
-    alert("Please select at least one data product.");
-    return;
-  }
   this.showShareModal = true;
   this.fetchSuggestions("", () => {});
   },
@@ -319,10 +342,6 @@ export default {
     this.shareTarget = "";
   },
   submitShare() {
-    if (!this.shareTarget) {
-      alert("Please specify a user or group.");
-      return;
-    }
     const requestData = {
       share_type: this.shareType,
       share_target: this.shareTarget,
@@ -333,18 +352,20 @@ export default {
     };
     fetch("/smiles/share-data-product", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json" ,
+        "X-CSRFToken": getCookie("csrftoken")
+      },
       body: JSON.stringify(requestData),
     })
     .then(response => response.json())
     .then(data => {
       if (data.error) {
-        alert("Error: " + data.error);
-      } else {
-        alert("Data products shared successfully!");
-        this.closeShareModal();
-        this.selectAllGlobal = false;
-      }
+        console.error("Share failed:", data.error);
+        return;
+      } 
+      this.closeShareModal();
+      this.selectAllGlobal = false;
     })
     .catch(error => {
       console.error("Error:", error);
@@ -352,19 +373,19 @@ export default {
   },
   async fetchSuggestions(queryString, callback) {
     try {
-      //shareType (user/group)
       const typeParam = this.shareType;  
-
       const response = await fetch(`/smiles/action/?action=search&type=${typeParam}&query=${encodeURIComponent(queryString || "")}`);
       const data = await response.json();
 
       let suggestions = [];
       if (typeParam === 'user') {
-        suggestions = data.users.map(user => ({
-          value: user.id,  // internalUserId
-          label: user.id,
-          type: 'user',
-        }));
+      suggestions = data.users
+        .filter(u => u.id !== this.currentUserId)
+        .map(u => ({
+          value: u.id,
+          label: u.id,
+          type: "user",
+      }));
       } else if (typeParam === 'group') {
         suggestions = data.groups.map(group => ({
           value: group.name,
@@ -372,6 +393,7 @@ export default {
           type: 'group',
         }));
       }
+      this.suggestions = suggestions;
       callback(suggestions);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
