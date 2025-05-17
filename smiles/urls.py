@@ -31,4 +31,9 @@ urlpatterns = [
     re_path(r"^lit-dp/(?P<dp_id>[^/]+)/$", LiteratureDPView, name="delete-lit-dp"),
     re_path(r'lit-dp/upload/?$', LiteratureDPView, name="upload-lit-dps"),
     re_path(r"^lit-dps/?$", LiteratureDPView, name="get-lit-dps"),
+
+    re_path(r'^action/?$', views.search_users_groups, name='search_users_groups'),
+    re_path(r'^share-data-product/?$', views.share_data_product, name="share-data-product"),
+    re_path(r'^my-groups/?$', views.my_groups, name='my_groups'),
+
 ]

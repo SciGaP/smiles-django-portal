@@ -11,6 +11,8 @@ class DataCatalogService:
         channel = grpc.insecure_channel('localhost:6565')
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
         self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
+        if 'group_ids' in request_data:
+            self.user_info.group_ids.extend(request_data['group_ids'])
    
     def create_data_product(self, data_catalog_product: pb2.DataProduct) -> pb2.DataProduct:
         create_request = pb2.DataProductCreateRequest(user_info=self.user_info)
@@ -120,4 +122,25 @@ class DataCatalogService:
         )
         response = self.stub.searchDataProducts(search_request)
         return response
+
+    def grant_permission_to_user(self, target_user_id: str, data_product_id: str, permission: pb2.Permission):
+        target_user_info = pb2.UserInfo(user_id=target_user_id, tenant_id=self.user_info.tenant_id)
+        req = pb2.GrantPermissionToUserRequest(
+            user_info=self.user_info,
+            target_user=target_user_info,
+            data_product_id=data_product_id,
+            permission=permission
+        )
+        self.stub.GrantPermissionToUser(req)
+
+
+    def grant_permission_to_group(self, target_group_id: str, data_product_id: str, permission: pb2.Permission):
+        target_group_info = pb2.GroupInfo(group_id=target_group_id, tenant_id=self.user_info.tenant_id)
+        req = pb2.GrantPermissionToGroupRequest(
+            user_info=self.user_info,
+            target_group=target_group_info,
+            data_product_id=data_product_id,
+            permission=permission
+        )
+        self.stub.GrantPermissionToGroup(req)
 

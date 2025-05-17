@@ -1,8 +1,10 @@
 import json
 import os
+import logging
+import grpc
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.views import View
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -11,6 +13,12 @@ from . import smiles_data_migration
 from django.shortcuts import render
 from .apps import SmilesDjangoPortalConfig
 
+from .airavata_portal_service import AiravataPortalAPIService
+from .data_catalog_service import DataCatalogService
+from smiles.proto import data_catalog_pb2 as pb2
+from django.views.decorators.csrf import csrf_exempt
+
+logger = logging.getLogger(__name__)
 
 class ComputationalDPView(View):
     UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/comp-dp/upload'
@@ -241,7 +249,172 @@ def upload_smile_dps(request, dp_type):
 
 
 def extract_request_data(request):
+    groups_response = my_groups(request)
+    groups_list = json.loads(groups_response.content)
     return {
-        'user_id': str(request.user.id),
-        'tenant_id': "demotenant"
+        'user_id': request.user.username ,
+        'tenant_id': "demotenant",
+        'group_ids': groups_list
     }
+
+@login_required
+def search_users_groups(request):
+    search_type = request.GET.get("type", "").strip().lower()
+    query = request.GET.get("query", "").strip().lower()
+
+    service = AiravataPortalAPIService(request)
+
+    resp_data = {
+        "users": [],
+        "groups": []
+    }
+    if search_type in ("user", ""):
+        all_users = service.get_user_profiles()
+        if query:
+            def user_matches(u):
+                combined = (
+                    f"{u.get('firstName','')} "
+                    f"{u.get('lastName','')} "
+                    f"{u.get('userId','')} "
+                    f"{u.get('airavataInternalUserId','')}"
+                ).lower()
+                return query in combined
+            filtered_users = [u for u in all_users if user_matches(u)]
+        else:
+            filtered_users = all_users
+
+        user_list = []
+        for u in filtered_users:
+            user_list.append({
+                "id": u.get('userId', 'unknown-user')
+            })
+        resp_data["users"] = user_list
+
+    if search_type in ("group", ""):
+        all_groups_response = service.get_groups()
+        groups_list = all_groups_response.get("results", [])
+
+        if query:
+            def group_matches(g):
+                combined = (
+                    f"{g.get('name','')} "
+                    f"{g.get('id','')}"
+                ).lower()
+                return query in combined
+            filtered_groups = [g for g in groups_list if group_matches(g)]
+        else:
+            filtered_groups = groups_list
+
+        group_list = []
+        for g in filtered_groups:
+            group_list.append({
+                "name": g.get("name", "")
+            })
+        resp_data["groups"] = group_list
+
+    return JsonResponse(resp_data)
+
+@login_required
+def my_groups(request):
+    if not hasattr(request, 'profile_service'):
+        logger.error("No profile_service found in request; possibly the middleware is missing.")
+        return HttpResponseForbidden("Profile service unavailable.")
+
+    group_manager_client = request.profile_service.get('group_manager')
+    if not group_manager_client:
+        logger.error("No group_manager found in profile_service.")
+        return HttpResponseForbidden("Group manager client not available.")
+
+    user_name = request.user.username + "@" + settings.GATEWAY_ID
+
+    user_groups = group_manager_client.getAllGroupsUserBelongs(
+        request.authz_token,
+        user_name
+    )
+
+    group_ids = []
+    for grp in user_groups:
+        group_ids.append(grp.name)
+
+    return JsonResponse(group_ids, safe=False)
+
+@login_required
+def share_data_product(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("Only POST is allowed")
+    try:
+        body = json.loads(request.body)
+    except (ValueError, TypeError) as e:  
+        return JsonResponse(  
+            {"error": "Invalid JSON payload"},
+            status=400
+            )
+    data_product_ids = body.get("data_product_ids", [])
+    share_all= body.get("share_all", False)
+    share_type = body.get("share_type")
+    share_target = body.get("share_target")
+
+    if not share_all and not data_product_ids:
+        return JsonResponse(
+            {"error": "No data_product_ids provided"},
+            status=400
+        )
+    if share_type not in ("user", "group"):
+        return HttpResponseBadRequest("Invalid share_type")
+    if share_all:
+        data_product_ids = []
+        for dp_type in (
+            smiles_dp_util.SmilesDP.COMPUTATIONAL,
+            smiles_dp_util.SmilesDP.EXPERIMENTAL,
+            smiles_dp_util.SmilesDP.LITERATURE
+        ):
+            page, size = 1, 50
+            while True:
+                resp = smiles_dp_util.get_smiles_data_products(
+                            extract_request_data(request),
+                            dp_type,
+                            page,
+                            size
+                )
+                prods = resp.get("data_products", [])
+                ids = [p["data_product_id"] for p in prods]
+                if not ids:
+                    break
+                data_product_ids.extend(ids)
+                if len(ids) < size:
+                    break
+                page += 1
+
+
+    request_data = {
+        "user_id": request.user.username,
+        "tenant_id": "demotenant"
+    }
+    catalog_service = DataCatalogService(request_data)
+
+    if share_type == "user":
+        user_ids = [share_target]
+        group_ids = []
+    else:
+        user_ids = []
+        group_ids = [share_target]
+
+    try:
+        for dp_id in data_product_ids:
+            for u in user_ids:
+                catalog_service.grant_permission_to_user(
+                    target_user_id=u,
+                    data_product_id=dp_id,
+                    permission=pb2.READ
+                )
+            for g in group_ids:
+                catalog_service.grant_permission_to_group(
+                    target_group_id=g,
+                    data_product_id=dp_id,
+                    permission=pb2.READ
+                )
+    except grpc.RpcError as e:
+        return JsonResponse({"error": f"Error sharing data product: {e.details()}"},
+                            status=400)
+
+    return JsonResponse({"status": "ok", "data_product_ids": data_product_ids})

@@ -94,6 +94,16 @@ class DataCatalogAPIServiceStub(object):
                 request_serializer=data__catalog__pb2.DataProductSearchRequest.SerializeToString,
                 response_deserializer=data__catalog__pb2.DataProductSearchResponse.FromString,
                 )
+        self.GrantPermissionToUser = channel.unary_unary(
+                '/DataCatalogAPIService/GrantPermissionToUser',
+                request_serializer=data__catalog__pb2.GrantPermissionToUserRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.GrantPermissionToUserResponse.FromString,
+                )
+        self.GrantPermissionToGroup = channel.unary_unary(
+                '/DataCatalogAPIService/GrantPermissionToGroup',
+                request_serializer=data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
+                response_deserializer=data__catalog__pb2.GrantPermissionToGroupResponse.FromString,
+                )
 
 
 class DataCatalogAPIServiceServicer(object):
@@ -195,6 +205,18 @@ class DataCatalogAPIServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GrantPermissionToUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GrantPermissionToGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DataCatalogAPIServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -277,6 +299,16 @@ def add_DataCatalogAPIServiceServicer_to_server(servicer, server):
                     servicer.searchDataProducts,
                     request_deserializer=data__catalog__pb2.DataProductSearchRequest.FromString,
                     response_serializer=data__catalog__pb2.DataProductSearchResponse.SerializeToString,
+            ),
+            'GrantPermissionToUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.GrantPermissionToUser,
+                    request_deserializer=data__catalog__pb2.GrantPermissionToUserRequest.FromString,
+                    response_serializer=data__catalog__pb2.GrantPermissionToUserResponse.SerializeToString,
+            ),
+            'GrantPermissionToGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.GrantPermissionToGroup,
+                    request_deserializer=data__catalog__pb2.GrantPermissionToGroupRequest.FromString,
+                    response_serializer=data__catalog__pb2.GrantPermissionToGroupResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -557,5 +589,39 @@ class DataCatalogAPIService(object):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/searchDataProducts',
             data__catalog__pb2.DataProductSearchRequest.SerializeToString,
             data__catalog__pb2.DataProductSearchResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GrantPermissionToUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/GrantPermissionToUser',
+            data__catalog__pb2.GrantPermissionToUserRequest.SerializeToString,
+            data__catalog__pb2.GrantPermissionToUserResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GrantPermissionToGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/GrantPermissionToGroup',
+            data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
+            data__catalog__pb2.GrantPermissionToGroupResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
