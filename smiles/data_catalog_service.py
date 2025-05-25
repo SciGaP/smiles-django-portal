@@ -133,7 +133,6 @@ class DataCatalogService:
         )
         self.stub.GrantPermissionToUser(req)
 
-
     def grant_permission_to_group(self, target_group_id: str, data_product_id: str, permission: pb2.Permission):
         target_group_info = pb2.GroupInfo(group_id=target_group_id, tenant_id=self.user_info.tenant_id)
         req = pb2.GrantPermissionToGroupRequest(
@@ -144,3 +143,28 @@ class DataCatalogService:
         )
         self.stub.GrantPermissionToGroup(req)
 
+    def grant_permission_to_user_on_all(self, target_user_id: str,
+                                        permission: pb2.Permission):
+        target_user_info = pb2.UserInfo(
+            user_id=target_user_id,
+            tenant_id=self.user_info.tenant_id
+        )
+        req = pb2.GrantPermissionToUserOnAllRequest(
+            user_info=self.user_info,
+            target_user=target_user_info,
+            permission=permission
+        )
+        self.stub.GrantPermissionToUserOnAll(req)
+
+    def grant_permission_to_group_on_all(self, target_group_id: str,
+                                         permission: pb2.Permission):
+        target_group_info = pb2.GroupInfo(
+            group_id=target_group_id,
+            tenant_id=self.user_info.tenant_id
+        )
+        req = pb2.GrantPermissionToGroupOnAllRequest(
+            user_info=self.user_info,
+            target_group=target_group_info,
+            permission=permission
+        )
+        self.stub.GrantPermissionToGroupOnAll(req)
