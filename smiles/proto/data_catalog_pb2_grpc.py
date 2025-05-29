@@ -15,95 +15,105 @@ class DataCatalogAPIServiceStub(object):
             channel: A grpc.Channel.
         """
         self.createDataProduct = channel.unary_unary(
-                '/DataCatalogAPIService/createDataProduct',
-                request_serializer=data__catalog__pb2.DataProductCreateRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductCreateResponse.FromString,
-                )
+            '/DataCatalogAPIService/createDataProduct',
+            request_serializer=data__catalog__pb2.DataProductCreateRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductCreateResponse.FromString,
+        )
         self.updateDataProduct = channel.unary_unary(
-                '/DataCatalogAPIService/updateDataProduct',
-                request_serializer=data__catalog__pb2.DataProductUpdateRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductUpdateResponse.FromString,
-                )
+            '/DataCatalogAPIService/updateDataProduct',
+            request_serializer=data__catalog__pb2.DataProductUpdateRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductUpdateResponse.FromString,
+        )
         self.getDataProduct = channel.unary_unary(
-                '/DataCatalogAPIService/getDataProduct',
-                request_serializer=data__catalog__pb2.DataProductGetRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductGetResponse.FromString,
-                )
+            '/DataCatalogAPIService/getDataProduct',
+            request_serializer=data__catalog__pb2.DataProductGetRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductGetResponse.FromString,
+        )
         self.deleteDataProduct = channel.unary_unary(
-                '/DataCatalogAPIService/deleteDataProduct',
-                request_serializer=data__catalog__pb2.DataProductDeleteRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductDeleteResponse.FromString,
-                )
+            '/DataCatalogAPIService/deleteDataProduct',
+            request_serializer=data__catalog__pb2.DataProductDeleteRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductDeleteResponse.FromString,
+        )
         self.getMetadataSchema = channel.unary_unary(
-                '/DataCatalogAPIService/getMetadataSchema',
-                request_serializer=data__catalog__pb2.MetadataSchemaGetRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaGetResponse.FromString,
-                )
+            '/DataCatalogAPIService/getMetadataSchema',
+            request_serializer=data__catalog__pb2.MetadataSchemaGetRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaGetResponse.FromString,
+        )
         self.createMetadataSchema = channel.unary_unary(
-                '/DataCatalogAPIService/createMetadataSchema',
-                request_serializer=data__catalog__pb2.MetadataSchemaCreateRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaCreateResponse.FromString,
-                )
+            '/DataCatalogAPIService/createMetadataSchema',
+            request_serializer=data__catalog__pb2.MetadataSchemaCreateRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaCreateResponse.FromString,
+        )
         self.deleteMetadataSchema = channel.unary_unary(
-                '/DataCatalogAPIService/deleteMetadataSchema',
-                request_serializer=data__catalog__pb2.MetadataSchemaDeleteRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaDeleteResponse.FromString,
-                )
+            '/DataCatalogAPIService/deleteMetadataSchema',
+            request_serializer=data__catalog__pb2.MetadataSchemaDeleteRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaDeleteResponse.FromString,
+        )
         self.getMetadataSchemas = channel.unary_unary(
-                '/DataCatalogAPIService/getMetadataSchemas',
-                request_serializer=data__catalog__pb2.MetadataSchemaListRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaListResponse.FromString,
-                )
+            '/DataCatalogAPIService/getMetadataSchemas',
+            request_serializer=data__catalog__pb2.MetadataSchemaListRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaListResponse.FromString,
+        )
         self.getMetadataSchemaField = channel.unary_unary(
-                '/DataCatalogAPIService/getMetadataSchemaField',
-                request_serializer=data__catalog__pb2.MetadataSchemaFieldGetRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaFieldGetResponse.FromString,
-                )
+            '/DataCatalogAPIService/getMetadataSchemaField',
+            request_serializer=data__catalog__pb2.MetadataSchemaFieldGetRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaFieldGetResponse.FromString,
+        )
         self.createMetadataSchemaField = channel.unary_unary(
-                '/DataCatalogAPIService/createMetadataSchemaField',
-                request_serializer=data__catalog__pb2.MetadataSchemaFieldCreateRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaFieldCreateResponse.FromString,
-                )
+            '/DataCatalogAPIService/createMetadataSchemaField',
+            request_serializer=data__catalog__pb2.MetadataSchemaFieldCreateRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaFieldCreateResponse.FromString,
+        )
         self.updateMetadataSchemaField = channel.unary_unary(
-                '/DataCatalogAPIService/updateMetadataSchemaField',
-                request_serializer=data__catalog__pb2.MetadataSchemaFieldUpdateRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaFieldUpdateResponse.FromString,
-                )
+            '/DataCatalogAPIService/updateMetadataSchemaField',
+            request_serializer=data__catalog__pb2.MetadataSchemaFieldUpdateRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaFieldUpdateResponse.FromString,
+        )
         self.deleteMetadataSchemaField = channel.unary_unary(
-                '/DataCatalogAPIService/deleteMetadataSchemaField',
-                request_serializer=data__catalog__pb2.MetadataSchemaFieldDeleteRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaFieldDeleteResponse.FromString,
-                )
+            '/DataCatalogAPIService/deleteMetadataSchemaField',
+            request_serializer=data__catalog__pb2.MetadataSchemaFieldDeleteRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaFieldDeleteResponse.FromString,
+        )
         self.getMetadataSchemaFields = channel.unary_unary(
-                '/DataCatalogAPIService/getMetadataSchemaFields',
-                request_serializer=data__catalog__pb2.MetadataSchemaFieldListRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.MetadataSchemaFieldListResponse.FromString,
-                )
+            '/DataCatalogAPIService/getMetadataSchemaFields',
+            request_serializer=data__catalog__pb2.MetadataSchemaFieldListRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.MetadataSchemaFieldListResponse.FromString,
+        )
         self.addDataProductToMetadataSchema = channel.unary_unary(
-                '/DataCatalogAPIService/addDataProductToMetadataSchema',
-                request_serializer=data__catalog__pb2.DataProductAddToMetadataSchemaRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductAddToMetadataSchemaResponse.FromString,
-                )
+            '/DataCatalogAPIService/addDataProductToMetadataSchema',
+            request_serializer=data__catalog__pb2.DataProductAddToMetadataSchemaRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductAddToMetadataSchemaResponse.FromString,
+        )
         self.removeDataProductFromMetadataSchema = channel.unary_unary(
-                '/DataCatalogAPIService/removeDataProductFromMetadataSchema',
-                request_serializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.FromString,
-                )
+            '/DataCatalogAPIService/removeDataProductFromMetadataSchema',
+            request_serializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.FromString,
+        )
         self.searchDataProducts = channel.unary_unary(
-                '/DataCatalogAPIService/searchDataProducts',
-                request_serializer=data__catalog__pb2.DataProductSearchRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.DataProductSearchResponse.FromString,
-                )
+            '/DataCatalogAPIService/searchDataProducts',
+            request_serializer=data__catalog__pb2.DataProductSearchRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.DataProductSearchResponse.FromString,
+        )
         self.GrantPermissionToUser = channel.unary_unary(
-                '/DataCatalogAPIService/GrantPermissionToUser',
-                request_serializer=data__catalog__pb2.GrantPermissionToUserRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.GrantPermissionToUserResponse.FromString,
-                )
+            '/DataCatalogAPIService/GrantPermissionToUser',
+            request_serializer=data__catalog__pb2.GrantPermissionToUserRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.GrantPermissionToUserResponse.FromString,
+        )
         self.GrantPermissionToGroup = channel.unary_unary(
-                '/DataCatalogAPIService/GrantPermissionToGroup',
-                request_serializer=data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
-                response_deserializer=data__catalog__pb2.GrantPermissionToGroupResponse.FromString,
-                )
+            '/DataCatalogAPIService/GrantPermissionToGroup',
+            request_serializer=data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.GrantPermissionToGroupResponse.FromString,
+        )
+        self.GrantPermissionToUserOnAll = channel.unary_unary(
+            '/DataCatalogAPIService/GrantPermissionToUserOnAll',
+            request_serializer=data__catalog__pb2.GrantPermissionToUserOnAllRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.GrantPermissionToUserOnAllResponse.FromString,
+        )
+        self.GrantPermissionToGroupOnAll = channel.unary_unary(
+            '/DataCatalogAPIService/GrantPermissionToGroupOnAll',
+            request_serializer=data__catalog__pb2.GrantPermissionToGroupOnAllRequest.SerializeToString,
+            response_deserializer=data__catalog__pb2.GrantPermissionToGroupOnAllResponse.FromString,
+        )
 
 
 class DataCatalogAPIServiceServicer(object):
@@ -217,411 +227,467 @@ class DataCatalogAPIServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GrantPermissionToUserOnAll(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GrantPermissionToGroupOnAll(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DataCatalogAPIServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'createDataProduct': grpc.unary_unary_rpc_method_handler(
-                    servicer.createDataProduct,
-                    request_deserializer=data__catalog__pb2.DataProductCreateRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductCreateResponse.SerializeToString,
-            ),
-            'updateDataProduct': grpc.unary_unary_rpc_method_handler(
-                    servicer.updateDataProduct,
-                    request_deserializer=data__catalog__pb2.DataProductUpdateRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductUpdateResponse.SerializeToString,
-            ),
-            'getDataProduct': grpc.unary_unary_rpc_method_handler(
-                    servicer.getDataProduct,
-                    request_deserializer=data__catalog__pb2.DataProductGetRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductGetResponse.SerializeToString,
-            ),
-            'deleteDataProduct': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteDataProduct,
-                    request_deserializer=data__catalog__pb2.DataProductDeleteRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductDeleteResponse.SerializeToString,
-            ),
-            'getMetadataSchema': grpc.unary_unary_rpc_method_handler(
-                    servicer.getMetadataSchema,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaGetRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaGetResponse.SerializeToString,
-            ),
-            'createMetadataSchema': grpc.unary_unary_rpc_method_handler(
-                    servicer.createMetadataSchema,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaCreateRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaCreateResponse.SerializeToString,
-            ),
-            'deleteMetadataSchema': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteMetadataSchema,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaDeleteRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaDeleteResponse.SerializeToString,
-            ),
-            'getMetadataSchemas': grpc.unary_unary_rpc_method_handler(
-                    servicer.getMetadataSchemas,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaListRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaListResponse.SerializeToString,
-            ),
-            'getMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
-                    servicer.getMetadataSchemaField,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaFieldGetRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaFieldGetResponse.SerializeToString,
-            ),
-            'createMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
-                    servicer.createMetadataSchemaField,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaFieldCreateRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaFieldCreateResponse.SerializeToString,
-            ),
-            'updateMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
-                    servicer.updateMetadataSchemaField,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaFieldUpdateRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaFieldUpdateResponse.SerializeToString,
-            ),
-            'deleteMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteMetadataSchemaField,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaFieldDeleteRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaFieldDeleteResponse.SerializeToString,
-            ),
-            'getMetadataSchemaFields': grpc.unary_unary_rpc_method_handler(
-                    servicer.getMetadataSchemaFields,
-                    request_deserializer=data__catalog__pb2.MetadataSchemaFieldListRequest.FromString,
-                    response_serializer=data__catalog__pb2.MetadataSchemaFieldListResponse.SerializeToString,
-            ),
-            'addDataProductToMetadataSchema': grpc.unary_unary_rpc_method_handler(
-                    servicer.addDataProductToMetadataSchema,
-                    request_deserializer=data__catalog__pb2.DataProductAddToMetadataSchemaRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductAddToMetadataSchemaResponse.SerializeToString,
-            ),
-            'removeDataProductFromMetadataSchema': grpc.unary_unary_rpc_method_handler(
-                    servicer.removeDataProductFromMetadataSchema,
-                    request_deserializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.SerializeToString,
-            ),
-            'searchDataProducts': grpc.unary_unary_rpc_method_handler(
-                    servicer.searchDataProducts,
-                    request_deserializer=data__catalog__pb2.DataProductSearchRequest.FromString,
-                    response_serializer=data__catalog__pb2.DataProductSearchResponse.SerializeToString,
-            ),
-            'GrantPermissionToUser': grpc.unary_unary_rpc_method_handler(
-                    servicer.GrantPermissionToUser,
-                    request_deserializer=data__catalog__pb2.GrantPermissionToUserRequest.FromString,
-                    response_serializer=data__catalog__pb2.GrantPermissionToUserResponse.SerializeToString,
-            ),
-            'GrantPermissionToGroup': grpc.unary_unary_rpc_method_handler(
-                    servicer.GrantPermissionToGroup,
-                    request_deserializer=data__catalog__pb2.GrantPermissionToGroupRequest.FromString,
-                    response_serializer=data__catalog__pb2.GrantPermissionToGroupResponse.SerializeToString,
-            ),
+        'createDataProduct': grpc.unary_unary_rpc_method_handler(
+            servicer.createDataProduct,
+            request_deserializer=data__catalog__pb2.DataProductCreateRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductCreateResponse.SerializeToString,
+        ),
+        'updateDataProduct': grpc.unary_unary_rpc_method_handler(
+            servicer.updateDataProduct,
+            request_deserializer=data__catalog__pb2.DataProductUpdateRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductUpdateResponse.SerializeToString,
+        ),
+        'getDataProduct': grpc.unary_unary_rpc_method_handler(
+            servicer.getDataProduct,
+            request_deserializer=data__catalog__pb2.DataProductGetRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductGetResponse.SerializeToString,
+        ),
+        'deleteDataProduct': grpc.unary_unary_rpc_method_handler(
+            servicer.deleteDataProduct,
+            request_deserializer=data__catalog__pb2.DataProductDeleteRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductDeleteResponse.SerializeToString,
+        ),
+        'getMetadataSchema': grpc.unary_unary_rpc_method_handler(
+            servicer.getMetadataSchema,
+            request_deserializer=data__catalog__pb2.MetadataSchemaGetRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaGetResponse.SerializeToString,
+        ),
+        'createMetadataSchema': grpc.unary_unary_rpc_method_handler(
+            servicer.createMetadataSchema,
+            request_deserializer=data__catalog__pb2.MetadataSchemaCreateRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaCreateResponse.SerializeToString,
+        ),
+        'deleteMetadataSchema': grpc.unary_unary_rpc_method_handler(
+            servicer.deleteMetadataSchema,
+            request_deserializer=data__catalog__pb2.MetadataSchemaDeleteRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaDeleteResponse.SerializeToString,
+        ),
+        'getMetadataSchemas': grpc.unary_unary_rpc_method_handler(
+            servicer.getMetadataSchemas,
+            request_deserializer=data__catalog__pb2.MetadataSchemaListRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaListResponse.SerializeToString,
+        ),
+        'getMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
+            servicer.getMetadataSchemaField,
+            request_deserializer=data__catalog__pb2.MetadataSchemaFieldGetRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaFieldGetResponse.SerializeToString,
+        ),
+        'createMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
+            servicer.createMetadataSchemaField,
+            request_deserializer=data__catalog__pb2.MetadataSchemaFieldCreateRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaFieldCreateResponse.SerializeToString,
+        ),
+        'updateMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
+            servicer.updateMetadataSchemaField,
+            request_deserializer=data__catalog__pb2.MetadataSchemaFieldUpdateRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaFieldUpdateResponse.SerializeToString,
+        ),
+        'deleteMetadataSchemaField': grpc.unary_unary_rpc_method_handler(
+            servicer.deleteMetadataSchemaField,
+            request_deserializer=data__catalog__pb2.MetadataSchemaFieldDeleteRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaFieldDeleteResponse.SerializeToString,
+        ),
+        'getMetadataSchemaFields': grpc.unary_unary_rpc_method_handler(
+            servicer.getMetadataSchemaFields,
+            request_deserializer=data__catalog__pb2.MetadataSchemaFieldListRequest.FromString,
+            response_serializer=data__catalog__pb2.MetadataSchemaFieldListResponse.SerializeToString,
+        ),
+        'addDataProductToMetadataSchema': grpc.unary_unary_rpc_method_handler(
+            servicer.addDataProductToMetadataSchema,
+            request_deserializer=data__catalog__pb2.DataProductAddToMetadataSchemaRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductAddToMetadataSchemaResponse.SerializeToString,
+        ),
+        'removeDataProductFromMetadataSchema': grpc.unary_unary_rpc_method_handler(
+            servicer.removeDataProductFromMetadataSchema,
+            request_deserializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.SerializeToString,
+        ),
+        'searchDataProducts': grpc.unary_unary_rpc_method_handler(
+            servicer.searchDataProducts,
+            request_deserializer=data__catalog__pb2.DataProductSearchRequest.FromString,
+            response_serializer=data__catalog__pb2.DataProductSearchResponse.SerializeToString,
+        ),
+        'GrantPermissionToUser': grpc.unary_unary_rpc_method_handler(
+            servicer.GrantPermissionToUser,
+            request_deserializer=data__catalog__pb2.GrantPermissionToUserRequest.FromString,
+            response_serializer=data__catalog__pb2.GrantPermissionToUserResponse.SerializeToString,
+        ),
+        'GrantPermissionToGroup': grpc.unary_unary_rpc_method_handler(
+            servicer.GrantPermissionToGroup,
+            request_deserializer=data__catalog__pb2.GrantPermissionToGroupRequest.FromString,
+            response_serializer=data__catalog__pb2.GrantPermissionToGroupResponse.SerializeToString,
+        ),
+        'GrantPermissionToUserOnAll': grpc.unary_unary_rpc_method_handler(
+            servicer.GrantPermissionToUserOnAll,
+            request_deserializer=data__catalog__pb2.GrantPermissionToUserOnAllRequest.FromString,
+            response_serializer=data__catalog__pb2.GrantPermissionToUserOnAllResponse.SerializeToString,
+        ),
+        'GrantPermissionToGroupOnAll': grpc.unary_unary_rpc_method_handler(
+            servicer.GrantPermissionToGroupOnAll,
+            request_deserializer=data__catalog__pb2.GrantPermissionToGroupOnAllRequest.FromString,
+            response_serializer=data__catalog__pb2.GrantPermissionToGroupOnAllResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'DataCatalogAPIService', rpc_method_handlers)
+        'DataCatalogAPIService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class DataCatalogAPIService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def createDataProduct(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                          target,
+                          options=(),
+                          channel_credentials=None,
+                          call_credentials=None,
+                          insecure=False,
+                          compression=None,
+                          wait_for_ready=None,
+                          timeout=None,
+                          metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/createDataProduct',
-            data__catalog__pb2.DataProductCreateRequest.SerializeToString,
-            data__catalog__pb2.DataProductCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductCreateRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductCreateResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def updateDataProduct(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                          target,
+                          options=(),
+                          channel_credentials=None,
+                          call_credentials=None,
+                          insecure=False,
+                          compression=None,
+                          wait_for_ready=None,
+                          timeout=None,
+                          metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/updateDataProduct',
-            data__catalog__pb2.DataProductUpdateRequest.SerializeToString,
-            data__catalog__pb2.DataProductUpdateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductUpdateRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductUpdateResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getDataProduct(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                       target,
+                       options=(),
+                       channel_credentials=None,
+                       call_credentials=None,
+                       insecure=False,
+                       compression=None,
+                       wait_for_ready=None,
+                       timeout=None,
+                       metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/getDataProduct',
-            data__catalog__pb2.DataProductGetRequest.SerializeToString,
-            data__catalog__pb2.DataProductGetResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductGetRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductGetResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def deleteDataProduct(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                          target,
+                          options=(),
+                          channel_credentials=None,
+                          call_credentials=None,
+                          insecure=False,
+                          compression=None,
+                          wait_for_ready=None,
+                          timeout=None,
+                          metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/deleteDataProduct',
-            data__catalog__pb2.DataProductDeleteRequest.SerializeToString,
-            data__catalog__pb2.DataProductDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductDeleteRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductDeleteResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getMetadataSchema(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                          target,
+                          options=(),
+                          channel_credentials=None,
+                          call_credentials=None,
+                          insecure=False,
+                          compression=None,
+                          wait_for_ready=None,
+                          timeout=None,
+                          metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/getMetadataSchema',
-            data__catalog__pb2.MetadataSchemaGetRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaGetResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaGetRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaGetResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def createMetadataSchema(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                             target,
+                             options=(),
+                             channel_credentials=None,
+                             call_credentials=None,
+                             insecure=False,
+                             compression=None,
+                             wait_for_ready=None,
+                             timeout=None,
+                             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/createMetadataSchema',
-            data__catalog__pb2.MetadataSchemaCreateRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaCreateRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaCreateResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def deleteMetadataSchema(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                             target,
+                             options=(),
+                             channel_credentials=None,
+                             call_credentials=None,
+                             insecure=False,
+                             compression=None,
+                             wait_for_ready=None,
+                             timeout=None,
+                             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/deleteMetadataSchema',
-            data__catalog__pb2.MetadataSchemaDeleteRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaDeleteRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaDeleteResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getMetadataSchemas(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                           target,
+                           options=(),
+                           channel_credentials=None,
+                           call_credentials=None,
+                           insecure=False,
+                           compression=None,
+                           wait_for_ready=None,
+                           timeout=None,
+                           metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/getMetadataSchemas',
-            data__catalog__pb2.MetadataSchemaListRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaListResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaListRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaListResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getMetadataSchemaField(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                               target,
+                               options=(),
+                               channel_credentials=None,
+                               call_credentials=None,
+                               insecure=False,
+                               compression=None,
+                               wait_for_ready=None,
+                               timeout=None,
+                               metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/getMetadataSchemaField',
-            data__catalog__pb2.MetadataSchemaFieldGetRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaFieldGetResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaFieldGetRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaFieldGetResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def createMetadataSchemaField(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                                  target,
+                                  options=(),
+                                  channel_credentials=None,
+                                  call_credentials=None,
+                                  insecure=False,
+                                  compression=None,
+                                  wait_for_ready=None,
+                                  timeout=None,
+                                  metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/createMetadataSchemaField',
-            data__catalog__pb2.MetadataSchemaFieldCreateRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaFieldCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaFieldCreateRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaFieldCreateResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def updateMetadataSchemaField(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                                  target,
+                                  options=(),
+                                  channel_credentials=None,
+                                  call_credentials=None,
+                                  insecure=False,
+                                  compression=None,
+                                  wait_for_ready=None,
+                                  timeout=None,
+                                  metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/updateMetadataSchemaField',
-            data__catalog__pb2.MetadataSchemaFieldUpdateRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaFieldUpdateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaFieldUpdateRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaFieldUpdateResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def deleteMetadataSchemaField(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                                  target,
+                                  options=(),
+                                  channel_credentials=None,
+                                  call_credentials=None,
+                                  insecure=False,
+                                  compression=None,
+                                  wait_for_ready=None,
+                                  timeout=None,
+                                  metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/deleteMetadataSchemaField',
-            data__catalog__pb2.MetadataSchemaFieldDeleteRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaFieldDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaFieldDeleteRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaFieldDeleteResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getMetadataSchemaFields(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                                target,
+                                options=(),
+                                channel_credentials=None,
+                                call_credentials=None,
+                                insecure=False,
+                                compression=None,
+                                wait_for_ready=None,
+                                timeout=None,
+                                metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/getMetadataSchemaFields',
-            data__catalog__pb2.MetadataSchemaFieldListRequest.SerializeToString,
-            data__catalog__pb2.MetadataSchemaFieldListResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.MetadataSchemaFieldListRequest.SerializeToString,
+                                             data__catalog__pb2.MetadataSchemaFieldListResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def addDataProductToMetadataSchema(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                                       target,
+                                       options=(),
+                                       channel_credentials=None,
+                                       call_credentials=None,
+                                       insecure=False,
+                                       compression=None,
+                                       wait_for_ready=None,
+                                       timeout=None,
+                                       metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/addDataProductToMetadataSchema',
-            data__catalog__pb2.DataProductAddToMetadataSchemaRequest.SerializeToString,
-            data__catalog__pb2.DataProductAddToMetadataSchemaResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductAddToMetadataSchemaRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductAddToMetadataSchemaResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def removeDataProductFromMetadataSchema(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                                            target,
+                                            options=(),
+                                            channel_credentials=None,
+                                            call_credentials=None,
+                                            insecure=False,
+                                            compression=None,
+                                            wait_for_ready=None,
+                                            timeout=None,
+                                            metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/removeDataProductFromMetadataSchema',
-            data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.SerializeToString,
-            data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductRemoveFromMetadataSchemaRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductRemoveFromMetadataSchemaResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def searchDataProducts(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                           target,
+                           options=(),
+                           channel_credentials=None,
+                           call_credentials=None,
+                           insecure=False,
+                           compression=None,
+                           wait_for_ready=None,
+                           timeout=None,
+                           metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/searchDataProducts',
-            data__catalog__pb2.DataProductSearchRequest.SerializeToString,
-            data__catalog__pb2.DataProductSearchResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.DataProductSearchRequest.SerializeToString,
+                                             data__catalog__pb2.DataProductSearchResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GrantPermissionToUser(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                              target,
+                              options=(),
+                              channel_credentials=None,
+                              call_credentials=None,
+                              insecure=False,
+                              compression=None,
+                              wait_for_ready=None,
+                              timeout=None,
+                              metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/GrantPermissionToUser',
-            data__catalog__pb2.GrantPermissionToUserRequest.SerializeToString,
-            data__catalog__pb2.GrantPermissionToUserResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.GrantPermissionToUserRequest.SerializeToString,
+                                             data__catalog__pb2.GrantPermissionToUserResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GrantPermissionToGroup(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                               target,
+                               options=(),
+                               channel_credentials=None,
+                               call_credentials=None,
+                               insecure=False,
+                               compression=None,
+                               wait_for_ready=None,
+                               timeout=None,
+                               metadata=None):
         return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/GrantPermissionToGroup',
-            data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
-            data__catalog__pb2.GrantPermissionToGroupResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             data__catalog__pb2.GrantPermissionToGroupRequest.SerializeToString,
+                                             data__catalog__pb2.GrantPermissionToGroupResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GrantPermissionToUserOnAll(request,
+                                   target,
+                                   options=(),
+                                   channel_credentials=None,
+                                   call_credentials=None,
+                                   insecure=False,
+                                   compression=None,
+                                   wait_for_ready=None,
+                                   timeout=None,
+                                   metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/GrantPermissionToUserOnAll',
+                                             data__catalog__pb2.GrantPermissionToUserOnAllRequest.SerializeToString,
+                                             data__catalog__pb2.GrantPermissionToUserOnAllResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GrantPermissionToGroupOnAll(request,
+                                    target,
+                                    options=(),
+                                    channel_credentials=None,
+                                    call_credentials=None,
+                                    insecure=False,
+                                    compression=None,
+                                    wait_for_ready=None,
+                                    timeout=None,
+                                    metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataCatalogAPIService/GrantPermissionToGroupOnAll',
+                                             data__catalog__pb2.GrantPermissionToGroupOnAllRequest.SerializeToString,
+                                             data__catalog__pb2.GrantPermissionToGroupOnAllResponse.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
