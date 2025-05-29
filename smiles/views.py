@@ -46,7 +46,7 @@ class ComputationalDPView(View):
             page,
             size
         )
-        return JsonResponse(result, safe=False, status=200)    
+        return JsonResponse(result, safe=False, status=200)
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -112,7 +112,7 @@ class ExperimentalDPView(View):
             size
         )
         return JsonResponse(result, safe=False, status=200)
-    
+
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -168,7 +168,7 @@ class LiteratureDPView(View):
             return JsonResponse(result, status=200)
         except Exception as e:
             return HttpResponseNotFound(str(e))
-    
+
     def get(self, request):
         page = int(request.GET.get("page", 1))
         size = int(request.GET.get("size", 20))
@@ -179,7 +179,7 @@ class LiteratureDPView(View):
             size
         )
         return JsonResponse(result, safe=False, status=200)
-    
+
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -252,10 +252,11 @@ def extract_request_data(request):
     groups_response = my_groups(request)
     groups_list = json.loads(groups_response.content)
     return {
-        'user_id': request.user.username ,
+        'user_id': request.user.username,
         'tenant_id': "demotenant",
         'group_ids': groups_list
     }
+
 
 @login_required
 def search_users_groups(request):
@@ -273,12 +274,13 @@ def search_users_groups(request):
         if query:
             def user_matches(u):
                 combined = (
-                    f"{u.get('firstName','')} "
-                    f"{u.get('lastName','')} "
-                    f"{u.get('userId','')} "
-                    f"{u.get('airavataInternalUserId','')}"
+                    f"{u.get('firstName', '')} "
+                    f"{u.get('lastName', '')} "
+                    f"{u.get('userId', '')} "
+                    f"{u.get('airavataInternalUserId', '')}"
                 ).lower()
                 return query in combined
+
             filtered_users = [u for u in all_users if user_matches(u)]
         else:
             filtered_users = all_users
@@ -297,10 +299,11 @@ def search_users_groups(request):
         if query:
             def group_matches(g):
                 combined = (
-                    f"{g.get('name','')} "
-                    f"{g.get('id','')}"
+                    f"{g.get('name', '')} "
+                    f"{g.get('id', '')}"
                 ).lower()
                 return query in combined
+
             filtered_groups = [g for g in groups_list if group_matches(g)]
         else:
             filtered_groups = groups_list
@@ -313,6 +316,7 @@ def search_users_groups(request):
         resp_data["groups"] = group_list
 
     return JsonResponse(resp_data)
+
 
 @login_required
 def my_groups(request):
@@ -338,19 +342,20 @@ def my_groups(request):
 
     return JsonResponse(group_ids, safe=False)
 
+
 @login_required
 def share_data_product(request):
     if request.method != "POST":
         return HttpResponseBadRequest("Only POST is allowed")
     try:
         body = json.loads(request.body)
-    except (ValueError, TypeError) as e:  
-        return JsonResponse(  
+    except (ValueError, TypeError) as e:
+        return JsonResponse(
             {"error": "Invalid JSON payload"},
             status=400
-            )
+        )
     data_product_ids = body.get("data_product_ids", [])
-    share_all= body.get("share_all", False)
+    share_all = body.get("share_all", False)
     share_type = body.get("share_type")
     share_target = body.get("share_target")
 
@@ -361,37 +366,27 @@ def share_data_product(request):
         )
     if share_type not in ("user", "group"):
         return HttpResponseBadRequest("Invalid share_type")
-    if share_all:
-        data_product_ids = []
-        for dp_type in (
-            smiles_dp_util.SmilesDP.COMPUTATIONAL,
-            smiles_dp_util.SmilesDP.EXPERIMENTAL,
-            smiles_dp_util.SmilesDP.LITERATURE
-        ):
-            page, size = 1, 50
-            while True:
-                resp = smiles_dp_util.get_smiles_data_products(
-                            extract_request_data(request),
-                            dp_type,
-                            page,
-                            size
-                )
-                prods = resp.get("data_products", [])
-                ids = [p["data_product_id"] for p in prods]
-                if not ids:
-                    break
-                data_product_ids.extend(ids)
-                if len(ids) < size:
-                    break
-                page += 1
-
 
     request_data = {
         "user_id": request.user.username,
         "tenant_id": "demotenant"
     }
     catalog_service = DataCatalogService(request_data)
+    if share_all:
 
+        if share_type == "user":
+            catalog_service.grant_permission_to_user_on_all(
+                target_user_id=share_target,
+                permission=pb2.READ
+            )
+        else:
+            catalog_service.grant_permission_to_group_on_all(
+                target_group_id=share_target,
+                permission=pb2.READ
+            )
+        logger.info("Shared *all* data products with %s %s",
+                    share_type, share_target)
+        return JsonResponse({"status": "ok"})
     if share_type == "user":
         user_ids = [share_target]
         group_ids = []
