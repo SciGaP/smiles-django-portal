@@ -46,3 +46,10 @@ To watch a custom path:
 
 ```bash
 python manage.py watch_logs --base_dir /your/custom/path
+```
+
+To run in background:
+
+```bash
+nohup python manage.py watch_logs > watcher.log 2>&1 &
+```
