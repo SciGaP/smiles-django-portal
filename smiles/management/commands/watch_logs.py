@@ -68,7 +68,9 @@ class LogHandler(FileSystemEventHandler):
             user_opts = ["--user", f"{os.getuid()}:{os.getgid()}"]
 
         proc = subprocess.run([
-            "docker", "run", "--rm", *user_opts,
+            "docker", "run", "--rm",
+            "-w", "/data/output",
+            *user_opts,
             "-v", f"{log_path}:/data/input/job.log:ro",
             "-v", f"{parsed_dir}:/data/output",
             DOCKER_IMG,
@@ -137,9 +139,9 @@ class Command(BaseCommand):
             help="Base directory where SMILES user folders live.",
         )
         parser.add_argument(
-           "--output_dir",
-           default=os.getenv("SMILES_OUTPUT_DIR", "/data/smiles"),
-           help="Directory where parsed JSON will be written.",
+            "--output_dir",
+            default=os.getenv("SMILES_OUTPUT_DIR", "/data/smiles"),
+            help="Directory where parsed JSON will be written.",
         )
 
     def handle(self, *args, **opts):
