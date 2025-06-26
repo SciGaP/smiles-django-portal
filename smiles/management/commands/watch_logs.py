@@ -16,9 +16,10 @@ DOCKER_IMG = "miao0703/gaussian-parser:1.0"
 
 class LogHandler(FileSystemEventHandler):
 
-    def __init__(self, base_dir: Path):
+    def __init__(self, base_dir: Path, output_root: Path):
         super().__init__()
         self.base_dir = base_dir
+        self.output_root = output_root
 
     @staticmethod
     def _wait_until_stable(path: Path, timeout: float = 10.0, step: float = 0.5) -> bool:
@@ -58,8 +59,9 @@ class LogHandler(FileSystemEventHandler):
 
         user_dir = self._find_user_dir(log_path)
         user = user_dir.name
-        parsed_dir = log_path.parent / log_path.stem
-        parsed_dir.mkdir(exist_ok=True)
+        experiment = log_path.parent.name          # 例如 “exp001”
+        parsed_dir = self.output_root / user / experiment
+        parsed_dir.mkdir(parents=True, exist_ok=True)
 
         user_opts = []
         if hasattr(os, "getuid"):
@@ -134,13 +136,20 @@ class Command(BaseCommand):
             default=os.getenv("SMILES_BASE_DIR", "/var/www/portals/gateway-user-data/smiles"),
             help="Base directory where SMILES user folders live.",
         )
+       parser.add_argument(
+           "--output_dir",
+           default=os.getenv("SMILES_OUTPUT_DIR", "/data/smiles"),
+           help="Directory where parsed JSON will be written.",
+       )
 
     def handle(self, *args, **opts):
         base_dir = Path(opts["base_dir"]).expanduser().resolve()
+        output_dir = Path(opts["output_dir"]).expanduser().resolve()
         if not base_dir.exists():
             raise CommandError(f"Base directory '{base_dir}' does not exist")
+        output_dir.mkdir(parents=True, exist_ok=True)
 
-        handler = LogHandler(base_dir)
+        handler = LogHandler(base_dir, output_dir)
 
         for log_path in base_dir.rglob("*.log"):
             if not handler._already_processed(log_path):

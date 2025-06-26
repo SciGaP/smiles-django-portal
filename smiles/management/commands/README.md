@@ -2,6 +2,8 @@
 
 This tool automatically watches Gaussian `.log` files under SMILES user folders, parses them via Docker, and uploads the generated JSON to the Airavata Data Catalog.
 
+The parsed JSON files are saved to `/data/smiles/<username>/<experiment_name>/` by default. You can customize this output location with the `--output_dir` option.
+
 ## Setup
 
 Navigate to the airavata-django-portal directory:
@@ -36,8 +38,7 @@ docker pull miao0703/gaussian-parser:1.0
 
 ## Usage
 
-To monitor the default path `/var/www/portals/gateway-user-data/smiles`:
-
+To monitor the default input path `/var/www/portals/gateway-user-data/smiles` and save parsed results under `/data/smiles`:
 ```bash
 python manage.py watch_logs
 ```
@@ -45,7 +46,10 @@ python manage.py watch_logs
 To watch a custom path:
 
 ```bash
-python manage.py watch_logs --base_dir /your/custom/path
+python manage.py watch_logs \
+  --base_dir /your/input/path \
+  --output_dir /your/output/path
+
 ```
 
 To run in background:
