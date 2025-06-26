@@ -136,11 +136,11 @@ class Command(BaseCommand):
             default=os.getenv("SMILES_BASE_DIR", "/var/www/portals/gateway-user-data/smiles"),
             help="Base directory where SMILES user folders live.",
         )
-       parser.add_argument(
+        parser.add_argument(
            "--output_dir",
            default=os.getenv("SMILES_OUTPUT_DIR", "/data/smiles"),
            help="Directory where parsed JSON will be written.",
-       )
+        )
 
     def handle(self, *args, **opts):
         base_dir = Path(opts["base_dir"]).expanduser().resolve()
