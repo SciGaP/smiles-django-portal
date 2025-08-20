@@ -1,4 +1,5 @@
 import grpc
+from django.conf import settings
 from smiles.proto import data_catalog_pb2_grpc, data_catalog_pb2 as pb2
 from smiles.proto.data_catalog_pb2 import DataProductSearchRequest
 from typing import List
@@ -8,7 +9,7 @@ from grpc import StatusCode, RpcError
 class DataCatalogService:
     def __init__(self, request_data):
         # Connect to the gRPC service (DataCatalogAPI gRPC Server)
-        channel = grpc.insecure_channel('localhost:6565')
+        channel = grpc.insecure_channel(settings.DATA_CATALOG_GRPC_SERVER)
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
         self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
         if 'group_ids' in request_data:
