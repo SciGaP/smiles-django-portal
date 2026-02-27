@@ -1,3 +1,4 @@
+import threading
 import grpc
 from django.conf import settings
 from smiles.proto import data_catalog_pb2_grpc, data_catalog_pb2 as pb2
@@ -5,11 +6,30 @@ from smiles.proto.data_catalog_pb2 import DataProductSearchRequest
 from typing import List
 from grpc import StatusCode, RpcError
 
+_channel_lock = threading.Lock()
+_grpc_channel = None
+
+
+def get_grpc_channel():
+    global _grpc_channel
+    if _grpc_channel is None:
+        with _channel_lock:
+            if _grpc_channel is None:
+                options = [
+                    ('grpc.keepalive_time_ms', 30000),
+                    ('grpc.keepalive_timeout_ms', 5000),
+                    ('grpc.keepalive_permit_without_calls', True),
+                    ('grpc.http2.max_pings_without_data', 0),
+                ]
+                _grpc_channel = grpc.insecure_channel(
+                    settings.DATA_CATALOG_GRPC_SERVER, options=options
+                )
+    return _grpc_channel
+
 
 class DataCatalogService:
     def __init__(self, request_data):
-        # Connect to the gRPC service (DataCatalogAPI gRPC Server)
-        channel = grpc.insecure_channel(settings.DATA_CATALOG_GRPC_SERVER)
+        channel = get_grpc_channel()
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
         self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
         if 'group_ids' in request_data:

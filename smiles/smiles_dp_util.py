@@ -48,8 +48,17 @@ def delete_smiles_data_product(request_data, data_product_id: str):
     if catalog_dp.data_product_id:
         catalog_service.delete_data_product(data_product_id)
 
+def _catalog_dp_to_dict(catalog_dp: dc_pb2.DataProduct) -> dict:
+    """Direct conversion for list views, skips intermediate protobuf."""
+    result = json.loads(catalog_dp.metadata) if catalog_dp.metadata else {}
+    result['data_product_id'] = catalog_dp.data_product_id
+    result['parent_data_product_id'] = catalog_dp.parent_data_product_id
+    result['name'] = catalog_dp.name
+    return result
+
+
 def get_smiles_data_products(request_data, dp_type, page=1, size=20):
-    #set size=20 because the table size on frontend is 20 
+    #set size=20 because the table size on frontend is 20
     catalog_service = dcs.DataCatalogService(request_data)
     filtered_schema_list = metadata_util.get_metadata_schemas(request_data, dp_type.prefix)
 
@@ -64,11 +73,7 @@ def get_smiles_data_products(request_data, dp_type, page=1, size=20):
     data_products = response.data_products
     total_count = response.total_count
 
-    # convert DataProduct to Python dict
-    smiles_products = [
-        MessageToDict(map_catalog_dp_to_smiles_dp(dp, dp_type), preserving_proto_field_name=True)
-        for dp in data_products
-    ]
+    smiles_products = [_catalog_dp_to_dict(dp) for dp in data_products]
     return {
         "data_products": smiles_products,
         "total_count": total_count

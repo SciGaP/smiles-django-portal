@@ -111,6 +111,11 @@
           </svg>
           <strong>Loading...</strong>
         </div>
+        <!-- Load Error -->
+        <div v-if="loadError" class="flex items-center justify-center py-4 text-red-500">
+          <span>{{ loadError }}</span>
+          <button class="ml-2 underline" @click="loadSMILESDataProducts">Retry</button>
+        </div>
       </div>
 
       <!-- Sidebar -->
@@ -223,6 +228,7 @@ export default {
       perPage: 20,
       filter: null,
       isBusy: true,
+      loadError: null,
       plusButtonIcon,
       selectedRow: null,
       totalPages: 1,
@@ -407,22 +413,30 @@ export default {
     },
     loadSMILESDataProducts() {
       this.isBusy = true;
-      utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`).then((response) => {
-        console.log("Server response:", response);
-        if (response) {
-          this.items = response.data_products;
-          this.totalRows = response.total_count;
-          if (this.selectAllGlobal) {
-            this.items.forEach(it => {
-              if (!this.selectedItems.includes(it.data_product_id)) {
-                this.selectedItems.push(it.data_product_id);
-              }
-            });
+      this.loadError = null;
+      utils.FetchUtils.get(`/smiles/${this.type}-dps?page=${this.currentPage}&size=${this.perPage}`)
+        .then((response) => {
+          console.log("Server response:", response);
+          if (response) {
+            this.items = response.data_products;
+            this.totalRows = response.total_count;
+            if (this.selectAllGlobal) {
+              this.items.forEach(it => {
+                if (!this.selectedItems.includes(it.data_product_id)) {
+                  this.selectedItems.push(it.data_product_id);
+                }
+              });
+            }
+            this.updateTotalPages();
           }
-          this.updateTotalPages();
-        }
-        this.isBusy = false;
-      });
+        })
+        .catch((error) => {
+          console.error("Failed to load data products:", error);
+          this.loadError = "Failed to load data. Please try again.";
+        })
+        .finally(() => {
+          this.isBusy = false;
+        });
     },
     updateTotalPages() {
       this.totalPages = Math.ceil(this.totalRows / this.perPage) || 1;
