@@ -1,6 +1,9 @@
 import logging
-import threading
+import os
 from typing import List
+
+os.environ.setdefault('GRPC_ENABLE_FORK_SUPPORT', '1')
+os.environ.setdefault('GRPC_POLL_STRATEGY', 'poll')
 
 import grpc
 from django.conf import settings
@@ -10,27 +13,21 @@ from smiles.proto import data_catalog_pb2_grpc, data_catalog_pb2 as pb2
 
 logger = logging.getLogger(__name__)
 
-_channel_lock = threading.Lock()
-_grpc_channel = None
-
 # Timeout for all gRPC calls, prevents hanging forever on a dead channel
 _GRPC_TIMEOUT = 30  # seconds
 
-
-def get_grpc_channel():
-    global _grpc_channel
-    if _grpc_channel is None:
-        with _channel_lock:
-            if _grpc_channel is None:
-                _grpc_channel = grpc.insecure_channel(
-                    settings.DATA_CATALOG_GRPC_SERVER
-                )
-    return _grpc_channel
+_CHANNEL_OPTIONS = [
+    ('grpc.max_send_message_length', 50 * 1024 * 1024),
+    ('grpc.max_receive_message_length', 50 * 1024 * 1024),
+]
 
 
 class DataCatalogService:
     def __init__(self, request_data):
-        channel = get_grpc_channel()
+        channel = grpc.insecure_channel(
+            settings.DATA_CATALOG_GRPC_SERVER,
+            options=_CHANNEL_OPTIONS,
+        )
         self.stub = data_catalog_pb2_grpc.DataCatalogAPIServiceStub(channel)
         self.user_info = pb2.UserInfo(user_id=request_data['user_id'], tenant_id=request_data['tenant_id'])
         if 'group_ids' in request_data:
