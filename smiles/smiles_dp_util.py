@@ -1,10 +1,14 @@
 import os
 import json
+import time
+import logging
 import decimal
 from smiles.proto import data_catalog_pb2 as dc_pb2
 from enum import Enum
 from . import data_catalog_service as dcs
 from . import metadata_util
+
+logger = logging.getLogger(__name__)
 from .proto import (computational_dp_pb2 as comp_pb2,
                     experimental_dp_pb2 as exp_pb2,
                     literature_dp_pb2 as lit_pb2)
@@ -24,11 +28,19 @@ def create_smiles_data_product(request_data, dp_type, data) -> dc_pb2.DataProduc
 
 
 def get_smiles_data_product(request_data, data_product_id: str, dp_type):
+    t0 = time.perf_counter()
     catalog_service = dcs.DataCatalogService(request_data)
     catalog_dp = catalog_service.get_data_product(data_product_id)
+    t1 = time.perf_counter()
     result_comp_dp = map_catalog_dp_to_smiles_dp(catalog_dp, dp_type)
-
-    return MessageToDict(result_comp_dp, preserving_proto_field_name=True)
+    t2 = time.perf_counter()
+    result = MessageToDict(result_comp_dp, preserving_proto_field_name=True)
+    t3 = time.perf_counter()
+    logger.warning(
+        "[TIMING] get_smiles_data_product id=%s type=%s | grpc=%.3fs map=%.3fs dict=%.3fs total=%.3fs",
+        data_product_id, dp_type.name, t1 - t0, t2 - t1, t3 - t2, t3 - t0
+    )
+    return result
 
 
 def update_smiles_data_product(request_data, data_product_id: str, dp_type, data):
@@ -59,8 +71,12 @@ def _catalog_dp_to_dict(catalog_dp: dc_pb2.DataProduct) -> dict:
 
 def get_smiles_data_products(request_data, dp_type, page=1, size=20):
     #set size=20 because the table size on frontend is 20
+    t0 = time.perf_counter()
     catalog_service = dcs.DataCatalogService(request_data)
+
+    t1 = time.perf_counter()
     filtered_schema_list = metadata_util.get_metadata_schemas(request_data, dp_type.prefix)
+    t2 = time.perf_counter()
 
     if len(filtered_schema_list) == 1:
         sql = f"SELECT data_product_id FROM {filtered_schema_list[0]}"
@@ -70,10 +86,18 @@ def get_smiles_data_products(request_data, dp_type, page=1, size=20):
         raise Exception("No Schemas have been defined")
 
     response = catalog_service.search_data_products(sql, page, size)
+    t3 = time.perf_counter()
     data_products = response.data_products
     total_count = response.total_count
 
     smiles_products = [_catalog_dp_to_dict(dp) for dp in data_products]
+    t4 = time.perf_counter()
+    logger.warning(
+        "[TIMING] get_smiles_data_products type=%s page=%d | "
+        "stub=%.3fs schema=%.3fs search=%.3fs convert=%.3fs total=%.3fs",
+        dp_type.name, page,
+        t1 - t0, t2 - t1, t3 - t2, t4 - t3, t4 - t0
+    )
     return {
         "data_products": smiles_products,
         "total_count": total_count

@@ -1,24 +1,28 @@
 import json
-import os
 import logging
+import os
+import time
+
 import grpc
-
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
-from django.views import View
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.core.files.storage import FileSystemStorage
-from . import smiles_dp_util
-from . import smiles_data_migration
+from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import render
-from .apps import SmilesDjangoPortalConfig
+from django.views import View
 
-from .airavata_portal_service import AiravataPortalAPIService
-from .data_catalog_service import DataCatalogService
 from smiles.proto import data_catalog_pb2 as pb2
-from django.views.decorators.csrf import csrf_exempt
+from . import smiles_data_migration
+from . import smiles_dp_util
+from .airavata_portal_service import AiravataPortalAPIService
+from .apps import SmilesDjangoPortalConfig
+from .data_catalog_service import DataCatalogService
+
+_USER_GROUPS_CACHE_TTL = 300  # 5 minutes
 
 logger = logging.getLogger(__name__)
+
 
 class ComputationalDPView(View):
     UPLOAD_URL = '/' + SmilesDjangoPortalConfig.name + '/comp-dp/upload'
@@ -47,6 +51,7 @@ class ComputationalDPView(View):
             size
         )
         return JsonResponse(result, safe=False, status=200)
+
     def put(self, request, dp_id):
         data = json.loads(request.body)
         try:
@@ -249,8 +254,18 @@ def upload_smile_dps(request, dp_type):
 
 
 def extract_request_data(request):
-    groups_response = my_groups(request)
-    groups_list = json.loads(groups_response.content)
+    cache_key = f"smiles:user_groups:{request.user.username}"
+    groups_list = cache.get(cache_key)
+    if groups_list is None:
+        t0 = time.perf_counter()
+        groups_response = my_groups(request)
+        groups_list = json.loads(groups_response.content)
+        elapsed = time.perf_counter() - t0
+        logger.warning("[TIMING] my_groups() cache MISS took %.3fs for user=%s groups=%s",
+                       elapsed, request.user.username, groups_list)
+        cache.set(cache_key, groups_list, _USER_GROUPS_CACHE_TTL)
+    else:
+        logger.debug("[TIMING] my_groups() cache HIT for user=%s", request.user.username)
     return {
         'user_id': request.user.username,
         'tenant_id': "demotenant",

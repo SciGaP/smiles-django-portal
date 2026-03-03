@@ -136,10 +136,10 @@ export default {
     }
   },
   mounted() {
-    if (!this.item) {
-      this.fetchData();
-    } else {
+    if (this.dp) {
       this.item = this.dp;
+    } else {
+      this.fetchData();
     }
   },
   methods: {
