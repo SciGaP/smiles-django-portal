@@ -19,16 +19,12 @@ _GRPC_TIMEOUT = 30  # seconds
 
 def get_grpc_channel():
     global _grpc_channel
-    with _channel_lock:
-        if _grpc_channel is not None:
-            state = _grpc_channel.get_state(try_to_connect=False)
-            if state == grpc.ChannelConnectivity.SHUTDOWN:
-                logger.warning("gRPC channel is SHUTDOWN, recreating")
-                _grpc_channel = None
-        if _grpc_channel is None:
-            _grpc_channel = grpc.insecure_channel(
-                settings.DATA_CATALOG_GRPC_SERVER
-            )
+    if _grpc_channel is None:
+        with _channel_lock:
+            if _grpc_channel is None:
+                _grpc_channel = grpc.insecure_channel(
+                    settings.DATA_CATALOG_GRPC_SERVER
+                )
     return _grpc_channel
 
 
